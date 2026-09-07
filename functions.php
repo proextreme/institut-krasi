@@ -484,6 +484,21 @@ function beauty_institute_header_aparati_dropdown_items( $items, $args ) {
 add_filter( 'wp_nav_menu_objects', 'beauty_institute_header_aparati_dropdown_items', 10, 2 );
 
 /**
+ * Content helpers for ACF-driven templates.
+ */
+require get_template_directory() . '/inc/helpers.php';
+
+/**
+ * Custom post types and taxonomies.
+ */
+require get_template_directory() . '/inc/post-types.php';
+
+/**
+ * ACF field groups (registered in code).
+ */
+require get_template_directory() . '/inc/acf-fields.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';

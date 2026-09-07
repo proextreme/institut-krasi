@@ -17,11 +17,24 @@
 						<img class="footer_logo_img footer_logo_img_desktop" src="<?php echo esc_url( beauty_institute_asset( 'images/logo_footer.svg' ) ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" width="292" height="54">
 						<img class="footer_logo_img footer_logo_img_mobile" src="<?php echo esc_url( beauty_institute_asset( 'images/logo_footer_mobile.svg' ) ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" width="184" height="34">
 					</a>
-					<p class="footer_slogan"><?php esc_html_e( 'Традиції медицини та сучасні технології краси', 'beauty-institute' ); ?></p>
+					<p class="footer_slogan"><?php bi_option_text( 'footer_slogan', 'Традиції медицини та сучасні технології краси' ); ?></p>
 					<div class="footer_contacts">
-						<p class="footer_contacts_item"><strong><?php esc_html_e( 'м. Київ', 'beauty-institute' ); ?></strong> <?php esc_html_e( 'вул. Євгена Чикаленка, 20А', 'beauty-institute' ); ?></p>
-						<p class="footer_contacts_item"><strong><?php esc_html_e( 'Телефон:', 'beauty-institute' ); ?></strong> <a href="tel:+380985101551">+38-098-510-15-51</a> <a href="tel:+380955101551">+38-095-510-15-51</a></p>
-						<p class="footer_contacts_item"><strong>E-mail:</strong> <a href="mailto:22872120@ukr.net">22872120@ukr.net</a></p>
+						<p class="footer_contacts_item"><strong><?php bi_option_text( 'address_locality', 'м. Київ' ); ?></strong> <?php echo wp_kses_post( bi_option( 'address_street', 'вул. Євгена Чикаленка, 20А' ) ); ?></p>
+						<p class="footer_contacts_item">
+							<strong><?php esc_html_e( 'Телефон:', 'beauty-institute' ); ?></strong>
+							<?php
+							$footer_phone_1 = bi_option( 'phone_1', '+38-098-510-15-51' );
+							$footer_phone_2 = bi_option( 'phone_2', '+38-095-510-15-51' );
+							if ( $footer_phone_1 ) {
+								printf( '<a href="tel:%s">%s</a> ', esc_attr( preg_replace( '/[^\d+]/', '', $footer_phone_1 ) ), esc_html( $footer_phone_1 ) );
+							}
+							if ( $footer_phone_2 ) {
+								printf( '<a href="tel:%s">%s</a>', esc_attr( preg_replace( '/[^\d+]/', '', $footer_phone_2 ) ), esc_html( $footer_phone_2 ) );
+							}
+							?>
+						</p>
+						<?php $footer_email = bi_option( 'email', '22872120@ukr.net' ); ?>
+						<p class="footer_contacts_item"><strong>E-mail:</strong> <a href="mailto:<?php echo esc_attr( $footer_email ); ?>"><?php echo esc_html( $footer_email ); ?></a></p>
 					</div>
 				</div>
 
@@ -107,15 +120,22 @@
 						</ul>
 
 						<ul class="footer_socials">
-							<li class="footer_socials_item">
-								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/instagram_footer.svg' ) ); ?>');"></a>
-							</li>
-							<li class="footer_socials_item">
-								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/fb_footer.svg' ) ); ?>');"></a>
-							</li>
-							<li class="footer_socials_item">
-								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/youtube_footer.svg' ) ); ?>');"></a>
-							</li>
+							<?php
+							$footer_socials = array(
+								'social_instagram' => array( 'Instagram', 'images/instagram_footer.svg' ),
+								'social_facebook'  => array( 'Facebook', 'images/fb_footer.svg' ),
+								'social_youtube'   => array( 'YouTube', 'images/youtube_footer.svg' ),
+							);
+							foreach ( $footer_socials as $key => $meta ) :
+								$url = bi_option( $key );
+								if ( ! $url ) {
+									continue;
+								}
+								?>
+								<li class="footer_socials_item">
+									<a class="footer_socials_link" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( $meta[0] ); ?>" style="background-image: url('<?php echo esc_url( beauty_institute_asset( $meta[1] ) ); ?>');"></a>
+								</li>
+							<?php endforeach; ?>
 							<!-- <li class="footer_socials_item">
 								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Threads" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/threads_footer.svg' ) ); ?>');"></a>
 							</li> 
@@ -140,10 +160,14 @@
 
 			<div class="footer_bottom">
 				<div class="footer_legal">
-					<a class="footer_legal_link" href="#"><?php esc_html_e( 'Умови використання', 'beauty-institute' ); ?></a>
-					<a class="footer_legal_link" href="#"><?php esc_html_e( 'Політика конфіденційності', 'beauty-institute' ); ?></a>
+					<?php
+					$footer_terms   = bi_option( 'footer_terms_link' );
+					$footer_privacy = bi_option( 'footer_privacy_link' );
+					?>
+					<a class="footer_legal_link" href="<?php echo esc_url( is_array( $footer_terms ) && ! empty( $footer_terms['url'] ) ? $footer_terms['url'] : '#' ); ?>"><?php echo esc_html( is_array( $footer_terms ) && ! empty( $footer_terms['title'] ) ? $footer_terms['title'] : __( 'Умови використання', 'beauty-institute' ) ); ?></a>
+					<a class="footer_legal_link" href="<?php echo esc_url( is_array( $footer_privacy ) && ! empty( $footer_privacy['url'] ) ? $footer_privacy['url'] : '#' ); ?>"><?php echo esc_html( is_array( $footer_privacy ) && ! empty( $footer_privacy['title'] ) ? $footer_privacy['title'] : __( 'Політика конфіденційності', 'beauty-institute' ) ); ?></a>
 				</div>
-				<p class="footer_copy">&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php esc_html_e( 'ІНСТИТУТ КРАСИ', 'beauty-institute' ); ?></p>
+				<p class="footer_copy">&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bi_option_text( 'footer_copy_name', 'ІНСТИТУТ КРАСИ' ); ?></p>
 			</div>
 		</div>
 	</footer>
