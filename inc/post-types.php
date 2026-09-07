@@ -10,7 +10,7 @@
  */
 
 // Bump this when a post type slug / rewrite changes to trigger a one-time flush.
-define( 'BEAUTY_INSTITUTE_REWRITE_VERSION', '2026-09-07-1' );
+define( 'BEAUTY_INSTITUTE_REWRITE_VERSION', '2026-09-07-2' );
 
 /**
  * Register theme post types.
@@ -186,6 +186,27 @@ function beauty_institute_register_taxonomies() {
 		)
 	);
 
+	// Doctor specialties — drives the tabs on the "Лікарі" page.
+	register_taxonomy(
+		'bi_specialty',
+		array( 'bi_doctor' ),
+		array(
+			'labels'            => array(
+				'name'          => __( 'Спеціальності', 'beauty-institute' ),
+				'singular_name' => __( 'Спеціальність', 'beauty-institute' ),
+				'menu_name'     => __( 'Спеціальності', 'beauty-institute' ),
+				'add_new_item'  => __( 'Додати спеціальність', 'beauty-institute' ),
+			),
+			'public'            => false,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'show_in_rest'      => true,
+			'hierarchical'      => true,
+			'rewrite'           => false,
+			'query_var'         => false,
+		)
+	);
+
 	// Optional category for before/after results (e.g. "Ін'єкційна косметологія").
 	register_taxonomy(
 		'bi_result_cat',
@@ -218,6 +239,21 @@ function beauty_institute_maybe_flush_rewrite() {
 	beauty_institute_register_post_types();
 	beauty_institute_register_taxonomies();
 	flush_rewrite_rules( false );
+
+	// Seed the default doctor specialties once.
+	$default_specialties = array(
+		'Дерматологи',
+		'Хірурги',
+		'Косметологи',
+		'Стоматологи',
+		'Інші лікарі',
+	);
+	foreach ( $default_specialties as $specialty ) {
+		if ( ! term_exists( $specialty, 'bi_specialty' ) ) {
+			wp_insert_term( $specialty, 'bi_specialty' );
+		}
+	}
+
 	update_option( 'beauty_institute_rewrite_flushed', BEAUTY_INSTITUTE_REWRITE_VERSION );
 }
 add_action( 'init', 'beauty_institute_maybe_flush_rewrite', 99 );

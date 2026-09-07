@@ -2,485 +2,177 @@
 /**
  * Template Name: Likari
  *
- * @package Beauty_Institute
+ * @package beauty-institute
  */
 
 get_header();
+
+$likari_title = '';
+$likari_intro = '';
+while ( have_posts() ) :
+	the_post();
+	$likari_title = get_the_title();
+	$likari_intro = get_the_content();
+endwhile;
+
+$specialties = get_terms(
+	array(
+		'taxonomy'   => 'bi_specialty',
+		'hide_empty' => true,
+	)
+);
+$specialties = is_wp_error( $specialties ) ? array() : $specialties;
+
+// Doctors with no specialty assigned.
+$unassigned = get_posts(
+	array(
+		'post_type'      => 'bi_doctor',
+		'post_status'    => 'publish',
+		'posts_per_page' => -1,
+		'fields'         => 'ids',
+		'no_found_rows'  => true,
+		'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			array(
+				'taxonomy' => 'bi_specialty',
+				'operator' => 'NOT EXISTS',
+			),
+		),
+	)
+);
+
+$panels = array();
+foreach ( $specialties as $term ) {
+	$ids = get_posts(
+		array(
+			'post_type'      => 'bi_doctor',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
+			'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				array(
+					'taxonomy' => 'bi_specialty',
+					'field'    => 'term_id',
+					'terms'    => $term->term_id,
+				),
+			),
+		)
+	);
+	if ( $ids ) {
+		$panels[] = array(
+			'slug'  => $term->slug,
+			'name'  => $term->name,
+			'items' => $ids,
+		);
+	}
+}
+if ( $unassigned ) {
+	$panels[] = array(
+		'slug'  => 'other',
+		'name'  => __( 'Інші лікарі', 'beauty-institute' ),
+		'items' => $unassigned,
+	);
+}
+
+/**
+ * Print one doctor card.
+ *
+ * @param int $doctor_id Doctor post ID.
+ */
+if ( ! function_exists( 'beauty_institute_doctor_card' ) ) :
+function beauty_institute_doctor_card( $doctor_id ) {
+	$photo_id = bi_image_id( function_exists( 'get_field' ) ? get_field( 'photo', $doctor_id ) : '' );
+	if ( ! $photo_id ) {
+		$photo_id = get_post_thumbnail_id( $doctor_id );
+	}
+	$photo_url = $photo_id ? wp_get_attachment_image_url( $photo_id, 'medium_large' ) : beauty_institute_asset( 'images/likari/estetychnyi_khirurh.webp' );
+	$role      = function_exists( 'get_field' ) ? (string) get_field( 'role', $doctor_id ) : '';
+	$permalink = get_permalink( $doctor_id );
+	?>
+	<article class="estetychnyi_khirurh_card">
+		<a class="estetychnyi_khirurh_photo" href="<?php echo esc_url( $permalink ); ?>" style="background-image: url('<?php echo esc_url( $photo_url ); ?>');"></a>
+		<a class="estetychnyi_khirurh_info" href="<?php echo esc_url( $permalink ); ?>">
+			<?php if ( '' !== $role ) : ?>
+				<span class="estetychnyi_khirurh_role"><?php echo esc_html( $role ); ?></span>
+			<?php endif; ?>
+			<span class="estetychnyi_khirurh_name"><?php echo esc_html( get_the_title( $doctor_id ) ); ?></span>
+		</a>
+	</article>
+	<?php
+}
+endif;
 ?>
 <main class="likari">
 
 	<section class="poslugi">
 		<nav class="breadcrumbs" aria-label="Хлібні крихти">
 			<div class="container breadcrumbs_inner">
-				<? if ( function_exists('yoast_breadcrumb') ) yoast_breadcrumb('<div id="breadcrumbs">','</div>');?>
+				<?php
+				if ( function_exists( 'yoast_breadcrumb' ) ) {
+					yoast_breadcrumb( '<div id="breadcrumbs">', '</div>' );
+				}
+				?>
 			</div>
 		</nav>
 
 		<div class="container poslugi_inner">
-			<h1 class="poslugi_title font_heading">Наші лікарі</h1>
+			<h1 class="poslugi_title font_heading"><?php echo esc_html( $likari_title ? $likari_title : __( 'Наші лікарі', 'beauty-institute' ) ); ?></h1>
 			<div class="poslugi_text">
-				<p class="poslugi_desc">Наші лікарі — експерти, яким довіряють. Багаторічний досвід, постійне навчання, бездоганне володіння сучасними методами діагностики та лікування — основа нашої роботи.</p>
+				<div class="poslugi_desc">
+					<?php
+					echo $likari_intro
+						? wp_kses_post( apply_filters( 'the_content', $likari_intro ) )
+						: '<p>Наші лікарі — експерти, яким довіряють. Багаторічний досвід, постійне навчання, бездоганне володіння сучасними методами діагностики та лікування — основа нашої роботи.</p>';
+					?>
+				</div>
 			</div>
+
+			<?php if ( count( $panels ) > 1 ) : ?>
 			<nav class="poslugi_tabs" aria-label="Наші лікарі" data-likari-tabs role="tablist">
-				<button type="button" class="poslugi_tab" role="tab" id="likari-tab-dermatology" data-likari-tab="dermatology" aria-controls="likari-panel-dermatology" aria-selected="false" tabindex="-1">Дерматологи</button>
-				<button type="button" class="poslugi_tab is_active" role="tab" id="likari-tab-surgery" data-likari-tab="surgery" aria-controls="likari-panel-surgery" aria-selected="true" tabindex="0">Хірурги</button>
-				<button type="button" class="poslugi_tab" role="tab" id="likari-tab-cosmetology" data-likari-tab="cosmetology" aria-controls="likari-panel-cosmetology" aria-selected="false" tabindex="-1">Косметологи</button>
-				<button type="button" class="poslugi_tab" role="tab" id="likari-tab-stomatology" data-likari-tab="stomatology" aria-controls="likari-panel-stomatology" aria-selected="false" tabindex="-1">Стоматологи</button>
-				<button type="button" class="poslugi_tab" role="tab" id="likari-tab-other" data-likari-tab="other" aria-controls="likari-panel-other" aria-selected="false" tabindex="-1">Інші лікарі</button>
+				<?php foreach ( $panels as $index => $panel ) : ?>
+					<button
+						type="button"
+						class="poslugi_tab<?php echo 0 === $index ? ' is_active' : ''; ?>"
+						role="tab"
+						id="likari-tab-<?php echo esc_attr( $panel['slug'] ); ?>"
+						data-likari-tab="<?php echo esc_attr( $panel['slug'] ); ?>"
+						aria-controls="likari-panel-<?php echo esc_attr( $panel['slug'] ); ?>"
+						aria-selected="<?php echo 0 === $index ? 'true' : 'false'; ?>"
+						tabindex="<?php echo 0 === $index ? '0' : '-1'; ?>"
+					><?php echo esc_html( $panel['name'] ); ?></button>
+				<?php endforeach; ?>
 			</nav>
+			<?php endif; ?>
 		</div>
 	</section>
 
 	<section class="estetychnyi_khirurh" aria-label="Список лікарів">
 		<div class="container estetychnyi_khirurh_inner">
+			<?php if ( $panels ) : ?>
 			<div class="estetychnyi_khirurh_panels">
-
-				<div
-					class="estetychnyi_khirurh_panel"
-					id="likari-panel-dermatology"
-					role="tabpanel"
-					data-likari-panel="dermatology"
-					aria-labelledby="likari-tab-dermatology"
-					aria-hidden="true"
-				>
-					<div class="estetychnyi_khirurh_list">
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_3.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_7.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_1.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_9.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_5.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_10.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_2.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_8.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_4.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_6.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
+				<?php foreach ( $panels as $index => $panel ) : ?>
+					<div
+						class="estetychnyi_khirurh_panel<?php echo 0 === $index ? ' is_active' : ''; ?>"
+						id="likari-panel-<?php echo esc_attr( $panel['slug'] ); ?>"
+						role="tabpanel"
+						data-likari-panel="<?php echo esc_attr( $panel['slug'] ); ?>"
+						aria-labelledby="likari-tab-<?php echo esc_attr( $panel['slug'] ); ?>"
+						aria-hidden="<?php echo 0 === $index ? 'false' : 'true'; ?>"
+					>
+						<div class="estetychnyi_khirurh_list">
+							<?php
+							foreach ( $panel['items'] as $doctor_id ) {
+								beauty_institute_doctor_card( $doctor_id );
+							}
+							?>
+						</div>
 					</div>
-				</div>
-
-				<div
-					class="estetychnyi_khirurh_panel is_active"
-					id="likari-panel-surgery"
-					role="tabpanel"
-					data-likari-panel="surgery"
-					aria-labelledby="likari-tab-surgery"
-					aria-hidden="false"
-				>
-					<div class="estetychnyi_khirurh_list">
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_1.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_2.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_3.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_4.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_5.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_6.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_7.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_8.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_9.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_10.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-					</div>
-				</div>
-
-				<div
-					class="estetychnyi_khirurh_panel"
-					id="likari-panel-cosmetology"
-					role="tabpanel"
-					data-likari-panel="cosmetology"
-					aria-labelledby="likari-tab-cosmetology"
-					aria-hidden="true"
-				>
-					<div class="estetychnyi_khirurh_list">
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_10.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_5.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_2.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_8.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_1.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_6.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_9.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_3.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_7.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_4.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-					</div>
-				</div>
-
-				<div
-					class="estetychnyi_khirurh_panel"
-					id="likari-panel-stomatology"
-					role="tabpanel"
-					data-likari-panel="stomatology"
-					aria-labelledby="likari-tab-stomatology"
-					aria-hidden="true"
-				>
-					<div class="estetychnyi_khirurh_list">
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_4.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_9.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_2.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_6.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_8.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_1.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_10.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_3.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_5.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_7.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-					</div>
-				</div>
-
-				<div
-					class="estetychnyi_khirurh_panel"
-					id="likari-panel-other"
-					role="tabpanel"
-					data-likari-panel="other"
-					aria-labelledby="likari-tab-other"
-					aria-hidden="true"
-				>
-					<div class="estetychnyi_khirurh_list">
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_8.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_6.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_2.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_10.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_4.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_1.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_7.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_3.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_9.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-						<article class="estetychnyi_khirurh_card">
-							<a class="estetychnyi_khirurh_photo" href="/likar" style="background-image: url('/wp-content/themes/beauty-institute/assets/images/likari/estetychnyi_khirurh_5.webp');"></a>
-							<a class="estetychnyi_khirurh_info" href="/likar">
-								<span class="estetychnyi_khirurh_role">Естетичний хірург</span>
-								<span class="estetychnyi_khirurh_name">Сливка Олена Михайлівна</span>
-							</a>
-						</article>
-					</div>
-				</div>
-
+				<?php endforeach; ?>
 			</div>
+			<?php else : ?>
+				<p class="poslugi_desc"><?php esc_html_e( 'Лікарі зʼявляться тут найближчим часом.', 'beauty-institute' ); ?></p>
+			<?php endif; ?>
 		</div>
 	</section>
 

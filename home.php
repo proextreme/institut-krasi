@@ -389,7 +389,7 @@ $req_btn  = bi_field( 'requests_btn' );
 							foreach ( $doctors as $index => $doctor_id ) :
 								$d_img  = get_post_thumbnail_id( $doctor_id );
 								$d_src  = $d_img ? wp_get_attachment_image_url( $d_img, 'medium_large' ) : beauty_institute_asset( 'images/doctor_1.webp' );
-								$d_role = function_exists( 'get_field' ) ? (string) get_field( 'specialization', $doctor_id ) : '';
+								$d_role = function_exists( 'get_field' ) ? (string) get_field( 'role', $doctor_id ) : '';
 								$d_desc = function_exists( 'get_field' ) ? (string) get_field( 'card_description', $doctor_id ) : '';
 								?>
 								<div class="doctors_slide<?php echo ( $index % 2 ) ? ' doctors_slide_rev' : ''; ?>">
@@ -689,32 +689,7 @@ $req_btn  = bi_field( 'requests_btn' );
 						<p class="consult_intro consult_intro_desktop"><?php bi_text( 'consult_intro_desktop', 'Ми завжди раді відповісти на всі хвилюючі вас питання і зробити все можливе для поліпшення вашого здоров’я і зовнішнього вигляду' ); ?></p>
 						<p class="consult_intro consult_intro_mobile"><?php bi_text( 'consult_intro_mobile', 'Допоможемо визначити проблему та підібрати лікування.' ); ?></p>
 
-						<?php
-						$consult_form = bi_field( 'consult_form' );
-						if ( $consult_form ) {
-							echo do_shortcode( $consult_form );
-						} else {
-							?>
-							<form action="/#wpcf7-f72-o1" method="post" class="wpcf7-form consult_form init" aria-label="Контактна форма" novalidate="novalidate" data-status="init">
-								<p>
-									<label> Ім’я</label><br>
-									<span class="wpcf7-form-control-wrap" data-name="your-name"><input size="40" maxlength="400" class="wpcf7-form-control wpcf7-text" autocomplete="name" aria-invalid="false" value="" type="text" name="your-name" placeholder="Вкажіть як до вас звертатися"></span>
-								</p>
-								<p>
-									<label> Телефон</label><br>
-									<span class="wpcf7-form-control-wrap" data-name="your-phone"><input size="40" maxlength="15" class="wpcf7-form-control wpcf7-tel wpcf7-text" autocomplete="tel" inputmode="numeric" aria-invalid="false" value="" type="tel" name="your-phone" placeholder="Вкажіть свій номер телефону"></span>
-								</p>
-								<p>
-									<label> Послуга</label><br>
-									<span class="wpcf7-form-control-wrap" data-name="your-service"><select class="wpcf7-form-control wpcf7-select" aria-invalid="false" name="your-service"><option value="">Оберіть послугу</option><option value="novoutvorennya">Видалення новоутворень</option><option value="injection">Ін’єкційна косметологія</option><option value="surgery">Естетична хірургія</option><option value="hardware">Апаратна косметологія</option><option value="care">Доглядові процедури</option><option value="stomatology">Стоматологія</option></select></span>
-								</p>
-								<p>
-									<input class="wpcf7-form-control wpcf7-submit has-spinner" type="submit" value="Відправити"><span class="wpcf7-spinner"></span>
-								</p>
-							</form>
-							<?php
-						}
-						?>
+						<?php beauty_institute_consult_form( bi_field( 'consult_form' ) ); ?>
 					</div>
 
 					<div class="consult_visual" aria-hidden="true"></div>

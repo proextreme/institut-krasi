@@ -212,6 +212,44 @@ function bi_option_text( $selector, $fallback = '' ) {
 }
 
 /**
+ * Render the "Запис на консультацію" form.
+ *
+ * Uses the Contact Form 7 shortcode from Site Settings (or a per-call
+ * override); falls back to the static markup so the block never disappears.
+ *
+ * @param string $shortcode Optional shortcode overriding the global one.
+ */
+function beauty_institute_consult_form( $shortcode = '' ) {
+	if ( '' === $shortcode ) {
+		$shortcode = (string) bi_option( 'consult_form_shortcode', '' );
+	}
+
+	if ( '' !== $shortcode ) {
+		echo do_shortcode( $shortcode );
+		return;
+	}
+	?>
+	<form action="/#wpcf7-f72-o1" method="post" class="wpcf7-form consult_form init" aria-label="Контактна форма" novalidate="novalidate" data-status="init">
+		<p>
+			<label> Ім’я</label><br>
+			<span class="wpcf7-form-control-wrap" data-name="your-name"><input size="40" maxlength="400" class="wpcf7-form-control wpcf7-text" autocomplete="name" aria-invalid="false" value="" type="text" name="your-name" placeholder="Вкажіть як до вас звертатися"></span>
+		</p>
+		<p>
+			<label> Телефон</label><br>
+			<span class="wpcf7-form-control-wrap" data-name="your-phone"><input size="40" maxlength="15" class="wpcf7-form-control wpcf7-tel wpcf7-text" autocomplete="tel" inputmode="numeric" aria-invalid="false" value="" type="tel" name="your-phone" placeholder="Вкажіть свій номер телефону"></span>
+		</p>
+		<p>
+			<label> Послуга</label><br>
+			<span class="wpcf7-form-control-wrap" data-name="your-service"><select class="wpcf7-form-control wpcf7-select" aria-invalid="false" name="your-service"><option value="">Оберіть послугу</option><option value="novoutvorennya">Видалення новоутворень</option><option value="injection">Ін’єкційна косметологія</option><option value="surgery">Естетична хірургія</option><option value="hardware">Апаратна косметологія</option><option value="care">Доглядові процедури</option><option value="stomatology">Стоматологія</option></select></span>
+		</p>
+		<p>
+			<input class="wpcf7-form-control wpcf7-submit has-spinner" type="submit" value="Відправити"><span class="wpcf7-spinner"></span>
+		</p>
+	</form>
+	<?php
+}
+
+/**
  * Resolve a "pick items, or fall back to latest" list for a home-page section.
  *
  * Reads an ACF relationship field on the current post; when empty, returns the

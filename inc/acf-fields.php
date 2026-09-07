@@ -41,8 +41,137 @@ function beauty_institute_register_acf_fields() {
 
 	beauty_institute_acf_group_settings();
 	beauty_institute_acf_group_home();
+	beauty_institute_acf_group_doctor();
+	beauty_institute_acf_group_problem();
+	beauty_institute_acf_group_review();
+	beauty_institute_acf_group_result();
 }
 add_action( 'acf/include_fields', 'beauty_institute_register_acf_fields' );
+
+/**
+ * Location helper: one rule, post type equals.
+ *
+ * @param string $post_type Post type slug.
+ * @return array
+ */
+function bi_acf_location_post_type( $post_type ) {
+	return array(
+		array(
+			array(
+				'param'    => 'post_type',
+				'operator' => '==',
+				'value'    => $post_type,
+			),
+		),
+	);
+}
+
+/**
+ * Лікар — profile fields.
+ */
+function beauty_institute_acf_group_doctor() {
+	$certs = array(
+		bi_acf_field( 'doc_certs_intro', __( 'Опис блоку сертифікатів', 'beauty-institute' ), 'certs_intro', 'text' ),
+	);
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$certs[] = bi_acf_field( "doc_cert_{$i}_label", sprintf( __( 'Сертифікат %d — назва', 'beauty-institute' ), $i ), "cert_{$i}_label", 'text', array( 'wrapper' => array( 'width' => '50' ) ) );
+		$certs[] = bi_acf_field( "doc_cert_{$i}_year", sprintf( __( 'Сертифікат %d — рік', 'beauty-institute' ), $i ), "cert_{$i}_year", 'text', array( 'wrapper' => array( 'width' => '20' ) ) );
+		$certs[] = bi_acf_field( "doc_cert_{$i}_file", sprintf( __( 'Сертифікат %d — файл', 'beauty-institute' ), $i ), "cert_{$i}_file", 'file', array( 'return_format' => 'url', 'wrapper' => array( 'width' => '30' ) ) );
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_doctor',
+			'title'    => __( 'Дані лікаря', 'beauty-institute' ),
+			'fields'   => array_merge(
+				array(
+					bi_acf_field( 'doc_tab_main', __( 'Основне', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'doc_photo', __( 'Фото', 'beauty-institute' ), 'photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+					bi_acf_field( 'doc_position', __( 'Посада / регалії', 'beauty-institute' ), 'position', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+					bi_acf_field( 'doc_since', __( 'Стаж (рядок під посадою)', 'beauty-institute' ), 'since', 'text', array( 'placeholder' => 'Працює в косметології з 2012 року.' ) ),
+					bi_acf_field( 'doc_bio', __( 'Біографія', 'beauty-institute' ), 'bio', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+
+					bi_acf_field( 'doc_tab_card', __( 'Картка (список / головна)', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'doc_role', __( 'Спеціалізація (короткий підпис у картці)', 'beauty-institute' ), 'role', 'text', array( 'placeholder' => 'Дерматолог' ) ),
+					bi_acf_field( 'doc_card_description', __( 'Опис у картці на головній', 'beauty-institute' ), 'card_description', 'text' ),
+
+					bi_acf_field( 'doc_tab_lists', __( 'Списки', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'doc_specialization_list', __( 'Спеціалізація (по одному пункту на рядок)', 'beauty-institute' ), 'specialization_list', 'textarea', array( 'rows' => 6 ) ),
+					bi_acf_field( 'doc_services_list', __( 'Послуги (по одному пункту на рядок)', 'beauty-institute' ), 'services_list', 'textarea', array( 'rows' => 8 ) ),
+
+					bi_acf_field( 'doc_tab_certs', __( 'Сертифікати', 'beauty-institute' ), '', 'tab' ),
+				),
+				$certs
+			),
+			'location' => bi_acf_location_post_type( 'bi_doctor' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Запит («Що ми вирішуємо») — card + page fields.
+ */
+function beauty_institute_acf_group_problem() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_problem',
+			'title'    => __( 'Дані запиту', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'prob_card_image', __( 'Зображення картки', 'beauty-institute' ), 'card_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Якщо порожньо — береться головне зображення запису.', 'beauty-institute' ) ) ),
+				bi_acf_field( 'prob_lead', __( 'Короткий опис', 'beauty-institute' ), 'lead', 'textarea', array( 'rows' => 3 ) ),
+			),
+			'location' => bi_acf_location_post_type( 'bi_problem' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Відгук — block-only content.
+ */
+function beauty_institute_acf_group_review() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_review',
+			'title'    => __( 'Дані відгуку', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'rev_author', __( 'Ім’я автора', 'beauty-institute' ), 'author_name', 'text' ),
+				bi_acf_field( 'rev_topic', __( 'Тема / послуга', 'beauty-institute' ), 'topic', 'text' ),
+				bi_acf_field( 'rev_text', __( 'Текст відгуку', 'beauty-institute' ), 'text', 'textarea', array( 'rows' => 6 ) ),
+				bi_acf_field( 'rev_photo', __( 'Фото автора', 'beauty-institute' ), 'photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail' ) ),
+				bi_acf_field( 'rev_video', __( 'Посилання на відеовідгук (YouTube)', 'beauty-institute' ), 'video_url', 'url' ),
+				bi_acf_field(
+					'rev_doctor',
+					__( 'Лікар', 'beauty-institute' ),
+					'doctor',
+					'post_object',
+					array( 'post_type' => array( 'bi_doctor' ), 'return_format' => 'id', 'allow_null' => 1 )
+				),
+			),
+			'location' => bi_acf_location_post_type( 'bi_review' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Результат «До та після» — block-only content.
+ */
+function beauty_institute_acf_group_result() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_result',
+			'title'    => __( 'Дані результату', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'res_image', __( 'Зображення «до / після»', 'beauty-institute' ), 'image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Якщо порожньо — береться головне зображення запису.', 'beauty-institute' ) ) ),
+				bi_acf_field( 'res_procedure', __( 'Процедура / підпис', 'beauty-institute' ), 'procedure', 'text' ),
+			),
+			'location' => bi_acf_location_post_type( 'bi_result' ),
+			'active'   => true,
+		)
+	);
+}
 
 /**
  * Global "Налаштування сайту" group (free-ACF stand-in for an options page).
@@ -78,6 +207,18 @@ function beauty_institute_acf_group_settings() {
 					'map_embed',
 					'textarea',
 					array( 'rows' => 4 )
+				),
+
+				bi_acf_field( 'set_tab_forms', __( 'Форми', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field(
+					'consult_form_shortcode',
+					__( 'Шорткод форми «Запис на консультацію» (Contact Form 7)', 'beauty-institute' ),
+					'consult_form_shortcode',
+					'text',
+					array(
+						'placeholder'  => '[contact-form-7 id="123" title="Консультація"]',
+						'instructions' => __( 'Використовується у блоках запису на всіх сторінках.', 'beauty-institute' ),
+					)
 				),
 
 				bi_acf_field( 'set_tab_footer', __( 'Підвал', 'beauty-institute' ), '', 'tab' ),
