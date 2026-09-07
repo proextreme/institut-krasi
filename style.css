@@ -1,0 +1,21 @@
+/*!
+Theme Name: beauty-institute
+Theme URI: http://underscores.me/
+Author: Underscores.me
+Author URI: http://underscores.me/
+Description: Custom theme for Інститут краси. Based on Underscores.
+Version: 1.0.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: beauty-institute
+Tags: custom-logo, custom-menu, featured-images, translation-ready
+
+beauty-institute is based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc.
+Underscores is distributed under the terms of the GNU GPL v2 or later.
+
+Front-end styles: assets/css/fonts.css + assets/css/style.css
+*/
+
+/* Theme stylesheet intentionally minimal — see assets/css/style.css */

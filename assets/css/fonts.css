@@ -1,0 +1,117 @@
+/* Fonts: Manrope + Lora + Rochester (Cyrillic + Latin where available) */
+/* Weights used: Manrope 300/400/500/600/700, Lora 400/500/600/700, Rochester 400 */
+
+/* ========== Lora (static, Cyrillic + Latin) ========== */
+@font-face {
+	font-family: "Lora";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/lora/static/lora_regular.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Lora";
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/lora/static/lora_italic.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Lora";
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url("../fonts/lora/static/lora_medium.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Lora";
+	font-style: italic;
+	font-weight: 500;
+	font-display: swap;
+	src: url("../fonts/lora/static/lora_medium_italic.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Lora";
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url("../fonts/lora/static/lora_semibold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Lora";
+	font-style: italic;
+	font-weight: 600;
+	font-display: swap;
+	src: url("../fonts/lora/static/lora_semibold_italic.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Lora";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("../fonts/lora/static/lora_bold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Lora";
+	font-style: italic;
+	font-weight: 700;
+	font-display: swap;
+	src: url("../fonts/lora/static/lora_bold_italic.ttf") format("truetype");
+}
+
+/* ========== Manrope (static, Cyrillic + Latin) ========== */
+@font-face {
+	font-family: "Manrope";
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../fonts/manrope/static/manrope_light.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Manrope";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/manrope/static/manrope_regular.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Manrope";
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url("../fonts/manrope/static/manrope_medium.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Manrope";
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url("../fonts/manrope/static/manrope_semibold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Manrope";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("../fonts/manrope/static/manrope_bold.ttf") format("truetype");
+}
+
+/* ========== Rochester ========== */
+@font-face {
+	font-family: "Rochester";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/rochester/Rochester-Regular.ttf") format("truetype");
+}
