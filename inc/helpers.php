@@ -289,5 +289,13 @@ function beauty_institute_home_service_terms() {
 		)
 	);
 
-	return is_wp_error( $terms ) ? array() : $terms;
+	if ( is_wp_error( $terms ) ) {
+		return array();
+	}
+
+	/*
+	 * The design has room for ~6 service tiles. Until the "Послуги" tree is
+	 * built out, keep the static fallback rather than showing one lonely term.
+	 */
+	return ( count( $terms ) >= 3 ) ? $terms : array();
 }
