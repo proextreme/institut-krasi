@@ -208,21 +208,7 @@ while ( have_posts() ) :
 	</section>
 	<?php endif; ?>
 
-	<section class="consult" id="consult" aria-label="Запис на консультацію">
-		<div class="consult_media" aria-hidden="true" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/zapys_img_mob.webp' ) ); ?>');"></div>
-
-		<div class="container consult_container">
-			<div class="consult_box" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/zapys_bg.webp' ) ); ?>');">
-				<div class="consult_form_col">
-					<h2 class="consult_title font_heading"><?php esc_html_e( 'Записатись на прийом', 'beauty-institute' ); ?></h2>
-					<p class="consult_intro"><?php esc_html_e( 'Підберемо зручний час', 'beauty-institute' ); ?></p>
-					<?php beauty_institute_consult_form(); ?>
-				</div>
-
-				<div class="consult_visual" aria-hidden="true"></div>
-			</div>
-		</div>
-	</section>
+	<?php beauty_institute_consult_section(); ?>
 
 </main>
 	<?php

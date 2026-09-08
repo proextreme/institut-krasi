@@ -489,6 +489,11 @@ add_filter( 'wp_nav_menu_objects', 'beauty_institute_header_aparati_dropdown_ite
 require get_template_directory() . '/inc/helpers.php';
 
 /**
+ * Reusable front-end sections (find / consult).
+ */
+require get_template_directory() . '/inc/sections.php';
+
+/**
  * Custom post types and taxonomies.
  */
 require get_template_directory() . '/inc/post-types.php';

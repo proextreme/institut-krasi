@@ -41,6 +41,7 @@ function beauty_institute_register_acf_fields() {
 
 	beauty_institute_acf_group_settings();
 	beauty_institute_acf_group_home();
+	beauty_institute_acf_group_contact();
 	beauty_institute_acf_group_doctor();
 	beauty_institute_acf_group_problem();
 	beauty_institute_acf_group_review();
@@ -174,6 +175,36 @@ function beauty_institute_acf_group_result() {
 }
 
 /**
+ * Контакти page group (location: the Contact page template).
+ */
+function beauty_institute_acf_group_contact() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_contact',
+			'title'    => __( 'Сторінка «Контакти»', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'contact_hero_title', __( 'Заголовок', 'beauty-institute' ), 'hero_title', 'text', array( 'placeholder' => 'Наші контакти' ) ),
+				bi_acf_field( 'contact_hero_bg', __( 'Фонове зображення (десктоп)', 'beauty-institute' ), 'hero_bg', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'contact_hero_bg_mobile', __( 'Фонове зображення (мобільний)', 'beauty-institute' ), 'hero_bg_mobile', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'contact_feats', __( 'Плашки під заголовком (по одній на рядок)', 'beauty-institute' ), 'hero_feats', 'textarea', array( 'rows' => 3, 'instructions' => __( 'Порожньо — показується графік роботи з налаштувань сайту.', 'beauty-institute' ) ) ),
+				bi_acf_field( 'contact_find_title', __( 'Блок «Як нас знайти» — заголовок', 'beauty-institute' ), 'find_title', 'text', array( 'placeholder' => 'Як нас знайти' ) ),
+				bi_acf_field( 'contact_find_text', __( 'Блок «Як нас знайти» — текст', 'beauty-institute' ), 'find_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'page_template',
+						'operator' => '==',
+						'value'    => 'contact.php',
+					),
+				),
+			),
+			'active'   => true,
+		)
+	);
+}
+
+/**
  * Global "Налаштування сайту" group (free-ACF stand-in for an options page).
  */
 function beauty_institute_acf_group_settings() {
@@ -186,10 +217,11 @@ function beauty_institute_acf_group_settings() {
 				bi_acf_field( 'phone_1', __( 'Телефон 1', 'beauty-institute' ), 'phone_1', 'text' ),
 				bi_acf_field( 'phone_2', __( 'Телефон 2', 'beauty-institute' ), 'phone_2', 'text' ),
 				bi_acf_field( 'email', 'E-mail', 'email', 'text' ),
-				bi_acf_field( 'address_locality', __( 'Місто (напівжирне)', 'beauty-institute' ), 'address_locality', 'text', array( 'placeholder' => 'м. Київ' ) ),
-				bi_acf_field( 'address_street', __( 'Адреса (вулиця, будинок)', 'beauty-institute' ), 'address_street', 'text' ),
-				bi_acf_field( 'address_note', __( 'Уточнення (приміщення, індекс)', 'beauty-institute' ), 'address_note', 'text' ),
+				bi_acf_field( 'address_locality', __( 'Місто (напівжирне, для підвалу)', 'beauty-institute' ), 'address_locality', 'text', array( 'placeholder' => 'м. Київ' ) ),
+				bi_acf_field( 'address_region', __( 'Регіон / індекс (підпис у блоці «Як нас знайти»)', 'beauty-institute' ), 'address_region', 'text', array( 'placeholder' => 'Україна, м. Київ, 01024' ) ),
+				bi_acf_field( 'address_street', __( 'Адреса (вулиця, будинок, приміщення)', 'beauty-institute' ), 'address_street', 'text', array( 'placeholder' => 'вул. Чикаленка Євгена, буд. 20, приміщення №49' ) ),
 				bi_acf_field( 'edrpou', __( 'Код ЄДРПОУ', 'beauty-institute' ), 'edrpou', 'text' ),
+				bi_acf_field( 'work_hours', __( 'Графік роботи', 'beauty-institute' ), 'work_hours', 'text', array( 'placeholder' => 'Щодня з 9:00 до 21:00' ) ),
 
 				bi_acf_field( 'set_tab_social', __( 'Соцмережі', 'beauty-institute' ), '', 'tab' ),
 				bi_acf_field( 'social_instagram', 'Instagram', 'social_instagram', 'url' ),
@@ -220,6 +252,9 @@ function beauty_institute_acf_group_settings() {
 						'instructions' => __( 'Використовується у блоках запису на всіх сторінках.', 'beauty-institute' ),
 					)
 				),
+				bi_acf_field( 'consult_title', __( 'Блок запису — заголовок', 'beauty-institute' ), 'consult_title', 'text', array( 'placeholder' => 'Запис на консультацію' ) ),
+				bi_acf_field( 'consult_intro_desktop', __( 'Блок запису — текст (десктоп)', 'beauty-institute' ), 'consult_intro_desktop', 'textarea', array( 'rows' => 3 ) ),
+				bi_acf_field( 'consult_intro_mobile', __( 'Блок запису — текст (мобільний)', 'beauty-institute' ), 'consult_intro_mobile', 'textarea', array( 'rows' => 2 ) ),
 
 				bi_acf_field( 'set_tab_footer', __( 'Підвал', 'beauty-institute' ), '', 'tab' ),
 				bi_acf_field( 'footer_slogan', __( 'Слоган у підвалі', 'beauty-institute' ), 'footer_slogan', 'text' ),
