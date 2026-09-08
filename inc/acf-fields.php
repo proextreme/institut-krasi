@@ -42,6 +42,7 @@ function beauty_institute_register_acf_fields() {
 	beauty_institute_acf_group_settings();
 	beauty_institute_acf_group_home();
 	beauty_institute_acf_group_contact();
+	beauty_institute_acf_group_about();
 	beauty_institute_acf_group_doctor();
 	beauty_institute_acf_group_problem();
 	beauty_institute_acf_group_review();
@@ -196,6 +197,103 @@ function beauty_institute_acf_group_contact() {
 						'param'    => 'page_template',
 						'operator' => '==',
 						'value'    => 'contact.php',
+					),
+				),
+			),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Сторінка «Про нас».
+ */
+function beauty_institute_acf_group_about() {
+	$img = function ( $key, $label ) {
+		return bi_acf_field( $key, $label, str_replace( 'ab_', '', $key ), 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '25' ) ) );
+	};
+
+	$about_cards = array();
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$about_cards[] = bi_acf_field( "ab_card_{$i}_title", sprintf( __( 'Картка %d — заголовок', 'beauty-institute' ), $i ), "card_{$i}_title", 'text' );
+		$about_cards[] = bi_acf_field( "ab_card_{$i}_text", sprintf( __( 'Картка %d — текст', 'beauty-institute' ), $i ), "card_{$i}_text", 'textarea', array( 'rows' => 3 ) );
+	}
+
+	$certs = array();
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$certs[] = bi_acf_field( "ab_cert_{$i}_image", sprintf( __( 'Сертифікат %d — зображення', 'beauty-institute' ), $i ), "cert_{$i}_image", 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '25' ) ) );
+		$certs[] = bi_acf_field( "ab_cert_{$i}_name", sprintf( __( 'Сертифікат %d — назва', 'beauty-institute' ), $i ), "cert_{$i}_name", 'text', array( 'wrapper' => array( 'width' => '35' ) ) );
+		$certs[] = bi_acf_field( "ab_cert_{$i}_year", sprintf( __( 'Сертифікат %d — рік', 'beauty-institute' ), $i ), "cert_{$i}_year", 'text', array( 'wrapper' => array( 'width' => '15' ) ) );
+		$certs[] = bi_acf_field( "ab_cert_{$i}_link", sprintf( __( 'Сертифікат %d — файл/посилання', 'beauty-institute' ), $i ), "cert_{$i}_link", 'file', array( 'return_format' => 'url', 'wrapper' => array( 'width' => '25' ) ) );
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_about',
+			'title'    => __( 'Сторінка «Про нас»', 'beauty-institute' ),
+			'fields'   => array_merge(
+				array(
+					bi_acf_field( 'ab_tab_hero', __( 'Hero', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'ab_hero_title', __( 'Заголовок', 'beauty-institute' ), 'hero_title', 'text', array( 'instructions' => __( 'Можна використати <br> для переносу.', 'beauty-institute' ) ) ),
+					bi_acf_field( 'ab_hero_text', __( 'Підзаголовок', 'beauty-institute' ), 'hero_text', 'text' ),
+					$img( 'ab_hero_img_1', __( 'Галерея 1', 'beauty-institute' ) ),
+					$img( 'ab_hero_img_2', __( 'Галерея 2', 'beauty-institute' ) ),
+					$img( 'ab_hero_img_3', __( 'Галерея 3', 'beauty-institute' ) ),
+					$img( 'ab_hero_img_4', __( 'Галерея 4', 'beauty-institute' ) ),
+
+					bi_acf_field( 'ab_tab_tour', __( '3D-екскурсія', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'ab_tour_title', __( 'Заголовок', 'beauty-institute' ), 'tour_title', 'text' ),
+					bi_acf_field( 'ab_tour_text', __( 'Текст', 'beauty-institute' ), 'tour_text', 'textarea', array( 'rows' => 2 ) ),
+					bi_acf_field( 'ab_tour_poster', __( 'Постер відео', 'beauty-institute' ), 'tour_poster', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+					bi_acf_field( 'ab_tour_youtube', __( 'YouTube ID відео', 'beauty-institute' ), 'tour_youtube_id', 'text', array( 'placeholder' => 'rAx1qYtXI28' ) ),
+
+					bi_acf_field( 'ab_tab_work', __( 'Ми працюємо', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'ab_stat_1_num', __( 'Показник 1 — число', 'beauty-institute' ), 'stat_1_number', 'text', array( 'wrapper' => array( 'width' => '25' ), 'placeholder' => '75' ) ),
+					bi_acf_field( 'ab_stat_1_txt', __( 'Показник 1 — підпис', 'beauty-institute' ), 'stat_1_text', 'text', array( 'wrapper' => array( 'width' => '25' ), 'placeholder' => 'років досвіду' ) ),
+					bi_acf_field( 'ab_stat_2_num', __( 'Показник 2 — число', 'beauty-institute' ), 'stat_2_number', 'text', array( 'wrapper' => array( 'width' => '25' ), 'placeholder' => '23' ) ),
+					bi_acf_field( 'ab_stat_2_txt', __( 'Показник 2 — підпис', 'beauty-institute' ), 'stat_2_text', 'text', array( 'wrapper' => array( 'width' => '25' ), 'placeholder' => 'видів косметологічних послуг' ) ),
+					bi_acf_field( 'ab_work_img_1', __( 'Зображення 1', 'beauty-institute' ), 'work_image_1', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '50' ) ) ),
+					bi_acf_field( 'ab_work_img_2', __( 'Зображення 2', 'beauty-institute' ), 'work_image_2', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '50' ) ) ),
+					bi_acf_field( 'ab_quote_text', __( 'Цитата', 'beauty-institute' ), 'quote_text', 'textarea', array( 'rows' => 3 ) ),
+					bi_acf_field( 'ab_quote_author', __( 'Автор цитати', 'beauty-institute' ), 'quote_author', 'text', array( 'wrapper' => array( 'width' => '50' ) ) ),
+					bi_acf_field( 'ab_quote_role', __( 'Посада автора', 'beauty-institute' ), 'quote_role', 'text', array( 'wrapper' => array( 'width' => '50' ) ) ),
+
+					bi_acf_field( 'ab_tab_about', __( 'Про інститут', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'ab_about_title', __( 'Заголовок', 'beauty-institute' ), 'about_title', 'text' ),
+					bi_acf_field( 'ab_about_lead', __( 'Лід 1', 'beauty-institute' ), 'about_lead', 'textarea', array( 'rows' => 3 ) ),
+					bi_acf_field( 'ab_about_sub', __( 'Лід 2', 'beauty-institute' ), 'about_sub', 'textarea', array( 'rows' => 3 ) ),
+					bi_acf_field( 'ab_about_image', __( 'Зображення', 'beauty-institute' ), 'about_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				),
+				$about_cards,
+				array(
+					bi_acf_field( 'ab_tab_doctors', __( 'Наші лікарі', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'ab_doctors_title', __( 'Заголовок', 'beauty-institute' ), 'doctors_title', 'text' ),
+					bi_acf_field( 'ab_doctors_list', __( 'Список (по одному пункту на рядок)', 'beauty-institute' ), 'doctors_list', 'textarea', array( 'rows' => 5 ) ),
+					bi_acf_field( 'ab_doctors_btn', __( 'Кнопка', 'beauty-institute' ), 'doctors_btn', 'link' ),
+					bi_acf_field( 'ab_doctors_img_1', __( 'Фото 1', 'beauty-institute' ), 'doctors_image_1', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '50' ) ) ),
+					bi_acf_field( 'ab_doctors_img_2', __( 'Фото 2', 'beauty-institute' ), 'doctors_image_2', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '50' ) ) ),
+
+					bi_acf_field( 'ab_tab_results', __( 'Результати', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'ab_results_title', __( 'Заголовок', 'beauty-institute' ), 'results_title', 'text' ),
+					bi_acf_field( 'ab_results_text', __( 'Текст', 'beauty-institute' ), 'results_text', 'textarea', array( 'rows' => 3 ) ),
+					bi_acf_field( 'ab_results_note', __( 'Джерело', 'beauty-institute' ), '', 'message', array( 'message' => __( 'Роботи беруться з розділу «До та після». Вкладки — це «Категорії результатів».', 'beauty-institute' ) ) ),
+
+					bi_acf_field( 'ab_tab_certs', __( 'Сертифікати', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'ab_certs_title', __( 'Заголовок', 'beauty-institute' ), 'certs_title', 'text' ),
+				),
+				$certs,
+				array(
+					bi_acf_field( 'ab_tab_find', __( 'Як нас знайти', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'ab_find_title', __( 'Заголовок', 'beauty-institute' ), 'find_title', 'text' ),
+					bi_acf_field( 'ab_find_text', __( 'Текст', 'beauty-institute' ), 'find_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+				)
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'page_template',
+						'operator' => '==',
+						'value'    => 'about-us.php',
 					),
 				),
 			),

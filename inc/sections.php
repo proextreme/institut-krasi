@@ -157,6 +157,142 @@ function beauty_institute_find_section() {
 }
 
 /**
+ * Render one "Результати, яким довіряють" grid panel (5-cell asymmetric grid).
+ *
+ * @param int[] $ids       Result post IDs (uses up to 5).
+ * @param bool  $is_active Whether this panel is the visible one.
+ * @param string $panel_id DOM id.
+ * @param string $tab_id   Matching tab id.
+ * @param string $slug     data-* slug.
+ */
+function beauty_institute_results_panel( $ids, $is_active, $panel_id, $tab_id, $slug ) {
+	$slots = array( 'a', 'b', 'c', 'd', 'e' );
+	$imgs  = array();
+	foreach ( array_slice( $ids, 0, 5 ) as $index => $id ) {
+		$att = bi_image_id( function_exists( 'get_field' ) ? get_field( 'image', $id ) : '' );
+		if ( ! $att ) {
+			$att = get_post_thumbnail_id( $id );
+		}
+		$imgs[ $slots[ $index ] ] = $att ? wp_get_attachment_image_url( $att, 'large' ) : beauty_institute_asset( 'images/rezultaty_yakym.webp' );
+	}
+	// Pad to 5 with demo images so the grid keeps its shape.
+	foreach ( $slots as $n => $slot ) {
+		if ( empty( $imgs[ $slot ] ) ) {
+			$imgs[ $slot ] = beauty_institute_asset( 'images/rezultaty_yakym' . ( $n ? '_' . $n : '' ) . '.webp' );
+		}
+	}
+	?>
+	<div class="rezultaty_yakym_panel<?php echo $is_active ? ' is_active' : ''; ?>" id="<?php echo esc_attr( $panel_id ); ?>" role="tabpanel" aria-labelledby="<?php echo esc_attr( $tab_id ); ?>" data-rezultaty-panel="<?php echo esc_attr( $slug ); ?>" aria-hidden="<?php echo $is_active ? 'false' : 'true'; ?>">
+		<div class="rezultaty_yakym_grid">
+			<div class="rezultaty_yakym_row rezultaty_yakym_row_top">
+				<?php foreach ( array( 'a', 'b', 'c' ) as $slot ) : ?>
+					<figure class="rezultaty_yakym_item rezultaty_yakym_item_<?php echo esc_attr( $slot ); ?>">
+						<img class="rezultaty_yakym_img" src="<?php echo esc_url( $imgs[ $slot ] ); ?>" alt="" width="500" height="550" loading="lazy" decoding="async">
+					</figure>
+				<?php endforeach; ?>
+			</div>
+			<div class="rezultaty_yakym_row rezultaty_yakym_row_bottom">
+				<?php foreach ( array( 'd', 'e' ) as $slot ) : ?>
+					<figure class="rezultaty_yakym_item rezultaty_yakym_item_<?php echo esc_attr( $slot ); ?>">
+						<img class="rezultaty_yakym_img" src="<?php echo esc_url( $imgs[ $slot ] ); ?>" alt="" width="700" height="550" loading="lazy" decoding="async">
+					</figure>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Render the whole "Результати, яким довіряють" tabbed section.
+ *
+ * @param string $title Section heading.
+ * @param string $text  Section intro.
+ */
+function beauty_institute_results_tabs( $title = '', $text = '' ) {
+	$title = $title ? $title : __( 'Результати, яким довіряють', 'beauty-institute' );
+	$text  = $text ? $text : 'Реальні результати наших пацієнтів після лікування та естетичних процедур. Ми працюємо делікатно, щоб підкреслити природну красу без зайвого втручання.';
+
+	$all = get_posts(
+		array(
+			'post_type'      => 'bi_result',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'orderby'        => array( 'menu_order' => 'ASC', 'date' => 'DESC' ),
+		)
+	);
+
+	$panels = array();
+	if ( $all ) {
+		$panels[] = array( 'slug' => 'all', 'name' => __( 'Усі роботи', 'beauty-institute' ), 'ids' => $all );
+
+		$terms = get_terms( array( 'taxonomy' => 'bi_result_cat', 'hide_empty' => true ) );
+		foreach ( is_wp_error( $terms ) ? array() : $terms as $term ) {
+			$ids = get_posts(
+				array(
+					'post_type'      => 'bi_result',
+					'post_status'    => 'publish',
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+					'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+						array( 'taxonomy' => 'bi_result_cat', 'field' => 'term_id', 'terms' => $term->term_id ),
+					),
+				)
+			);
+			if ( $ids ) {
+				$panels[] = array( 'slug' => $term->slug, 'name' => $term->name, 'ids' => $ids );
+			}
+		}
+	} else {
+		// No results entered yet — one demo panel with the design's tab labels.
+		$panels[] = array( 'slug' => 'skin', 'name' => __( 'Лікування шкіри', 'beauty-institute' ), 'ids' => array() );
+	}
+
+	$active_index = ( count( $panels ) > 1 ) ? 1 : 0;
+	?>
+	<section class="rezultaty_yakym" data-rezultaty-tabs>
+		<div class="container rezultaty_yakym_top">
+			<div class="rezultaty_yakym_intro">
+				<h2 class="rezultaty_yakym_title font_heading"><?php echo esc_html( $title ); ?></h2>
+				<p class="rezultaty_yakym_text"><?php echo esc_html( $text ); ?></p>
+			</div>
+			<?php if ( count( $panels ) > 1 ) : ?>
+			<div class="rezultaty_yakym_tabs" role="tablist" aria-label="Категорії робіт">
+				<?php foreach ( $panels as $i => $panel ) : ?>
+					<button
+						class="rezultaty_yakym_tab<?php echo $i === $active_index ? ' is_active' : ''; ?>"
+						type="button" role="tab"
+						id="rezultaty-tab-<?php echo esc_attr( $panel['slug'] ); ?>"
+						aria-selected="<?php echo $i === $active_index ? 'true' : 'false'; ?>"
+						aria-controls="rezultaty-panel-<?php echo esc_attr( $panel['slug'] ); ?>"
+						data-rezultaty-tab="<?php echo esc_attr( $panel['slug'] ); ?>"
+						tabindex="<?php echo $i === $active_index ? '0' : '-1'; ?>"
+					><?php echo esc_html( $panel['name'] ); ?></button>
+				<?php endforeach; ?>
+			</div>
+			<?php endif; ?>
+		</div>
+		<div class="rezultaty_yakym_panels">
+			<?php
+			foreach ( $panels as $i => $panel ) {
+				beauty_institute_results_panel(
+					$panel['ids'],
+					$i === $active_index,
+					'rezultaty-panel-' . $panel['slug'],
+					'rezultaty-tab-' . $panel['slug'],
+					$panel['slug']
+				);
+			}
+			?>
+		</div>
+	</section>
+	<?php
+}
+
+/**
  * Render the whole "Запис на консультацію" section.
  */
 function beauty_institute_consult_section() {

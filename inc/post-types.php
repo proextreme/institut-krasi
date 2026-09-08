@@ -10,7 +10,7 @@
  */
 
 // Bump this when a post type slug / rewrite changes to trigger a one-time flush.
-define( 'BEAUTY_INSTITUTE_REWRITE_VERSION', '2026-09-07-2' );
+define( 'BEAUTY_INSTITUTE_REWRITE_VERSION', '2026-09-08-1' );
 
 /**
  * Register theme post types.
@@ -251,6 +251,18 @@ function beauty_institute_maybe_flush_rewrite() {
 	foreach ( $default_specialties as $specialty ) {
 		if ( ! term_exists( $specialty, 'bi_specialty' ) ) {
 			wp_insert_term( $specialty, 'bi_specialty' );
+		}
+	}
+
+	$default_result_cats = array(
+		'Лікування шкіри',
+		'Ін’єкційна косметологія',
+		'Трихологія',
+		'Естетичний хірург',
+	);
+	foreach ( $default_result_cats as $cat ) {
+		if ( ! term_exists( $cat, 'bi_result_cat' ) ) {
+			wp_insert_term( $cat, 'bi_result_cat' );
 		}
 	}
 
