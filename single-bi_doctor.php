@@ -147,10 +147,16 @@ while ( have_posts() ) :
 			'fields'         => 'ids',
 			'no_found_rows'  => true,
 			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'relation' => 'AND',
 				array(
-					'key'     => 'doctor',
-					'value'   => $doctor_id,
-					'compare' => '=',
+					'key'     => 'doctors',
+					'value'   => '"' . $doctor_id . '"',
+					'compare' => 'LIKE',
+				),
+				array(
+					'relation' => 'OR',
+					array( 'key' => 'is_video', 'compare' => 'NOT EXISTS' ),
+					array( 'key' => 'is_video', 'value' => '1', 'compare' => '!=' ),
 				),
 			),
 		)
@@ -180,7 +186,7 @@ while ( have_posts() ) :
 										</figure>
 										<div class="vidhuky_body">
 											<img class="vidhuky_quot vidhuky_quot_start" src="<?php echo esc_url( beauty_institute_asset( 'images/single/vydalennya_novoutvoren_review_quot_1.svg' ) ); ?>" alt="" width="45" height="40" decoding="async" aria-hidden="true">
-											<?php $rev_topic = get_field( 'topic', $review_id ); ?>
+											<?php $rev_topic = get_field( 'service', $review_id ); ?>
 											<?php if ( $rev_topic ) : ?>
 												<p class="vidhuky_topic"><?php echo esc_html( $rev_topic ); ?></p>
 											<?php endif; ?>

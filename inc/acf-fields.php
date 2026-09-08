@@ -46,6 +46,7 @@ function beauty_institute_register_acf_fields() {
 	beauty_institute_acf_group_doctor();
 	beauty_institute_acf_group_problem();
 	beauty_institute_acf_group_review();
+	beauty_institute_acf_group_reviews_page();
 	beauty_institute_acf_group_result();
 }
 add_action( 'acf/include_fields', 'beauty_institute_register_acf_fields' );
@@ -89,6 +90,7 @@ function beauty_institute_acf_group_doctor() {
 				array(
 					bi_acf_field( 'doc_tab_main', __( 'Основне', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'doc_photo', __( 'Фото', 'beauty-institute' ), 'photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+					bi_acf_field( 'doc_short_name', __( 'Коротке імʼя (для тегів у відгуках)', 'beauty-institute' ), 'short_name', 'text', array( 'placeholder' => 'Трембач О.М.' ) ),
 					bi_acf_field( 'doc_position', __( 'Посада / регалії', 'beauty-institute' ), 'position', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
 					bi_acf_field( 'doc_since', __( 'Стаж (рядок під посадою)', 'beauty-institute' ), 'since', 'text', array( 'placeholder' => 'Працює в косметології з 2012 року.' ) ),
 					bi_acf_field( 'doc_bio', __( 'Біографія', 'beauty-institute' ), 'bio', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
@@ -130,7 +132,7 @@ function beauty_institute_acf_group_problem() {
 }
 
 /**
- * Відгук — block-only content.
+ * Відгук — block-only content (text or video).
  */
 function beauty_institute_acf_group_review() {
 	acf_add_local_field_group(
@@ -138,20 +140,83 @@ function beauty_institute_acf_group_review() {
 			'key'      => 'group_bi_review',
 			'title'    => __( 'Дані відгуку', 'beauty-institute' ),
 			'fields'   => array(
-				bi_acf_field( 'rev_author', __( 'Ім’я автора', 'beauty-institute' ), 'author_name', 'text' ),
-				bi_acf_field( 'rev_topic', __( 'Тема / послуга', 'beauty-institute' ), 'topic', 'text' ),
-				bi_acf_field( 'rev_text', __( 'Текст відгуку', 'beauty-institute' ), 'text', 'textarea', array( 'rows' => 6 ) ),
-				bi_acf_field( 'rev_photo', __( 'Фото автора', 'beauty-institute' ), 'photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail' ) ),
-				bi_acf_field( 'rev_video', __( 'Посилання на відеовідгук (YouTube)', 'beauty-institute' ), 'video_url', 'url' ),
 				bi_acf_field(
-					'rev_doctor',
-					__( 'Лікар', 'beauty-institute' ),
-					'doctor',
-					'post_object',
-					array( 'post_type' => array( 'bi_doctor' ), 'return_format' => 'id', 'allow_null' => 1 )
+					'rev_is_video',
+					__( 'Це відеовідгук', 'beauty-institute' ),
+					'is_video',
+					'true_false',
+					array( 'ui' => 1, 'instructions' => __( 'Увімкніть для відео. Текстові та відео-відгуки показуються в різних блоках.', 'beauty-institute' ) )
+				),
+				bi_acf_field( 'rev_author', __( 'Ім’я автора', 'beauty-institute' ), 'author_name', 'text' ),
+				bi_acf_field( 'rev_title', __( 'Заголовок відгуку', 'beauty-institute' ), 'title', 'text', array( 'placeholder' => 'Турбота та професіоналізм' ) ),
+				bi_acf_field( 'rev_service', __( 'Послуга / процедура (тег)', 'beauty-institute' ), 'service', 'text', array( 'placeholder' => 'Консультація косметолога' ) ),
+				bi_acf_field(
+					'rev_doctors',
+					__( 'Лікарі (теги + звʼязок зі сторінкою лікаря)', 'beauty-institute' ),
+					'doctors',
+					'relationship',
+					array( 'post_type' => array( 'bi_doctor' ), 'return_format' => 'id', 'filters' => array( 'search' ) )
+				),
+				bi_acf_field(
+					'rev_text',
+					__( 'Текст відгуку', 'beauty-institute' ),
+					'text',
+					'textarea',
+					array( 'rows' => 6, 'conditional_logic' => array( array( array( 'field' => 'field_bi_rev_is_video', 'operator' => '!=', 'value' => '1' ) ) ) )
+				),
+				bi_acf_field(
+					'rev_photo',
+					__( 'Фото автора', 'beauty-institute' ),
+					'photo',
+					'image',
+					array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'conditional_logic' => array( array( array( 'field' => 'field_bi_rev_is_video', 'operator' => '!=', 'value' => '1' ) ) ) )
+				),
+				bi_acf_field(
+					'rev_video_url',
+					__( 'Посилання на YouTube-відео', 'beauty-institute' ),
+					'video_url',
+					'url',
+					array( 'conditional_logic' => array( array( array( 'field' => 'field_bi_rev_is_video', 'operator' => '==', 'value' => '1' ) ) ) )
+				),
+				bi_acf_field(
+					'rev_video_poster',
+					__( 'Обкладинка відео', 'beauty-institute' ),
+					'video_poster',
+					'image',
+					array( 'return_format' => 'id', 'preview_size' => 'medium', 'conditional_logic' => array( array( array( 'field' => 'field_bi_rev_is_video', 'operator' => '==', 'value' => '1' ) ) ) )
 				),
 			),
 			'location' => bi_acf_location_post_type( 'bi_review' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Сторінка «Відгуки».
+ */
+function beauty_institute_acf_group_reviews_page() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_reviews_page',
+			'title'    => __( 'Сторінка «Відгуки»', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'revp_hero_desc', __( 'Вступний текст', 'beauty-institute' ), 'hero_desc', 'textarea', array( 'rows' => 4 ) ),
+				bi_acf_field( 'revp_videos_title', __( 'Відеовідгуки — заголовок', 'beauty-institute' ), 'videos_title', 'text', array( 'placeholder' => 'Відеовідгуки' ) ),
+				bi_acf_field( 'revp_videos_text', __( 'Відеовідгуки — текст', 'beauty-institute' ), 'videos_text', 'textarea', array( 'rows' => 3 ) ),
+				bi_acf_field( 'revp_consult_title', __( 'Блок запису — заголовок', 'beauty-institute' ), 'consult_title', 'text', array( 'placeholder' => 'Ваша думка важлива' ) ),
+				bi_acf_field( 'revp_consult_desktop', __( 'Блок запису — текст (десктоп)', 'beauty-institute' ), 'consult_intro_desktop', 'textarea', array( 'rows' => 2 ) ),
+				bi_acf_field( 'revp_consult_mobile', __( 'Блок запису — текст (мобільний)', 'beauty-institute' ), 'consult_intro_mobile', 'textarea', array( 'rows' => 2 ) ),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'page_template',
+						'operator' => '==',
+						'value'    => 'reviews.php',
+					),
+				),
+			),
 			'active'   => true,
 		)
 	);

@@ -212,6 +212,42 @@ function bi_option_text( $selector, $fallback = '' ) {
 }
 
 /**
+ * Short display name for a doctor ("Трембач О.М."), falling back to the title.
+ *
+ * @param int $id Doctor post ID.
+ * @return string
+ */
+function beauty_institute_doctor_short_name( $id ) {
+	$short = function_exists( 'get_field' ) ? (string) get_field( 'short_name', $id ) : '';
+
+	return '' !== $short ? $short : get_the_title( $id );
+}
+
+/**
+ * Extract a YouTube video ID from a URL or bare ID.
+ *
+ * @param string $value URL or ID.
+ * @return string 11-char video ID, or ''.
+ */
+function beauty_institute_youtube_id( $value ) {
+	$value = trim( (string) $value );
+
+	if ( '' === $value ) {
+		return '';
+	}
+
+	if ( preg_match( '~^[A-Za-z0-9_-]{11}$~', $value ) ) {
+		return $value;
+	}
+
+	if ( preg_match( '~(?:youtu\.be/|v=|/embed/|/shorts/|/live/)([A-Za-z0-9_-]{11})~', $value, $m ) ) {
+		return $m[1];
+	}
+
+	return '';
+}
+
+/**
  * Render the "Запис на консультацію" form.
  *
  * Uses the Contact Form 7 shortcode from Site Settings (or a per-call
