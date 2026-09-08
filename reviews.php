@@ -50,13 +50,18 @@ $video_reviews = get_posts(
  */
 if ( ! function_exists( 'beauty_institute_review_card' ) ) :
 function beauty_institute_review_card( $review_id ) {
-	$tags = array();
-	$service = (string) get_field( 'service', $review_id );
+	$tags    = array();
+	$service = trim( (string) get_field( 'service', $review_id ) );
 	if ( '' !== $service ) {
 		$tags[] = $service;
 	}
-	foreach ( (array) get_field( 'doctors', $review_id ) as $doctor_id ) {
-		$tags[] = beauty_institute_doctor_short_name( (int) $doctor_id );
+	$doctors = get_field( 'doctors', $review_id );
+	if ( is_array( $doctors ) ) {
+		foreach ( $doctors as $doctor_id ) {
+			if ( $doctor_id ) {
+				$tags[] = beauty_institute_doctor_short_name( (int) $doctor_id );
+			}
+		}
 	}
 	?>
 	<article class="onovlenyi_prostir_card" data-review-item>
