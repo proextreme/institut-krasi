@@ -48,6 +48,9 @@ function beauty_institute_register_acf_fields() {
 	beauty_institute_acf_group_review();
 	beauty_institute_acf_group_reviews_page();
 	beauty_institute_acf_group_result();
+	beauty_institute_acf_group_faq();
+	beauty_institute_acf_group_device();
+	beauty_institute_acf_group_zemits();
 }
 add_action( 'acf/include_fields', 'beauty_institute_register_acf_fields' );
 
@@ -214,6 +217,127 @@ function beauty_institute_acf_group_reviews_page() {
 						'param'    => 'page_template',
 						'operator' => '==',
 						'value'    => 'reviews.php',
+					),
+				),
+			),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Питання (FAQ) — question is the post title.
+ */
+function beauty_institute_acf_group_faq() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_faq',
+			'title'    => __( 'Відповідь', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'faq_answer', __( 'Відповідь', 'beauty-institute' ), 'answer', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+			),
+			'location' => bi_acf_location_post_type( 'bi_faq' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Апаратна процедура (Zemits).
+ */
+function beauty_institute_acf_group_device() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_device',
+			'title'    => __( 'Дані процедури', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'dev_device_name', __( 'Апарат', 'beauty-institute' ), 'device_name', 'text', array( 'placeholder' => 'Zemits Adrinox 2.0', 'wrapper' => array( 'width' => '60' ) ) ),
+				bi_acf_field( 'dev_duration', __( 'Тривалість', 'beauty-institute' ), 'duration', 'text', array( 'placeholder' => '45–60 хв', 'wrapper' => array( 'width' => '40' ) ) ),
+				bi_acf_field( 'dev_photo', __( 'Фото процедури', 'beauty-institute' ), 'photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'dev_text', __( 'Опис', 'beauty-institute' ), 'text', 'textarea', array( 'rows' => 4 ) ),
+				bi_acf_field( 'dev_benefits', __( 'Переваги (по одній на рядок)', 'beauty-institute' ), 'benefits', 'textarea', array( 'rows' => 4 ) ),
+				bi_acf_field( 'dev_video_url', __( 'YouTube-відео (необовʼязково)', 'beauty-institute' ), 'video_url', 'url' ),
+				bi_acf_field(
+					'dev_video_poster',
+					__( 'Обкладинка відео', 'beauty-institute' ),
+					'video_poster',
+					'image',
+					array( 'return_format' => 'id', 'preview_size' => 'medium', 'conditional_logic' => array( array( array( 'field' => 'field_bi_dev_video_url', 'operator' => '!=', 'value' => '' ) ) ) )
+				),
+				bi_acf_field(
+					'dev_layout',
+					__( 'Розташування блоку', 'beauty-institute' ),
+					'layout',
+					'select',
+					array(
+						'choices'      => array(
+							''       => __( 'Авто (через один)', 'beauty-institute' ),
+							'type_1' => __( 'Фото зверху', 'beauty-institute' ),
+							'type_2' => __( 'Текст ліворуч', 'beauty-institute' ),
+						),
+						'allow_null'   => 0,
+						'instructions' => __( '«Авто» чергує блоки: 1-й, 3-й — фото зверху; 2-й, 4-й — текст ліворуч.', 'beauty-institute' ),
+					)
+				),
+			),
+			'location' => bi_acf_location_post_type( 'bi_device' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Сторінка «Апарати Zemits».
+ */
+function beauty_institute_acf_group_zemits() {
+	$zones = array();
+	for ( $i = 1; $i <= 4; $i++ ) {
+		$zones[] = bi_acf_field( "zem_zone_{$i}_title", sprintf( __( 'Зона %d — назва', 'beauty-institute' ), $i ), "zone_{$i}_title", 'text', array( 'wrapper' => array( 'width' => '40' ) ) );
+		$zones[] = bi_acf_field( "zem_zone_{$i}_desc", sprintf( __( 'Зона %d — опис', 'beauty-institute' ), $i ), "zone_{$i}_desc", 'text', array( 'wrapper' => array( 'width' => '60' ) ) );
+	}
+
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_zemits',
+			'title'    => __( 'Сторінка «Апарати Zemits»', 'beauty-institute' ),
+			'fields'   => array_merge(
+				array(
+					bi_acf_field( 'zem_tab_hero', __( 'Hero', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'zem_hero_title', __( 'Заголовок', 'beauty-institute' ), 'hero_title', 'text', array( 'instructions' => __( 'Можна <br>.', 'beauty-institute' ) ) ),
+					bi_acf_field( 'zem_hero_desc', __( 'Підзаголовок', 'beauty-institute' ), 'hero_desc', 'text' ),
+					bi_acf_field( 'zem_hero_btn', __( 'Кнопка', 'beauty-institute' ), 'hero_btn', 'link' ),
+					bi_acf_field( 'zem_hero_bg', __( 'Фон (десктоп)', 'beauty-institute' ), 'hero_bg', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+					bi_acf_field( 'zem_hero_bg_mob', __( 'Фон (мобільний)', 'beauty-institute' ), 'hero_bg_mobile', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+					bi_acf_field( 'zem_hero_feats', __( 'Плашки (по одній на рядок)', 'beauty-institute' ), 'hero_feats', 'textarea', array( 'rows' => 3 ) ),
+
+					bi_acf_field( 'zem_tab_faq', __( 'FAQ', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'zem_faq_title', __( 'Заголовок', 'beauty-institute' ), 'faq_title', 'text', array( 'placeholder' => 'Усе, що ви хотіли запитати' ) ),
+					bi_acf_field(
+						'zem_faq_group',
+						__( 'Група питань', 'beauty-institute' ),
+						'faq_group',
+						'taxonomy',
+						array( 'taxonomy' => 'bi_faq_group', 'field_type' => 'select', 'add_term' => 1, 'save_terms' => 0, 'load_terms' => 0, 'return_format' => 'id', 'allow_null' => 1, 'instructions' => __( 'Порожньо — усі питання розділу FAQ.', 'beauty-institute' ) )
+					),
+
+					bi_acf_field( 'zem_tab_zones', __( 'Зони обробки', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'zem_zones_title', __( 'Заголовок', 'beauty-institute' ), 'zones_title', 'text', array( 'placeholder' => 'Зони обробки апаратами Zemits:' ) ),
+					bi_acf_field( 'zem_zones_photo', __( 'Фото', 'beauty-institute' ), 'zones_photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail' ) ),
+				),
+				$zones,
+				array(
+					bi_acf_field( 'zem_tab_consult', __( 'Запис', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'zem_consult_title', __( 'Заголовок', 'beauty-institute' ), 'consult_title', 'text', array( 'placeholder' => 'Записатись на прийом' ) ),
+					bi_acf_field( 'zem_consult_desktop', __( 'Текст (десктоп)', 'beauty-institute' ), 'consult_intro_desktop', 'textarea', array( 'rows' => 3 ) ),
+					bi_acf_field( 'zem_consult_mobile', __( 'Текст (мобільний)', 'beauty-institute' ), 'consult_intro_mobile', 'textarea', array( 'rows' => 2 ) ),
+				)
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'page_template',
+						'operator' => '==',
+						'value'    => 'zemits.php',
 					),
 				),
 			),

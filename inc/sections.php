@@ -293,6 +293,259 @@ function beauty_institute_results_tabs( $title = '', $text = '' ) {
 }
 
 /**
+ * Render one apparatus-procedure block (box_type_1 / box_type_2).
+ *
+ * @param int $id    bi_device post ID.
+ * @param int $index Zero-based position (drives the "auto" layout).
+ */
+function beauty_institute_device_block( $id, $index ) {
+	$title    = get_the_title( $id );
+	$device   = (string) get_field( 'device_name', $id );
+	$duration = (string) get_field( 'duration', $id );
+	$text     = (string) get_field( 'text', $id );
+	$benefits = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) get_field( 'benefits', $id ) ) ) );
+
+	$photo_id = bi_image_id( get_field( 'photo', $id ) );
+	if ( ! $photo_id ) {
+		$photo_id = get_post_thumbnail_id( $id );
+	}
+	$photo = $photo_id ? wp_get_attachment_image_url( $photo_id, 'large' ) : beauty_institute_asset( 'images/zemits/mikrostrumova_terapiya.webp' );
+
+	$yt        = beauty_institute_youtube_id( (string) get_field( 'video_url', $id ) );
+	$poster_id = bi_image_id( get_field( 'video_poster', $id ) );
+	$poster    = $poster_id ? wp_get_attachment_image_url( $poster_id, 'large' ) : $photo;
+
+	$layout = (string) get_field( 'layout', $id );
+	if ( '' === $layout ) {
+		$layout = ( $index % 2 === 0 ) ? 'type_1' : 'type_2';
+	}
+
+	$cta   = esc_url( home_url( '/#consult' ) );
+	$icon1 = beauty_institute_asset( 'images/zemits/mikrostrumova_terapiya_3.svg' );
+	$icon2 = beauty_institute_asset( 'images/zemits/kompleksnyi_dohlyad_2.svg' );
+	$clock = beauty_institute_asset( 'images/zemits/clock.svg' );
+
+	if ( 'type_2' === $layout ) :
+		?>
+		<section class="box_type_2<?php echo $yt ? '' : ' box_type_2_bez_video'; ?>" aria-label="<?php echo esc_attr( $title ); ?>">
+			<div class="container box_type_2_inner">
+				<div class="box_type_2_head">
+					<div class="box_type_2_heading">
+						<h2 class="box_type_2_title font_heading"><?php echo esc_html( $title ); ?></h2>
+						<?php if ( $device ) : ?><p class="box_type_2_device"><?php echo esc_html( $device ); ?></p><?php endif; ?>
+					</div>
+					<?php if ( $duration ) : ?>
+					<p class="box_type_2_time">
+						<img class="box_type_2_time_icon" src="<?php echo esc_url( $clock ); ?>" alt="" width="24" height="24" decoding="async" aria-hidden="true">
+						<span><?php echo esc_html( $duration ); ?></span>
+					</p>
+					<?php endif; ?>
+				</div>
+
+				<div class="box_type_2_content">
+					<div class="box_type_2_body">
+						<?php if ( $text ) : ?><p class="box_type_2_text"><?php echo esc_html( $text ); ?></p><?php endif; ?>
+						<?php if ( $benefits ) : ?>
+						<ul class="box_type_2_list">
+							<?php foreach ( $benefits as $b ) : ?>
+								<li class="box_type_2_item">
+									<img class="box_type_2_item_icon" src="<?php echo esc_url( $icon2 ); ?>" alt="" width="10" height="10" decoding="async" aria-hidden="true">
+									<span class="box_type_2_item_text"><?php echo esc_html( $b ); ?></span>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+						<?php endif; ?>
+						<a class="box_type_2_btn" href="<?php echo $cta; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
+							<span class="box_type_2_btn_text"><?php esc_html_e( 'Записатись', 'beauty-institute' ); ?></span>
+							<span class="box_type_2_btn_icon" aria-hidden="true"></span>
+						</a>
+					</div>
+
+					<?php if ( $yt ) : ?>
+					<button type="button" class="box_type_2_media box_type_2_video" data-video-open data-youtube-id="<?php echo esc_attr( $yt ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відео: %s', 'beauty-institute' ), $title ) ); ?>">
+						<img class="box_type_2_img" src="<?php echo esc_url( $poster ); ?>" alt="" width="620" height="468" loading="lazy" decoding="async">
+						<span class="box_type_2_play" aria-hidden="true">
+							<img class="box_type_2_play_icon" src="<?php echo esc_url( beauty_institute_asset( 'images/zemits/kompleksnyi_dohlyad_7.svg' ) ); ?>" alt="" width="19" height="20" decoding="async">
+						</span>
+						<span class="box_type_2_caption">
+							<span class="box_type_2_caption_title"><?php echo esc_html( $title ); ?></span>
+							<?php if ( $device ) : ?><span class="box_type_2_caption_device"><?php echo esc_html( $device ); ?></span><?php endif; ?>
+						</span>
+					</button>
+					<?php else : ?>
+					<div class="box_type_2_media box_type_2_photo">
+						<img class="box_type_2_img" src="<?php echo esc_url( $photo ); ?>" alt="" width="620" height="468" loading="lazy" decoding="async">
+					</div>
+					<?php endif; ?>
+				</div>
+			</div>
+			<?php beauty_institute_video_modal( $title ); ?>
+		</section>
+		<?php
+	else :
+		?>
+		<section class="box_type_1" aria-label="<?php echo esc_attr( $title ); ?>">
+			<div class="container box_type_1_inner">
+				<div class="box_type_1_head">
+					<div class="box_type_1_heading">
+						<h2 class="box_type_1_title font_heading"><?php echo esc_html( $title ); ?></h2>
+						<div class="box_type_1_meta">
+							<?php if ( $device ) : ?><p class="box_type_1_device"><?php echo esc_html( $device ); ?></p><?php endif; ?>
+							<?php if ( $duration ) : ?>
+							<p class="box_type_1_time">
+								<img class="box_type_1_time_icon" src="<?php echo esc_url( $clock ); ?>" alt="" width="24" height="24" decoding="async" aria-hidden="true">
+								<span><?php echo esc_html( $duration ); ?></span>
+							</p>
+							<?php endif; ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="box_type_1_media">
+					<div class="box_type_1_photo">
+						<img class="box_type_1_img" src="<?php echo esc_url( $photo ); ?>" alt="" width="620" height="478" loading="lazy" decoding="async">
+					</div>
+
+					<?php if ( $yt ) : ?>
+					<button type="button" class="box_type_1_video" data-video-open data-youtube-id="<?php echo esc_attr( $yt ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відео: %s', 'beauty-institute' ), $title ) ); ?>">
+						<img class="box_type_1_img" src="<?php echo esc_url( $poster ); ?>" alt="" width="620" height="478" loading="lazy" decoding="async">
+						<span class="box_type_1_play" aria-hidden="true">
+							<img class="box_type_1_play_icon" src="<?php echo esc_url( beauty_institute_asset( 'images/zemits/mikrostrumova_terapiya_2.svg' ) ); ?>" alt="" width="19" height="20" decoding="async">
+						</span>
+						<span class="box_type_1_caption">
+							<span class="box_type_1_caption_title"><?php echo esc_html( $title ); ?></span>
+							<?php if ( $device ) : ?><span class="box_type_1_caption_device"><?php echo esc_html( $device ); ?></span><?php endif; ?>
+						</span>
+					</button>
+					<?php endif; ?>
+				</div>
+
+				<div class="box_type_1_body">
+					<?php if ( $text ) : ?><p class="box_type_1_text"><?php echo esc_html( $text ); ?></p><?php endif; ?>
+					<?php if ( $benefits ) : ?>
+					<ul class="box_type_1_list">
+						<?php foreach ( $benefits as $b ) : ?>
+							<li class="box_type_1_item">
+								<img class="box_type_1_item_icon" src="<?php echo esc_url( $icon1 ); ?>" alt="" width="10" height="10" decoding="async" aria-hidden="true">
+								<span class="box_type_1_item_text"><?php echo esc_html( $b ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<?php endif; ?>
+				</div>
+
+				<a class="box_type_1_btn" href="<?php echo $cta; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
+					<span class="box_type_1_btn_text"><?php esc_html_e( 'Записатись', 'beauty-institute' ); ?></span>
+					<span class="box_type_1_btn_icon" aria-hidden="true"></span>
+				</a>
+			</div>
+			<?php beauty_institute_video_modal( $title ); ?>
+		</section>
+		<?php
+	endif;
+}
+
+/**
+ * Output a single YouTube modal shell (used once per video block).
+ *
+ * @param string $label Accessible label.
+ */
+function beauty_institute_video_modal( $label = 'Відео' ) {
+	?>
+	<div class="videovidhuky_modal" data-video-modal hidden>
+		<div class="videovidhuky_modal_backdrop" data-video-modal-close tabindex="-1"></div>
+		<div class="videovidhuky_modal_dialog" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr( $label ); ?>">
+			<button type="button" class="videovidhuky_modal_close" data-video-modal-close aria-label="Закрити відео"></button>
+			<div class="videovidhuky_modal_frame">
+				<iframe class="videovidhuky_modal_iframe" data-video-iframe title="<?php echo esc_attr( $label ); ?>" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+			</div>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Render the "Усе, що ви хотіли запитати" FAQ accordion (use_shcho).
+ *
+ * @param string $title    Section heading.
+ * @param int    $group_id Optional bi_faq_group term ID to filter by.
+ */
+function beauty_institute_faq_section( $title = '', $group_id = 0 ) {
+	$title = $title ? $title : __( 'Усе, що ви хотіли запитати', 'beauty-institute' );
+
+	$args = array(
+		'post_type'      => 'bi_faq',
+		'post_status'    => 'publish',
+		'posts_per_page' => 20,
+		'fields'         => 'ids',
+		'no_found_rows'  => true,
+		'orderby'        => array( 'menu_order' => 'ASC', 'date' => 'ASC' ),
+	);
+	if ( $group_id ) {
+		$args['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			array( 'taxonomy' => 'bi_faq_group', 'field' => 'term_id', 'terms' => (int) $group_id ),
+		);
+	}
+	$faqs = get_posts( $args );
+
+	$icon = beauty_institute_asset( 'images/child_cat/use_shcho.svg' );
+	?>
+	<section class="use_shcho" aria-label="Усе, що ви хотіли запитати">
+		<span class="use_shcho_bg" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/zemits/bg.webp' ) ); ?>');" aria-hidden="true"></span>
+
+		<div class="container use_shcho_inner">
+			<div class="use_shcho_panel">
+				<h2 class="use_shcho_title"><?php echo esc_html( $title ); ?></h2>
+
+				<div class="use_shcho_list">
+					<?php
+					if ( $faqs ) {
+						foreach ( $faqs as $i => $faq_id ) {
+							$open = ( 0 === $i );
+							?>
+							<div class="use_shcho_item<?php echo $open ? ' is_open' : ''; ?>">
+								<button class="use_shcho_toggle" type="button" aria-expanded="<?php echo $open ? 'true' : 'false'; ?>">
+									<span class="use_shcho_question"><?php echo esc_html( get_the_title( $faq_id ) ); ?></span>
+									<span class="use_shcho_icon" style="background-image: url('<?php echo esc_url( $icon ); ?>');" aria-hidden="true"></span>
+								</button>
+								<div class="use_shcho_answer">
+									<div class="use_shcho_answer_inner">
+										<?php echo wp_kses_post( (string) get_field( 'answer', $faq_id ) ); ?>
+									</div>
+								</div>
+							</div>
+							<?php
+						}
+					} else {
+						$demo = array(
+							array( 'Чому нам довіряють?', '<p class="use_shcho_answer_text">Пацієнти звертаються до нас, тому що є багато позитивних відгуків, працюють досвідчені лікарі, а наш медичний центр має позитивну репутацію.</p>' ),
+							array( 'Яка кваліфікація у наших спеціалістів?', '<p class="use_shcho_answer_text">Наші лікарі мають вищу категорію, постійно підвищують кваліфікацію та проходять навчання за сучасними методиками.</p>' ),
+							array( 'Чи сучасне у нас обладнання?', '<p class="use_shcho_answer_text">Ми працюємо на сертифікованих американських апаратах Zemits та інших сучасних системах.</p>' ),
+						);
+						foreach ( $demo as $i => $d ) {
+							$open = ( 0 === $i );
+							?>
+							<div class="use_shcho_item<?php echo $open ? ' is_open' : ''; ?>">
+								<button class="use_shcho_toggle" type="button" aria-expanded="<?php echo $open ? 'true' : 'false'; ?>">
+									<span class="use_shcho_question"><?php echo esc_html( $d[0] ); ?></span>
+									<span class="use_shcho_icon" style="background-image: url('<?php echo esc_url( $icon ); ?>');" aria-hidden="true"></span>
+								</button>
+								<div class="use_shcho_answer">
+									<div class="use_shcho_answer_inner"><?php echo wp_kses_post( $d[1] ); ?></div>
+								</div>
+							</div>
+							<?php
+						}
+					}
+					?>
+				</div>
+			</div>
+		</div>
+	</section>
+	<?php
+}
+
+/**
  * Render the whole "Запис на консультацію" section.
  */
 function beauty_institute_consult_section() {

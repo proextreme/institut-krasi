@@ -10,7 +10,7 @@
  */
 
 // Bump this when a post type slug / rewrite changes to trigger a one-time flush.
-define( 'BEAUTY_INSTITUTE_REWRITE_VERSION', '2026-09-08-1' );
+define( 'BEAUTY_INSTITUTE_REWRITE_VERSION', '2026-09-08-2' );
 
 /**
  * Register theme post types.
@@ -44,25 +44,27 @@ function beauty_institute_register_post_types() {
 		)
 	);
 
-	// Апарати (Zemits) — has a listing page; single pages optional.
+	// Апаратні процедури (Zemits) — block-only, shown on the Zemits page.
 	register_post_type(
 		'bi_device',
 		array(
 			'labels'        => array(
-				'name'          => __( 'Апарати', 'beauty-institute' ),
-				'singular_name' => __( 'Апарат', 'beauty-institute' ),
-				'add_new_item'  => __( 'Додати апарат', 'beauty-institute' ),
-				'edit_item'     => __( 'Редагувати апарат', 'beauty-institute' ),
-				'all_items'     => __( 'Всі апарати', 'beauty-institute' ),
-				'menu_name'     => __( 'Апарати', 'beauty-institute' ),
+				'name'          => __( 'Процедури Zemits', 'beauty-institute' ),
+				'singular_name' => __( 'Процедура', 'beauty-institute' ),
+				'add_new_item'  => __( 'Додати процедуру', 'beauty-institute' ),
+				'edit_item'     => __( 'Редагувати процедуру', 'beauty-institute' ),
+				'all_items'     => __( 'Всі процедури', 'beauty-institute' ),
+				'menu_name'     => __( 'Процедури Zemits', 'beauty-institute' ),
 			),
-			'public'        => true,
+			'public'        => false,
+			'show_ui'       => true,
+			'show_in_menu'  => true,
 			'has_archive'   => false,
 			'menu_icon'     => 'dashicons-superhero',
 			'menu_position' => 22,
-			'supports'      => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
-			'rewrite'       => array( 'slug' => 'aparat', 'with_front' => false ),
-			'show_in_rest'  => true,
+			'supports'      => array( 'title', 'thumbnail', 'page-attributes' ),
+			'rewrite'       => false,
+			'query_var'     => false,
 		)
 	);
 
