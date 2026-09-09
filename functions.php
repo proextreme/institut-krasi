@@ -504,11 +504,6 @@ require get_template_directory() . '/inc/post-types.php';
 require get_template_directory() . '/inc/acf-fields.php';
 
 /**
- * One-time content seed for the Zemits page (temporary).
- */
-require get_template_directory() . '/inc/seed-zemits.php';
-
-/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
