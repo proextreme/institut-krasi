@@ -160,8 +160,11 @@ $req_btn  = bi_field( 'requests_btn' );
 										<?php
 										foreach ( $pair as $i => $problem_id ) :
 											$shape = $req_shapes[ ( $i ) % 2 ];
-											$img   = get_post_thumbnail_id( $problem_id );
-											$src   = $img ? wp_get_attachment_image_url( $img, 'medium_large' ) : beauty_institute_asset( 'images/request_1.webp' );
+											$img   = bi_image_id( function_exists( 'get_field' ) ? get_field( 'card_image', $problem_id ) : '' );
+											if ( ! $img ) {
+												$img = get_post_thumbnail_id( $problem_id );
+											}
+											$src = $img ? wp_get_attachment_image_url( $img, 'medium_large' ) : beauty_institute_asset( 'images/request_1.webp' );
 											?>
 											<a class="requests_card <?php echo esc_attr( $shape[0] . ' ' . $shape[1] ); ?>" href="<?php echo esc_url( get_permalink( $problem_id ) ); ?>" style="--card-photo: url('<?php echo esc_url( $src ); ?>');">
 												<img class="requests_card_img" src="<?php echo esc_url( $src ); ?>" alt="" width="300" height="300" loading="lazy" decoding="async">

@@ -45,6 +45,7 @@ function beauty_institute_register_acf_fields() {
 	beauty_institute_acf_group_about();
 	beauty_institute_acf_group_doctor();
 	beauty_institute_acf_group_problem();
+	beauty_institute_acf_group_problems_page();
 	beauty_institute_acf_group_review();
 	beauty_institute_acf_group_reviews_page();
 	beauty_institute_acf_group_result();
@@ -117,18 +118,100 @@ function beauty_institute_acf_group_doctor() {
 }
 
 /**
- * Запит («Що ми вирішуємо») — card + page fields.
+ * Запит («Що ми вирішуємо») — detail-page content.
  */
 function beauty_institute_acf_group_problem() {
+	$types = array();
+	for ( $i = 1; $i <= 4; $i++ ) {
+		$types[] = bi_acf_field( "prob_type_{$i}_image", sprintf( __( 'Тип %d — іконка', 'beauty-institute' ), $i ), "type_{$i}_image", 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '20' ) ) );
+		$types[] = bi_acf_field( "prob_type_{$i}_title", sprintf( __( 'Тип %d — назва', 'beauty-institute' ), $i ), "type_{$i}_title", 'text', array( 'wrapper' => array( 'width' => '30' ) ) );
+		$types[] = bi_acf_field( "prob_type_{$i}_text", sprintf( __( 'Тип %d — опис', 'beauty-institute' ), $i ), "type_{$i}_text", 'textarea', array( 'rows' => 2, 'wrapper' => array( 'width' => '50' ) ) );
+	}
+
 	acf_add_local_field_group(
 		array(
 			'key'      => 'group_bi_problem',
 			'title'    => __( 'Дані запиту', 'beauty-institute' ),
-			'fields'   => array(
-				bi_acf_field( 'prob_card_image', __( 'Зображення картки', 'beauty-institute' ), 'card_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Якщо порожньо — береться головне зображення запису.', 'beauty-institute' ) ) ),
-				bi_acf_field( 'prob_lead', __( 'Короткий опис', 'beauty-institute' ), 'lead', 'textarea', array( 'rows' => 3 ) ),
+			'fields'   => array_merge(
+				array(
+					bi_acf_field( 'prob_tab_card', __( 'Картка', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'prob_card_image', __( 'Зображення картки', 'beauty-institute' ), 'card_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Використовується у сітці на сторінці «Що ми вирішуємо», на головній і в підвалі. Порожньо — головне зображення запису.', 'beauty-institute' ) ) ),
+					bi_acf_field( 'prob_card_short', __( 'Короткий опис для картки', 'beauty-institute' ), 'card_short', 'textarea', array( 'rows' => 2 ) ),
+
+					bi_acf_field( 'prob_tab_hero', __( 'Hero', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'prob_hero_title', __( 'Заголовок', 'beauty-institute' ), 'hero_title', 'text', array( 'instructions' => __( 'Можна <br>.', 'beauty-institute' ) ) ),
+					bi_acf_field( 'prob_hero_text', __( 'Текст під заголовком', 'beauty-institute' ), 'hero_text', 'textarea', array( 'rows' => 3 ) ),
+					bi_acf_field( 'prob_hero_bg', __( 'Фон (десктоп)', 'beauty-institute' ), 'hero_bg', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+					bi_acf_field( 'prob_hero_bg_mob', __( 'Фон (мобільний)', 'beauty-institute' ), 'hero_bg_mobile', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+
+					bi_acf_field( 'prob_tab_intro', __( 'Опис', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'prob_intro_title', __( 'Заголовок', 'beauty-institute' ), 'intro_title', 'text' ),
+					bi_acf_field( 'prob_intro_text', __( 'Текст', 'beauty-institute' ), 'intro_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+					bi_acf_field( 'prob_intro_image', __( 'Зображення', 'beauty-institute' ), 'intro_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+
+					bi_acf_field( 'prob_tab_details', __( 'Деталі', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'prob_types_title', __( 'Типи — заголовок', 'beauty-institute' ), 'types_title', 'text', array( 'placeholder' => 'Типи розацеа' ) ),
+					bi_acf_field( 'prob_types_lead', __( 'Типи — підзаголовок', 'beauty-institute' ), 'types_lead', 'text' ),
+				),
+				$types,
+				array(
+					bi_acf_field( 'prob_causes_title', __( 'Причини — заголовок', 'beauty-institute' ), 'causes_title', 'text', array( 'placeholder' => 'Причини та тригери' ) ),
+					bi_acf_field( 'prob_causes_list', __( 'Причини (по рядку: Назва | Опис)', 'beauty-institute' ), 'causes_list', 'textarea', array( 'rows' => 5, 'instructions' => __( 'Один пункт на рядок. Формат: <code>Назва | Опис</code>', 'beauty-institute' ) ) ),
+					bi_acf_field( 'prob_symptoms_title', __( 'Симптоми — заголовок', 'beauty-institute' ), 'symptoms_title', 'text', array( 'placeholder' => 'Симптоми' ) ),
+					bi_acf_field( 'prob_symptoms_list', __( 'Симптоми (по одному на рядок)', 'beauty-institute' ), 'symptoms_list', 'textarea', array( 'rows' => 5 ) ),
+					bi_acf_field( 'prob_stages_title', __( 'Стадії — заголовок', 'beauty-institute' ), 'stages_title', 'text', array( 'placeholder' => 'Стадії розвитку' ) ),
+					bi_acf_field( 'prob_stages_list', __( 'Стадії (по рядку: Назва | Опис) — нумеруються автоматично', 'beauty-institute' ), 'stages_list', 'textarea', array( 'rows' => 5 ) ),
+					bi_acf_field( 'prob_note_title', __( 'Примітка — заголовок', 'beauty-institute' ), 'note_title', 'text', array( 'placeholder' => 'Важливо знати!' ) ),
+					bi_acf_field( 'prob_note_text', __( 'Примітка — текст', 'beauty-institute' ), 'note_text', 'textarea', array( 'rows' => 3 ) ),
+
+					bi_acf_field( 'prob_tab_treatment', __( 'Лікування', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'prob_tr_title', __( 'Заголовок', 'beauty-institute' ), 'treatment_title', 'text', array( 'placeholder' => 'Лікування починається з діагнозу' ) ),
+					bi_acf_field( 'prob_tr_text', __( 'Текст', 'beauty-institute' ), 'treatment_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+					bi_acf_field( 'prob_tr_image', __( 'Зображення', 'beauty-institute' ), 'treatment_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+					bi_acf_field( 'prob_tr_label', __( 'Підпис над списком послуг', 'beauty-institute' ), 'treatment_label', 'text', array( 'placeholder' => 'Послуги, які ми радимо:' ) ),
+					bi_acf_field( 'prob_tr_services', __( 'Послуги (по рядку: Назва | Опис | Посилання)', 'beauty-institute' ), 'treatment_services', 'textarea', array( 'rows' => 6 ) ),
+
+					bi_acf_field( 'prob_tab_rel', __( 'Лікарі / Відгуки / До-після', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'prob_doctors_title', __( 'Лікарі — заголовок', 'beauty-institute' ), 'doctors_title', 'text', array( 'placeholder' => 'Лікарі' ) ),
+					bi_acf_field( 'prob_doctors_subtitle', __( 'Лікарі — підзаголовок', 'beauty-institute' ), 'doctors_subtitle', 'textarea', array( 'rows' => 2 ) ),
+					bi_acf_field( 'prob_doctors', __( 'Лікарі', 'beauty-institute' ), 'doctors', 'relationship', array( 'post_type' => array( 'bi_doctor' ), 'return_format' => 'id' ) ),
+					bi_acf_field( 'prob_reviews', __( 'Відгуки', 'beauty-institute' ), 'reviews', 'relationship', array( 'post_type' => array( 'bi_review' ), 'return_format' => 'id' ) ),
+					bi_acf_field( 'prob_results_title', __( 'До та після — заголовок', 'beauty-institute' ), 'results_title', 'text', array( 'placeholder' => 'До та після' ) ),
+					bi_acf_field( 'prob_results_intro', __( 'До та після — підзаголовок', 'beauty-institute' ), 'results_intro', 'text' ),
+					bi_acf_field( 'prob_results', __( 'До та після', 'beauty-institute' ), 'results', 'relationship', array( 'post_type' => array( 'bi_result' ), 'return_format' => 'id' ) ),
+
+					bi_acf_field( 'prob_tab_consult', __( 'Запис', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'prob_consult_title', __( 'Заголовок', 'beauty-institute' ), 'consult_title', 'text', array( 'placeholder' => 'Записатись на прийом' ) ),
+					bi_acf_field( 'prob_consult_intro', __( 'Текст', 'beauty-institute' ), 'consult_intro_desktop', 'textarea', array( 'rows' => 2 ) ),
+				)
 			),
 			'location' => bi_acf_location_post_type( 'bi_problem' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Сторінка-список «Що ми вирішуємо».
+ */
+function beauty_institute_acf_group_problems_page() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_problems_page',
+			'title'    => __( 'Сторінка «Що ми вирішуємо»', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'probp_title', __( 'Заголовок', 'beauty-institute' ), 'hero_title', 'text' ),
+				bi_acf_field( 'probp_text', __( 'Вступний текст', 'beauty-institute' ), 'hero_text', 'textarea', array( 'rows' => 3 ) ),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'page_template',
+						'operator' => '==',
+						'value'    => 'sho_vyrishuemo.php',
+					),
+				),
+			),
 			'active'   => true,
 		)
 	);

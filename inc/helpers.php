@@ -212,6 +212,30 @@ function bi_option_text( $selector, $fallback = '' ) {
 }
 
 /**
+ * Parse a "col | col | col" textarea into rows of trimmed columns.
+ * Blank lines are skipped.
+ *
+ * @param string $text Raw textarea value.
+ * @param int    $cols Expected column count (rows are padded to this length).
+ * @return array[] List of arrays with $cols string elements.
+ */
+function bi_parse_rows( $text, $cols = 2 ) {
+	$rows = array();
+
+	foreach ( preg_split( '/\r\n|\r|\n/', (string) $text ) as $line ) {
+		$line = trim( $line );
+		if ( '' === $line ) {
+			continue;
+		}
+		$parts = array_map( 'trim', explode( '|', $line ) );
+		$parts = array_pad( array_slice( $parts, 0, $cols ), $cols, '' );
+		$rows[] = $parts;
+	}
+
+	return $rows;
+}
+
+/**
  * Social networks in display order: key => label.
  *
  * @return array

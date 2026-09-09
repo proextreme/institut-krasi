@@ -512,6 +512,11 @@ require get_template_directory() . '/inc/acf-fields.php';
 require get_template_directory() . '/inc/seed-menus.php';
 
 /**
+ * One-time seed for "Запити" (problems) (temporary).
+ */
+require get_template_directory() . '/inc/seed-problems.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
