@@ -99,8 +99,8 @@ function beauty_institute_acf_group_doctor() {
 					bi_acf_field( 'doc_bio', __( 'Біографія', 'beauty-institute' ), 'bio', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
 
 					bi_acf_field( 'doc_tab_card', __( 'Картка (список / головна)', 'beauty-institute' ), '', 'tab' ),
-					bi_acf_field( 'doc_role', __( 'Спеціалізація (короткий підпис у картці)', 'beauty-institute' ), 'role', 'text', array( 'placeholder' => 'Дерматолог' ) ),
-					bi_acf_field( 'doc_card_description', __( 'Опис у картці на головній', 'beauty-institute' ), 'card_description', 'text' ),
+					bi_acf_field( 'doc_role', __( 'Спеціалізація — напис над ФІО у списку лікарів', 'beauty-institute' ), 'role', 'text', array( 'placeholder' => 'Естетичний хірург' ) ),
+					bi_acf_field( 'doc_card_description', __( 'Короткий опис — під підписом у картці на головній', 'beauty-institute' ), 'card_description', 'text', array( 'placeholder' => 'Професійна оцінка можливостей естетичної корекції.' ) ),
 
 					bi_acf_field( 'doc_tab_lists', __( 'Списки', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'doc_specialization_list', __( 'Спеціалізація (по одному пункту на рядок)', 'beauty-institute' ), 'specialization_list', 'textarea', array( 'rows' => 6 ) ),

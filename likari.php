@@ -87,8 +87,18 @@ function beauty_institute_doctor_card( $doctor_id ) {
 		$photo_id = get_post_thumbnail_id( $doctor_id );
 	}
 	$photo_url = $photo_id ? wp_get_attachment_image_url( $photo_id, 'medium_large' ) : beauty_institute_asset( 'images/likari/estetychnyi_khirurh.webp' );
-	$role      = function_exists( 'get_field' ) ? (string) get_field( 'role', $doctor_id ) : '';
 	$permalink = get_permalink( $doctor_id );
+
+	$role = function_exists( 'get_field' ) ? trim( (string) get_field( 'role', $doctor_id ) ) : '';
+	if ( '' === $role && function_exists( 'get_field' ) ) {
+		$role = trim( (string) get_field( 'card_description', $doctor_id ) );
+	}
+	if ( '' === $role ) {
+		$terms = get_the_terms( $doctor_id, 'bi_specialty' );
+		if ( $terms && ! is_wp_error( $terms ) ) {
+			$role = $terms[0]->name;
+		}
+	}
 	?>
 	<article class="estetychnyi_khirurh_card">
 		<a class="estetychnyi_khirurh_photo" href="<?php echo esc_url( $permalink ); ?>" style="background-image: url('<?php echo esc_url( $photo_url ); ?>');"></a>
