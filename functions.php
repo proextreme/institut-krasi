@@ -512,9 +512,9 @@ require get_template_directory() . '/inc/acf-fields.php';
 require get_template_directory() . '/inc/seed-menus.php';
 
 /**
- * One-time seed for "Запити" (problems) (temporary).
+ * One-time seed for the "Що ми вирішуємо" page (temporary).
  */
-require get_template_directory() . '/inc/seed-problems.php';
+require get_template_directory() . '/inc/seed-sho.php';
 
 /**
  * Implement the Custom Header feature.
