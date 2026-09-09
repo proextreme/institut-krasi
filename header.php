@@ -17,6 +17,21 @@
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<?php
+$header_cta      = function_exists( 'bi_option' ) ? bi_option( 'header_cta' ) : '';
+$header_cta_url  = ( is_array( $header_cta ) && ! empty( $header_cta['url'] ) ) ? $header_cta['url'] : home_url( '/#consult' );
+$header_cta_text = ( is_array( $header_cta ) && ! empty( $header_cta['title'] ) ) ? $header_cta['title'] : __( 'Консультація', 'beauty-institute' );
+
+$primary_menu_fallback = array(
+	array( 'label' => __( 'Про нас', 'beauty-institute' ), 'url' => home_url( '/pro-nas/' ) ),
+	array( 'label' => __( 'Послуги', 'beauty-institute' ), 'url' => home_url( '/poslugi/' ) ),
+	array( 'label' => __( 'Прайс', 'beauty-institute' ), 'url' => home_url( '/prays/' ) ),
+	array( 'label' => __( 'Лікарі', 'beauty-institute' ), 'url' => home_url( '/likari/' ) ),
+	array( 'label' => __( 'Відгуки', 'beauty-institute' ), 'url' => home_url( '/vidguki/' ) ),
+	array( 'label' => __( 'Технології', 'beauty-institute' ), 'url' => home_url( '/aparati-zemits/' ) ),
+	array( 'label' => __( 'Контакти', 'beauty-institute' ), 'url' => home_url( '/kontakti/' ) ),
+);
+?>
 
 	<header class="header">
 		<div class="container header_inner">
@@ -63,9 +78,9 @@
 				</nav>
 
 				<div class="header_actions">
-					<a class="btn btn_consultation" href="<?php echo esc_url( home_url( '/#consult' ) ); ?>">
+					<a class="btn btn_consultation" href="<?php echo esc_url( $header_cta_url ); ?>">
 						<span class="btn_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chat.svg' ) ); ?>');" aria-hidden="true"></span>
-						<span class="btn_text"><?php esc_html_e( 'Консультація', 'beauty-institute' ); ?></span>
+						<span class="btn_text"><?php echo esc_html( $header_cta_text ); ?></span>
 					</a>
 
 					<button class="header_burger" type="button" aria-label="<?php esc_attr_e( 'Відкрити меню', 'beauty-institute' ); ?>" aria-expanded="false" aria-controls="mobile-menu">
@@ -91,65 +106,37 @@
 			</a>
 
 			<nav class="mobile_menu_nav" aria-label="<?php esc_attr_e( 'Мобільне меню', 'beauty-institute' ); ?>">
-				<ul class="mobile_menu_list">
-					<li class="mobile_menu_item"><a class="mobile_menu_link" href="<?php echo esc_url( home_url( '/pro-nas/' ) ); ?>"><?php esc_html_e( 'Про нас', 'beauty-institute' ); ?></a></li>
-					<li class="mobile_menu_item"><a class="mobile_menu_link" href="<?php echo esc_url( home_url( '/poslugi/' ) ); ?>"><?php esc_html_e( 'Послуги', 'beauty-institute' ); ?></a></li>
-					<li class="mobile_menu_item"><a class="mobile_menu_link" href="<?php echo esc_url( home_url( '/prays' ) ); ?>"><?php esc_html_e( 'Прайс', 'beauty-institute' ); ?></a></li>
-					<li class="mobile_menu_item"><a class="mobile_menu_link" href="<?php echo esc_url( home_url( '/likari' ) ); ?>"><?php esc_html_e( 'Лікарі', 'beauty-institute' ); ?></a></li>
-					<li class="mobile_menu_item"><a class="mobile_menu_link" href="<?php echo esc_url( home_url( '/vidguki' ) ); ?>"><?php esc_html_e( 'Відгуки', 'beauty-institute' ); ?></a></li>
-					<li class="mobile_menu_item"><a class="mobile_menu_link" href="<?php echo esc_url( home_url( '/#devices' ) ); ?>"><?php esc_html_e( 'Технології', 'beauty-institute' ); ?></a></li>
-					<li class="mobile_menu_item"><a class="mobile_menu_link" href="<?php echo esc_url( home_url( '/kontakti' ) ); ?>"><?php esc_html_e( 'Контакти', 'beauty-institute' ); ?></a></li>
-				</ul>
+				<?php beauty_institute_primary_menu( 'mobile_menu_list', 'mobile_menu_item', 'mobile_menu_link', $primary_menu_fallback ); ?>
 			</nav>
 
-			<a class="btn btn_consultation btn_consultation_menu" href="<?php echo esc_url( home_url( '/#consult' ) ); ?>">
+			<a class="btn btn_consultation btn_consultation_menu" href="<?php echo esc_url( $header_cta_url ); ?>">
 				<span class="btn_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chat_white.svg' ) ); ?>');" aria-hidden="true"></span>
-				<span class="btn_text"><?php esc_html_e( 'Консультація', 'beauty-institute' ); ?></span>
+				<span class="btn_text"><?php echo esc_html( $header_cta_text ); ?></span>
 			</a>
 
 			<div class="mobile_menu_divider" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/menu_divider.svg' ) ); ?>');" aria-hidden="true"></div>
 
 			<ul class="mobile_menu_socials">
-				<li class="mobile_menu_socials_item">
-					<a class="mobile_menu_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-						<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/instagram_menu.svg' ) ); ?>');" aria-hidden="true"></span>
-					</a>
-				</li>
-				<li class="mobile_menu_socials_item">
-					<a class="mobile_menu_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Threads">
-						<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/threads_menu.svg' ) ); ?>');" aria-hidden="true"></span>
-					</a>
-				</li>
-				<li class="mobile_menu_socials_item">
-					<a class="mobile_menu_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-						<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/fb_menu.svg' ) ); ?>');" aria-hidden="true"></span>
-					</a>
-				</li>
-				<li class="mobile_menu_socials_item">
-					<a class="mobile_menu_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-						<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/youtube_menu.svg' ) ); ?>');" aria-hidden="true"></span>
-					</a>
-				</li>
-				<li class="mobile_menu_socials_item">
-					<a class="mobile_menu_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Meta">
-						<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/meta_menu.svg' ) ); ?>');" aria-hidden="true"></span>
-					</a>
-				</li>
-				<li class="mobile_menu_socials_item">
-					<a class="mobile_menu_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-						<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/whatsapp_menu.svg' ) ); ?>');" aria-hidden="true"></span>
-					</a>
-				</li>
-				<li class="mobile_menu_socials_item">
-					<a class="mobile_menu_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Messenger">
-						<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/fb_mess_menu.svg' ) ); ?>');" aria-hidden="true"></span>
-					</a>
-				</li>
-				<li class="mobile_menu_socials_item">
-					<a class="mobile_menu_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-						<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/telegram_menu.svg' ) ); ?>');" aria-hidden="true"></span>
-					</a>
-				</li>
+				<?php
+				$mobile_socials = array(
+					'social_instagram' => array( 'Instagram', 'images/instagram_menu.svg' ),
+					'social_threads'   => array( 'Threads', 'images/threads_menu.svg' ),
+					'social_facebook'  => array( 'Facebook', 'images/fb_menu.svg' ),
+					'social_youtube'   => array( 'YouTube', 'images/youtube_menu.svg' ),
+					'social_meta'      => array( 'Meta', 'images/meta_menu.svg' ),
+					'social_whatsapp'  => array( 'WhatsApp', 'images/whatsapp_menu.svg' ),
+					'social_messenger' => array( 'Messenger', 'images/fb_mess_menu.svg' ),
+					'social_telegram'  => array( 'Telegram', 'images/telegram_menu.svg' ),
+				);
+				foreach ( $mobile_socials as $social_key => $social_meta ) :
+					$social_url = function_exists( 'bi_option' ) ? bi_option( $social_key, '#' ) : '#';
+					?>
+					<li class="mobile_menu_socials_item">
+						<a class="mobile_menu_socials_link" href="<?php echo esc_url( $social_url ); ?>"<?php echo ( '#' !== $social_url ) ? ' target="_blank" rel="noopener noreferrer"' : ''; ?> aria-label="<?php echo esc_attr( $social_meta[0] ); ?>">
+							<span class="mobile_menu_socials_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( $social_meta[1] ) ); ?>');" aria-hidden="true"></span>
+						</a>
+					</li>
+				<?php endforeach; ?>
 			</ul>
 		</div>
 	</div>

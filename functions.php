@@ -172,10 +172,13 @@ function beauty_institute_setup() {
 		*/
 	add_theme_support( 'post-thumbnails' );
 
-	// This theme uses wp_nav_menu() in one location.
+	// This theme uses wp_nav_menu() in several locations.
 	register_nav_menus(
 		array(
-			'menu-1' => esc_html__( 'Primary', 'beauty-institute' ),
+			'menu-1'   => esc_html__( 'Головне меню', 'beauty-institute' ),
+			'footer-1' => esc_html__( 'Підвал — колонка 1', 'beauty-institute' ),
+			'footer-2' => esc_html__( 'Підвал — колонка 2', 'beauty-institute' ),
+			'footer-3' => esc_html__( 'Підвал — колонка 3', 'beauty-institute' ),
 		)
 	);
 
@@ -502,6 +505,11 @@ require get_template_directory() . '/inc/post-types.php';
  * ACF field groups (registered in code).
  */
 require get_template_directory() . '/inc/acf-fields.php';
+
+/**
+ * One-time seed for nav menus + header/footer settings (temporary).
+ */
+require get_template_directory() . '/inc/seed-menus.php';
 
 /**
  * Implement the Custom Header feature.

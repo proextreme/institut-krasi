@@ -39,87 +39,59 @@
 				</div>
 
 				<div class="footer_cols">
-					<div class="footer_col is_open">
-						<button class="footer_col_toggle" type="button" aria-expanded="true">
-							<span class="footer_col_title"><?php esc_html_e( 'Послуги', 'beauty-institute' ); ?></span>
-							<span class="footer_col_arrow" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_accordion.svg' ) ); ?>');" aria-hidden="true"></span>
-						</button>
-						<ul class="footer_col_list">
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/poslugi/' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Видалення новоутворень', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/poslugi/' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Ін’єкційна косметологія', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/poslugi/' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Пластична хірургія', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/poslugi/' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Апаратна косметологія', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/poslugi/' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Доглядові процедури', 'beauty-institute' ); ?></a>
-							</li>
-						</ul>
-					</div>
+					<?php
+					$footer_columns = array(
+						array(
+							'title'    => bi_option( 'footer_col_1_title', 'Послуги' ),
+							'location' => 'footer-1',
+							'open'     => true,
+							'fallback' => array(
+								array( 'label' => 'Видалення новоутворень', 'url' => home_url( '/poslugi/' ) ),
+								array( 'label' => 'Ін’єкційна косметологія', 'url' => home_url( '/poslugi/' ) ),
+								array( 'label' => 'Пластична хірургія', 'url' => home_url( '/poslugi/' ) ),
+								array( 'label' => 'Апаратна косметологія', 'url' => home_url( '/poslugi/' ) ),
+								array( 'label' => 'Доглядові процедури', 'url' => home_url( '/poslugi/' ) ),
+							),
+						),
+						array(
+							'title'    => bi_option( 'footer_col_2_title', 'Що ми вирішуємо?' ),
+							'location' => 'footer-2',
+							'open'     => false,
+							'fallback' => array(
+								array( 'label' => 'Новоутворення на шкірі', 'url' => '#' ),
+								array( 'label' => 'Розацеа', 'url' => '#' ),
+								array( 'label' => 'Акне (вугрова хвороба)', 'url' => '#' ),
+								array( 'label' => 'Пігментація шкіри', 'url' => '#' ),
+								array( 'label' => 'Рубці', 'url' => '#' ),
+								array( 'label' => 'Випадіння волосся', 'url' => '#' ),
+								array( 'label' => 'Себорейний дерматит', 'url' => '#' ),
+								array( 'label' => 'Вікові зміни шкіри', 'url' => '#' ),
+							),
+						),
+						array(
+							'title'    => bi_option( 'footer_col_3_title', 'Про ІНСТИТУТ КРАСИ' ),
+							'location' => 'footer-3',
+							'open'     => false,
+							'fallback' => array(
+								array( 'label' => 'Про нас', 'url' => home_url( '/pro-nas/' ) ),
+								array( 'label' => 'Лікарі', 'url' => home_url( '/likari/' ) ),
+								array( 'label' => 'Ціни', 'url' => home_url( '/prays/' ) ),
+								array( 'label' => 'Корисна інформація', 'url' => '#' ),
+								array( 'label' => 'Контакти', 'url' => home_url( '/kontakti/' ) ),
+							),
+						),
+					);
+					foreach ( $footer_columns as $col_index => $col ) :
+						?>
+						<div class="footer_col<?php echo $col['open'] ? ' is_open' : ''; ?>">
+							<button class="footer_col_toggle" type="button" aria-expanded="<?php echo $col['open'] ? 'true' : 'false'; ?>">
+								<span class="footer_col_title"><?php echo esc_html( $col['title'] ); ?></span>
+								<span class="footer_col_arrow" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_accordion.svg' ) ); ?>');" aria-hidden="true"></span>
+							</button>
+							<?php beauty_institute_footer_menu( $col['location'], $col['fallback'] ); ?>
+							<?php if ( 2 === $col_index ) : ?>
 
-					<div class="footer_col">
-						<button class="footer_col_toggle" type="button" aria-expanded="false">
-							<span class="footer_col_title"><?php esc_html_e( 'Що ми вирішуємо?', 'beauty-institute' ); ?></span>
-							<span class="footer_col_arrow" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_accordion.svg' ) ); ?>');" aria-hidden="true"></span>
-						</button>
-						<ul class="footer_col_list">
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Новоутворення на шкірі', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Розацеа', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Акне (вугрова хвороба)', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Пігментація шкіри', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Рубці', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Випадіння волосся', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Себорейний дерматит', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Вікові зміни шкіри', 'beauty-institute' ); ?></a>
-							</li>
-						</ul>
-					</div>
-
-					<div class="footer_col">
-						<button class="footer_col_toggle" type="button" aria-expanded="false">
-							<span class="footer_col_title"><?php esc_html_e( 'Про ІНСТИТУТ КРАСИ', 'beauty-institute' ); ?></span>
-							<span class="footer_col_arrow" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_accordion.svg' ) ); ?>');" aria-hidden="true"></span>
-						</button>
-						<ul class="footer_col_list">
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/pro-nas/' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Про нас', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/#doctors' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Лікарі', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/#price' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Ціни', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="#"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Корисна інформація', 'beauty-institute' ); ?></a>
-							</li>
-							<li class="footer_col_item">
-								<a class="footer_col_link" href="<?php echo esc_url( home_url( '/#contacts' ) ); ?>"><span class="footer_col_chevron" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chevron.svg' ) ); ?>');" aria-hidden="true"></span><?php esc_html_e( 'Контакти', 'beauty-institute' ); ?></a>
-							</li>
-						</ul>
-
-						<ul class="footer_socials">
+							<ul class="footer_socials">
 							<?php
 							$footer_socials = array(
 								'social_instagram' => array( 'Instagram', 'images/instagram_footer.svg' ),
@@ -136,25 +108,10 @@
 									<a class="footer_socials_link" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( $meta[0] ); ?>" style="background-image: url('<?php echo esc_url( beauty_institute_asset( $meta[1] ) ); ?>');"></a>
 								</li>
 							<?php endforeach; ?>
-							<!-- <li class="footer_socials_item">
-								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Threads" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/threads_footer.svg' ) ); ?>');"></a>
-							</li> 
-							
-							
-							<li class="footer_socials_item">
-								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Meta" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/meta_footer.svg' ) ); ?>');"></a>
-							</li>
-							<li class="footer_socials_item">
-								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/whatsapp_footer.svg' ) ); ?>');"></a>
-							</li>
-							<li class="footer_socials_item">
-								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Messenger" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/fb_mess_footer.svg' ) ); ?>');"></a>
-							</li>
-							<li class="footer_socials_item">
-								<a class="footer_socials_link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/telegram_footer.svg' ) ); ?>');"></a>
-							</li>-->
-						</ul>
-					</div>
+							</ul>
+							<?php endif; ?>
+						</div>
+					<?php endforeach; ?>
 				</div>
 			</div>
 

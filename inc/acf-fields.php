@@ -510,11 +510,16 @@ function beauty_institute_acf_group_settings() {
 				bi_acf_field( 'edrpou', __( 'Код ЄДРПОУ', 'beauty-institute' ), 'edrpou', 'text' ),
 				bi_acf_field( 'work_hours', __( 'Графік роботи', 'beauty-institute' ), 'work_hours', 'text', array( 'placeholder' => 'Щодня з 9:00 до 21:00' ) ),
 
+				bi_acf_field( 'set_tab_header', __( 'Шапка', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field( 'header_cta', __( 'Кнопка «Консультація»', 'beauty-institute' ), 'header_cta', 'link' ),
+
 				bi_acf_field( 'set_tab_social', __( 'Соцмережі', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field( 'social_msg', __( 'Порожнє поле — іконка не показується у підвалі; у мобільному меню показуються всі.', 'beauty-institute' ), '', 'message' ),
 				bi_acf_field( 'social_instagram', 'Instagram', 'social_instagram', 'url' ),
 				bi_acf_field( 'social_facebook', 'Facebook', 'social_facebook', 'url' ),
 				bi_acf_field( 'social_youtube', 'YouTube', 'social_youtube', 'url' ),
 				bi_acf_field( 'social_threads', 'Threads', 'social_threads', 'url' ),
+				bi_acf_field( 'social_meta', 'Meta', 'social_meta', 'url' ),
 				bi_acf_field( 'social_telegram', 'Telegram', 'social_telegram', 'url' ),
 				bi_acf_field( 'social_whatsapp', 'WhatsApp', 'social_whatsapp', 'url' ),
 				bi_acf_field( 'social_messenger', 'Messenger', 'social_messenger', 'url' ),
@@ -545,6 +550,10 @@ function beauty_institute_acf_group_settings() {
 
 				bi_acf_field( 'set_tab_footer', __( 'Підвал', 'beauty-institute' ), '', 'tab' ),
 				bi_acf_field( 'footer_slogan', __( 'Слоган у підвалі', 'beauty-institute' ), 'footer_slogan', 'text' ),
+				bi_acf_field( 'footer_col_1_title', __( 'Колонка 1 — заголовок', 'beauty-institute' ), 'footer_col_1_title', 'text', array( 'placeholder' => 'Послуги', 'wrapper' => array( 'width' => '33' ) ) ),
+				bi_acf_field( 'footer_col_2_title', __( 'Колонка 2 — заголовок', 'beauty-institute' ), 'footer_col_2_title', 'text', array( 'placeholder' => 'Що ми вирішуємо?', 'wrapper' => array( 'width' => '33' ) ) ),
+				bi_acf_field( 'footer_col_3_title', __( 'Колонка 3 — заголовок', 'beauty-institute' ), 'footer_col_3_title', 'text', array( 'placeholder' => 'Про ІНСТИТУТ КРАСИ', 'wrapper' => array( 'width' => '34' ) ) ),
+				bi_acf_field( 'footer_cols_msg', __( 'Посилання в колонках підвалу редагуються у «Вигляд → Меню» (Підвал — колонка 1/2/3).', 'beauty-institute' ), '', 'message' ),
 				bi_acf_field( 'footer_terms_link', __( 'Посилання «Умови використання»', 'beauty-institute' ), 'footer_terms_link', 'link' ),
 				bi_acf_field( 'footer_privacy_link', __( 'Посилання «Політика конфіденційності»', 'beauty-institute' ), 'footer_privacy_link', 'link' ),
 				bi_acf_field( 'footer_copy_name', __( 'Назва в копірайті', 'beauty-institute' ), 'footer_copy_name', 'text', array( 'placeholder' => 'ІНСТИТУТ КРАСИ' ) ),

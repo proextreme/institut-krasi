@@ -212,6 +212,112 @@ function bi_option_text( $selector, $fallback = '' ) {
 }
 
 /**
+ * Social networks in display order: key => label.
+ *
+ * @return array
+ */
+function beauty_institute_social_networks() {
+	return array(
+		'social_instagram' => 'Instagram',
+		'social_threads'   => 'Threads',
+		'social_facebook'  => 'Facebook',
+		'social_youtube'   => 'YouTube',
+		'social_meta'      => 'Meta',
+		'social_whatsapp'  => 'WhatsApp',
+		'social_messenger' => 'Messenger',
+		'social_telegram'  => 'Telegram',
+	);
+}
+
+/**
+ * Render a footer link column from a nav-menu location, or a fallback.
+ *
+ * @param string $location Nav-menu location.
+ * @param array  $fallback List of array( 'label' => ..., 'url' => ... ).
+ */
+function beauty_institute_footer_menu( $location, $fallback = array() ) {
+	$chevron = beauty_institute_asset( 'images/icon_chevron.svg' );
+	$items   = array();
+
+	$menu_locations = get_nav_menu_locations();
+	if ( ! empty( $menu_locations[ $location ] ) ) {
+		$menu_items = wp_get_nav_menu_items( $menu_locations[ $location ] );
+		if ( $menu_items ) {
+			foreach ( $menu_items as $item ) {
+				if ( (int) $item->menu_item_parent !== 0 ) {
+					continue;
+				}
+				$items[] = array( 'label' => $item->title, 'url' => $item->url );
+			}
+		}
+	}
+
+	if ( ! $items ) {
+		$items = $fallback;
+	}
+
+	if ( ! $items ) {
+		return;
+	}
+
+	echo '<ul class="footer_col_list">';
+	foreach ( $items as $item ) {
+		printf(
+			'<li class="footer_col_item"><a class="footer_col_link" href="%s"><span class="footer_col_chevron" style="background-image: url(\'%s\');" aria-hidden="true"></span>%s</a></li>',
+			esc_url( $item['url'] ),
+			esc_url( $chevron ),
+			esc_html( $item['label'] )
+		);
+	}
+	echo '</ul>';
+}
+
+/**
+ * Render the primary menu with a given BEM class set (used for header + mobile).
+ *
+ * @param string $list_class Class for the <ul>.
+ * @param string $item_class Class for each <li>.
+ * @param string $link_class Class for each <a>.
+ * @param array  $fallback   List of array( 'label' => ..., 'url' => ... ).
+ */
+function beauty_institute_primary_menu( $list_class, $item_class, $link_class, $fallback = array() ) {
+	$items          = array();
+	$menu_locations = get_nav_menu_locations();
+
+	if ( ! empty( $menu_locations['menu-1'] ) ) {
+		$menu_items = wp_get_nav_menu_items( $menu_locations['menu-1'] );
+		if ( $menu_items ) {
+			foreach ( $menu_items as $item ) {
+				if ( (int) $item->menu_item_parent !== 0 ) {
+					continue;
+				}
+				$items[] = array( 'label' => $item->title, 'url' => $item->url );
+			}
+		}
+	}
+
+	if ( ! $items ) {
+		$items = $fallback;
+	}
+
+	if ( ! $items ) {
+		return;
+	}
+
+	printf( '<ul class="%s">', esc_attr( $list_class ) );
+	foreach ( $items as $item ) {
+		printf(
+			'<li class="%s"><a class="%s" href="%s">%s</a></li>',
+			esc_attr( $item_class ),
+			esc_attr( $link_class ),
+			esc_url( $item['url'] ),
+			esc_html( $item['label'] )
+		);
+	}
+	echo '</ul>';
+}
+
+/**
  * Short display name for a doctor ("Трембач О.М."), falling back to the title.
  *
  * @param int $id Doctor post ID.
