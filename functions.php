@@ -517,6 +517,11 @@ require get_template_directory() . '/inc/seed-price.php';
 require get_template_directory() . '/inc/seed-price-devices.php';
 
 /**
+ * One-time seed for the "Стоматологія" price list (temporary).
+ */
+require get_template_directory() . '/inc/seed-price-dental.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
