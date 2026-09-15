@@ -529,3 +529,10 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+/**
+ * Contact Form 7 integration tweaks.
+ */
+if ( defined( 'WPCF7_VERSION' ) ) {
+	require get_template_directory() . '/inc/cf7.php';
+}
+

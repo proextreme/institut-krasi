@@ -266,23 +266,7 @@ get_header();
 					<div class="consult_form_col">
 						<h2 class="consult_title font_heading">Записатись на прийом</h2>
 						<p class="consult_intro">Підберемо зручний час</p>
-						<form action="/#wpcf7-f72-o1" method="post" class="wpcf7-form consult_form init" aria-label="Контактна форма" novalidate="novalidate" data-status="init">
-							<p>
-								<label> Ім’я</label><br>
-								<span class="wpcf7-form-control-wrap" data-name="your-name"><input size="40" maxlength="400" class="wpcf7-form-control wpcf7-text" autocomplete="name" aria-invalid="false" value="" type="text" name="your-name" placeholder="Вкажіть як до вас звертатися"></span>
-							</p>
-							<p>
-								<label> Телефон</label><br>
-								<span class="wpcf7-form-control-wrap" data-name="your-phone"><input size="40" maxlength="15" class="wpcf7-form-control wpcf7-tel wpcf7-text" autocomplete="tel" inputmode="numeric" aria-invalid="false" value="" type="tel" name="your-phone" placeholder="Вкажіть свій номер телефону"></span>
-							</p>
-							<p>
-								<label> Послуга</label><br>
-								<span class="wpcf7-form-control-wrap" data-name="your-service"><select class="wpcf7-form-control wpcf7-select" aria-invalid="false" name="your-service"><option value="">Оберіть послугу</option><option value="novoutvorennya">Видалення новоутворень</option><option value="injection">Ін’єкційна косметологія</option><option value="surgery">Естетична хірургія</option><option value="hardware">Апаратна косметологія</option><option value="care">Доглядові процедури</option><option value="stomatology">Стоматологія</option></select></span>
-							</p>
-							<p>
-								<input class="wpcf7-form-control wpcf7-submit has-spinner" type="submit" value="Відправити"><span class="wpcf7-spinner"></span>
-							</p>
-						</form>
+						<?php beauty_institute_consult_form( bi_field( 'consult_form' ) ); ?>
 					</div>
 
 					<div class="consult_visual" aria-hidden="true"></div>
