@@ -588,8 +588,8 @@ function beauty_institute_price_row( $item ) {
 		<span class="in_iektsiina_terapiya_name"><?php echo esc_html( $item['name'] ); ?></span>
 		<span class="in_iektsiina_terapiya_meta">
 			<?php if ( '' !== $item['price'] ) : ?><span class="in_iektsiina_terapiya_price"><?php echo esc_html( $item['price'] ); ?></span><?php endif; ?>
-			<?php if ( '' !== $item['time'] ) : ?><span class="in_iektsiina_terapiya_time"><?php echo esc_html( $item['time'] ); ?></span><?php endif; ?>
 			<?php if ( '' !== $item['code'] ) : ?><span class="in_iektsiina_terapiya_code">№ <?php echo esc_html( $item['code'] ); ?></span><?php endif; ?>
+			<?php if ( '' !== $item['time'] ) : ?><span class="in_iektsiina_terapiya_time"><?php echo esc_html( $item['time'] ); ?></span><?php endif; ?>
 		</span>
 	</li>
 	<?php
