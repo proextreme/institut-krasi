@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	 * @param {ParentNode} [root=document] Scope root.
 	 */
 	const initPhoneMasks = (root = document) => {
-		root.querySelectorAll('.consult_form input[type="tel"], input.wpcf7-tel[type="tel"]').forEach((input) => {
+		root.querySelectorAll('.consult_form input[name="your-phone"], input.wpcf7-tel[type="tel"]').forEach((input) => {
 			bindPhoneMask(input);
 		});
 	};
