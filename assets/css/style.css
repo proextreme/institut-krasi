@@ -7317,13 +7317,22 @@ main.likari {
 }
 
 .in_iektsiina_terapiya_price,
-.in_iektsiina_terapiya_time {
+.in_iektsiina_terapiya_time,
+.in_iektsiina_terapiya_code {
 	color: var(--color_gray_80);
 	font-family: var(--font_primary);
 	font-size: clamp(14px, calc(0.1905vw + 13.257px), 16px);
 	font-weight: var(--font_weight_light);
 	line-height: 1.4;
 	white-space: nowrap;
+}
+
+.in_iektsiina_terapiya_code {
+	opacity: 0.6;
+}
+
+.in_iektsiina_terapiya[aria-hidden="true"] {
+	display: none;
 }
 
 @media (min-width: 1024px) {
@@ -7372,6 +7381,12 @@ main.likari {
 		display: inline-flex;
 		justify-content: flex-end;
 		min-width: 5.5em;
+	}
+
+	.in_iektsiina_terapiya_code {
+		display: inline-flex;
+		justify-content: flex-end;
+		min-width: 4em;
 	}
 }
 

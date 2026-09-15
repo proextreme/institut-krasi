@@ -236,6 +236,74 @@ function bi_parse_rows( $text, $cols = 2 ) {
 }
 
 /**
+ * Parse a price-list textarea into categories > (optional groups) > rows.
+ *
+ * Line format:
+ *   # Category name
+ *   ## Group name (optional, nested under the current category)
+ *   Назва | Ціна | Код | Час   (an item row)
+ *
+ * @param string $text Raw textarea value.
+ * @return array[] List of array( 'name', 'items' => [...], 'groups' => [ 'name', 'items' => [...] ] ).
+ */
+function bi_parse_price_list( $text ) {
+	$categories = array();
+	$cat_index  = -1;
+	$grp_index  = -1;
+
+	foreach ( preg_split( '/\r\n|\r|\n/', (string) $text ) as $line ) {
+		$line = trim( $line );
+		if ( '' === $line ) {
+			continue;
+		}
+
+		if ( 0 === strpos( $line, '##' ) ) {
+			if ( $cat_index < 0 ) {
+				continue;
+			}
+			$categories[ $cat_index ]['groups'][] = array(
+				'name'  => trim( substr( $line, 2 ) ),
+				'items' => array(),
+			);
+			$grp_index = count( $categories[ $cat_index ]['groups'] ) - 1;
+			continue;
+		}
+
+		if ( 0 === strpos( $line, '#' ) ) {
+			$categories[] = array(
+				'name'   => trim( substr( $line, 1 ) ),
+				'items'  => array(),
+				'groups' => array(),
+			);
+			$cat_index = count( $categories ) - 1;
+			$grp_index = -1;
+			continue;
+		}
+
+		if ( $cat_index < 0 ) {
+			continue; // Item row before any category header — ignore.
+		}
+
+		$parts = array_map( 'trim', explode( '|', $line ) );
+		$parts = array_pad( array_slice( $parts, 0, 4 ), 4, '' );
+		$item  = array(
+			'name'  => $parts[0],
+			'price' => $parts[1],
+			'code'  => $parts[2],
+			'time'  => $parts[3],
+		);
+
+		if ( $grp_index >= 0 ) {
+			$categories[ $cat_index ]['groups'][ $grp_index ]['items'][] = $item;
+		} else {
+			$categories[ $cat_index ]['items'][] = $item;
+		}
+	}
+
+	return $categories;
+}
+
+/**
  * Social networks in display order: key => label.
  *
  * @return array

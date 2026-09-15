@@ -53,6 +53,7 @@ function beauty_institute_register_acf_fields() {
 	beauty_institute_acf_group_device();
 	beauty_institute_acf_group_zemits();
 	beauty_institute_acf_group_category();
+	beauty_institute_acf_group_price();
 }
 add_action( 'acf/include_fields', 'beauty_institute_register_acf_fields' );
 
@@ -858,6 +859,71 @@ function beauty_institute_acf_group_home() {
 			),
 			'menu_order' => 0,
 			'active'     => true,
+		)
+	);
+}
+
+/**
+ * Сторінка «Прайс» (vartist-poslug.php) — 3 вкладки, кожна свій прайс-лист.
+ *
+ * Кожне поле — це один текстовий список у форматі:
+ *   # Назва категорії
+ *   ## Назва групи (необов'язково, вкладена в категорію вище)
+ *   Назва позиції | Ціна | Код | Час
+ * Розбирається bi_parse_price_list() і рендериться beauty_institute_price_list().
+ */
+function beauty_institute_acf_group_price() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_price',
+			'title'    => __( 'Прайс', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'price_tab_general', __( 'Прайс загальний', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field(
+					'price_general',
+					__( 'Позиції', 'beauty-institute' ),
+					'price_general',
+					'textarea',
+					array(
+						'rows'         => 20,
+						'instructions' => __( 'Один рядок = один пункт. <code># Категорія</code> — новий розділ акордеону. <code>## Група</code> — підрозділ усередині категорії (необов’язково). Позиція: <code>Назва | Ціна | Код | Час</code>.', 'beauty-institute' ),
+					)
+				),
+
+				bi_acf_field( 'price_tab_devices', __( 'Апарати', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field(
+					'price_devices',
+					__( 'Позиції', 'beauty-institute' ),
+					'price_devices',
+					'textarea',
+					array(
+						'rows'         => 20,
+						'instructions' => __( 'Той самий формат, що й на вкладці «Прайс загальний».', 'beauty-institute' ),
+					)
+				),
+
+				bi_acf_field( 'price_tab_dental', __( 'Стоматологія', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field(
+					'price_dental',
+					__( 'Позиції', 'beauty-institute' ),
+					'price_dental',
+					'textarea',
+					array(
+						'rows'         => 20,
+						'instructions' => __( 'Той самий формат, що й на вкладці «Прайс загальний».', 'beauty-institute' ),
+					)
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'page_template',
+						'operator' => '==',
+						'value'    => 'vartist-poslug.php',
+					),
+				),
+			),
+			'active'   => true,
 		)
 	);
 }

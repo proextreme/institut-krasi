@@ -576,3 +576,67 @@ function beauty_institute_consult_section() {
 	</section>
 	<?php
 }
+
+/**
+ * Render one row of the price accordion.
+ *
+ * @param array $item array( 'name', 'price', 'code', 'time' ).
+ */
+function beauty_institute_price_row( $item ) {
+	?>
+	<li class="in_iektsiina_terapiya_row">
+		<span class="in_iektsiina_terapiya_name"><?php echo esc_html( $item['name'] ); ?></span>
+		<span class="in_iektsiina_terapiya_meta">
+			<?php if ( '' !== $item['price'] ) : ?><span class="in_iektsiina_terapiya_price"><?php echo esc_html( $item['price'] ); ?></span><?php endif; ?>
+			<?php if ( '' !== $item['time'] ) : ?><span class="in_iektsiina_terapiya_time"><?php echo esc_html( $item['time'] ); ?></span><?php endif; ?>
+			<?php if ( '' !== $item['code'] ) : ?><span class="in_iektsiina_terapiya_code">№ <?php echo esc_html( $item['code'] ); ?></span><?php endif; ?>
+		</span>
+	</li>
+	<?php
+}
+
+/**
+ * Render the whole price-list accordion (one tab's worth of categories).
+ *
+ * @param string $text Raw price-list field value — see bi_parse_price_list().
+ */
+function beauty_institute_price_list( $text ) {
+	$categories = bi_parse_price_list( $text );
+
+	if ( ! $categories ) {
+		?>
+		<p class="poslugi_desc"><?php esc_html_e( 'Розділ наповнюється. Незабаром тут з’явиться прайс.', 'beauty-institute' ); ?></p>
+		<?php
+		return;
+	}
+	?>
+	<ul class="in_iektsiina_terapiya_list">
+		<?php foreach ( $categories as $index => $category ) : ?>
+			<li class="in_iektsiina_terapiya_item<?php echo 0 === $index ? ' is_open' : ''; ?>">
+				<button type="button" class="in_iektsiina_terapiya_toggle" aria-expanded="<?php echo 0 === $index ? 'true' : 'false'; ?>">
+					<span class="in_iektsiina_terapiya_cat"><?php echo esc_html( $category['name'] ); ?></span>
+					<span class="in_iektsiina_terapiya_icon" aria-hidden="true"><span></span></span>
+				</button>
+				<div class="in_iektsiina_terapiya_body">
+					<div class="in_iektsiina_terapiya_body_inner">
+						<?php if ( $category['groups'] ) : ?>
+							<?php foreach ( $category['groups'] as $group ) : ?>
+								<div class="in_iektsiina_terapiya_group">
+									<h3 class="in_iektsiina_terapiya_sub"><?php echo esc_html( $group['name'] ); ?></h3>
+									<ul class="in_iektsiina_terapiya_rows">
+										<?php foreach ( $group['items'] as $item ) { beauty_institute_price_row( $item ); } ?>
+									</ul>
+								</div>
+							<?php endforeach; ?>
+						<?php else : ?>
+							<ul class="in_iektsiina_terapiya_rows">
+								<?php foreach ( $category['items'] as $item ) { beauty_institute_price_row( $item ); } ?>
+							</ul>
+						<?php endif; ?>
+					</div>
+				</div>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+	<?php
+}
