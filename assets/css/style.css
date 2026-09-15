@@ -3083,6 +3083,30 @@ body.is_menu_open .mobile_menu_close_icon::after {
 	width: 100%;
 }
 
+.phone_field {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.phone_prefix {
+	position: absolute;
+	top: 50%;
+	left: 24px;
+	z-index: 1;
+	transform: translateY(-50%);
+	font-family: var(--font_primary);
+	font-size: 14px;
+	font-weight: var(--font_weight_light);
+	line-height: 1.3;
+	color: var(--color_gray_90);
+	pointer-events: none;
+}
+
+.consult_form input[name="your-phone"] {
+	padding-left: 54px;
+}
+
 .consult_form .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-acceptance) {
 	box-sizing: border-box;
 	width: 100%;
