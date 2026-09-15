@@ -327,13 +327,39 @@ document.addEventListener('DOMContentLoaded', () => {
 	window.addEventListener('resize', syncPriceSpoilers);
 
 	/**
+	 * Strip a leading Ukrainian country code (+380 / 380 / 0380) so the
+	 * mask always ends up with the local "0XX XXX XX XX" digits, whether
+	 * the person typed/pasted the number with or without the code.
+	 *
+	 * @param {string} value Raw input value.
+	 * @return {string} Local-format digits (max 10, leading 0).
+	 */
+	const normalizeUaPhoneDigits = (value) => {
+		let digits = String(value).replace(/\D/g, '');
+
+		if (digits.length > 10) {
+			if (digits.startsWith('0380')) {
+				digits = digits.slice(4);
+			} else if (digits.startsWith('380')) {
+				digits = digits.slice(3);
+			}
+
+			if (digits.length === 9 && !digits.startsWith('0')) {
+				digits = '0' + digits;
+			}
+		}
+
+		return digits.slice(0, 10);
+	};
+
+	/**
 	 * Format digits as UA phone mask: (099) 999-99-99.
 	 *
 	 * @param {string} value Raw input value.
 	 * @return {string} Formatted phone.
 	 */
 	const formatUaPhoneMask = (value) => {
-		const digits = String(value).replace(/\D/g, '').slice(0, 10);
+		const digits = normalizeUaPhoneDigits(value);
 
 		if (!digits.length) {
 			return '';
