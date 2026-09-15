@@ -507,26 +507,6 @@ require get_template_directory() . '/inc/post-types.php';
 require get_template_directory() . '/inc/acf-fields.php';
 
 /**
- * One-time seed for nav menus + header/footer settings (temporary).
- */
-require get_template_directory() . '/inc/seed-menus.php';
-
-/**
- * One-time seed for the "Що ми вирішуємо" page (temporary).
- */
-require get_template_directory() . '/inc/seed-sho.php';
-
-/**
- * One-time seed for real doctor profiles (temporary).
- */
-require get_template_directory() . '/inc/seed-doctors.php';
-
-/**
- * One-time seed for the services category tree (temporary).
- */
-require get_template_directory() . '/inc/seed-services.php';
-
-/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
