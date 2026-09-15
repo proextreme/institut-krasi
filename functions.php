@@ -450,10 +450,6 @@ function beauty_institute_header_aparati_dropdown_items( $items, $args ) {
 			'title' => __( 'Апарати Zemits', 'beauty-institute' ),
 			'url'   => home_url( '/aparati-zemits/' ),
 		),
-		array(
-			'title' => __( 'Що ми вирішуємо', 'beauty-institute' ),
-			'url'   => home_url( '/scho-mi-virishuyemo/' ),
-		),
 	);
 
 	$fake_id = PHP_INT_MAX;
