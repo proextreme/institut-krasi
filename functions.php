@@ -522,6 +522,11 @@ require get_template_directory() . '/inc/seed-sho.php';
 require get_template_directory() . '/inc/seed-doctors.php';
 
 /**
+ * One-time seed for the services category tree (temporary).
+ */
+require get_template_directory() . '/inc/seed-services.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';

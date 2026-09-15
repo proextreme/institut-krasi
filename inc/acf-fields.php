@@ -52,6 +52,7 @@ function beauty_institute_register_acf_fields() {
 	beauty_institute_acf_group_faq();
 	beauty_institute_acf_group_device();
 	beauty_institute_acf_group_zemits();
+	beauty_institute_acf_group_category();
 }
 add_action( 'acf/include_fields', 'beauty_institute_register_acf_fields' );
 
@@ -467,6 +468,64 @@ function beauty_institute_acf_group_result() {
 				bi_acf_field( 'res_procedure', __( 'Процедура / підпис', 'beauty-institute' ), 'procedure', 'text' ),
 			),
 			'location' => bi_acf_location_post_type( 'bi_result' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Категорія послуг (сторінка «Послуги» + дочірні сторінки послуг).
+ *
+ * One group on all `category` terms, organised in 3 tabs: the hub page
+ * fields (used only on the "Послуги" term itself), how a term shows as a
+ * card on that hub, and the full child-category detail page. Free ACF has
+ * no repeater, so lists use "Назва | Опис" textarea rows (bi_parse_rows()).
+ */
+function beauty_institute_acf_group_category() {
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_category',
+			'title'    => __( 'Послуги — вміст сторінки', 'beauty-institute' ),
+			'fields'   => array(
+				bi_acf_field( 'cat_tab_hub', __( 'Головна «Послуги» (/poslugi/)', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field( 'cat_hub_msg', __( 'Ці поля використовуються тільки на самій рубриці «Послуги».', 'beauty-institute' ), '', 'message' ),
+				bi_acf_field( 'cat_hub_lead', __( 'Лід', 'beauty-institute' ), 'hub_lead', 'text', array( 'placeholder' => 'Краса та здоров’я — в одному місці!' ) ),
+				bi_acf_field( 'cat_hub_desc', __( 'Опис', 'beauty-institute' ), 'hub_desc', 'textarea', array( 'rows' => 3 ) ),
+
+				bi_acf_field( 'cat_tab_card', __( 'Картка на /poslugi/', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field( 'cat_card_msg', __( 'Ці поля показуються у прев’ю-картці цієї рубрики на сторінці «Послуги» (для дочірніх рубрик).', 'beauty-institute' ), '', 'message' ),
+				bi_acf_field( 'cat_card_image', __( 'Зображення картки', 'beauty-institute' ), 'card_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'cat_card_subtitle', __( 'Підзаголовок картки', 'beauty-institute' ), 'card_subtitle', 'text', array( 'placeholder' => 'Природний результат без операції.' ) ),
+				bi_acf_field( 'cat_card_services', __( 'Міні-список послуг (по одному на рядок)', 'beauty-institute' ), 'card_services', 'textarea', array( 'rows' => 5 ) ),
+
+				bi_acf_field( 'cat_tab_page', __( 'Сторінка послуги (для дочірньої рубрики)', 'beauty-institute' ), '', 'tab' ),
+				bi_acf_field( 'cat_hero_desc', __( 'Hero — опис під заголовком', 'beauty-institute' ), 'hero_desc', 'textarea', array( 'rows' => 2 ) ),
+				bi_acf_field( 'cat_hero_bg', __( 'Hero — фон (десктоп)', 'beauty-institute' ), 'hero_bg', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'cat_hero_bg_mob', __( 'Hero — фон (мобільний)', 'beauty-institute' ), 'hero_bg_mobile', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'cat_feat_1', __( 'Плашка 1', 'beauty-institute' ), 'feat_1', 'text', array( 'wrapper' => array( 'width' => '33' ) ) ),
+				bi_acf_field( 'cat_feat_2', __( 'Плашка 2', 'beauty-institute' ), 'feat_2', 'text', array( 'wrapper' => array( 'width' => '33' ) ) ),
+				bi_acf_field( 'cat_feat_3', __( 'Плашка 3', 'beauty-institute' ), 'feat_3', 'text', array( 'wrapper' => array( 'width' => '34' ) ) ),
+				bi_acf_field( 'cat_intro_title', __( 'Вступ — заголовок', 'beauty-institute' ), 'intro_title', 'text' ),
+				bi_acf_field( 'cat_intro_text', __( 'Вступ — текст', 'beauty-institute' ), 'intro_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+				bi_acf_field( 'cat_intro_image', __( 'Вступ — зображення', 'beauty-institute' ), 'intro_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'cat_services_title', __( '«Наші послуги» — заголовок', 'beauty-institute' ), 'services_title', 'text', array( 'placeholder' => 'Наші послуги' ) ),
+				bi_acf_field( 'cat_services_list', __( '«Наші послуги» — пункти (Назва | Опис)', 'beauty-institute' ), 'services_list', 'textarea', array( 'rows' => 8, 'instructions' => __( 'Один пункт на рядок. Формат: <code>Назва | Опис</code>', 'beauty-institute' ) ) ),
+				bi_acf_field( 'cat_audience_title', __( '«Кому підходить» — заголовок', 'beauty-institute' ), 'audience_title', 'text', array( 'placeholder' => 'Кому підходить' ) ),
+				bi_acf_field( 'cat_audience_list', __( '«Кому підходить» — пункти (Назва | Опис)', 'beauty-institute' ), 'audience_list', 'textarea', array( 'rows' => 4 ) ),
+				bi_acf_field( 'cat_problems_title', __( '«Які проблеми вирішує» — заголовок', 'beauty-institute' ), 'problems_title', 'text', array( 'placeholder' => 'Які проблеми вирішує' ) ),
+				bi_acf_field( 'cat_problems_list', __( '«Які проблеми вирішує» — пункти (по одному на рядок)', 'beauty-institute' ), 'problems_list', 'textarea', array( 'rows' => 4 ) ),
+				bi_acf_field( 'cat_consult_title', __( 'Запис — заголовок', 'beauty-institute' ), 'consult_title', 'text', array( 'placeholder' => 'Записатись на прийом' ) ),
+				bi_acf_field( 'cat_consult_intro', __( 'Запис — текст', 'beauty-institute' ), 'consult_intro_desktop', 'textarea', array( 'rows' => 2, 'instructions' => __( 'Використовується як текст блоку запису на цій сторінці.', 'beauty-institute' ) ) ),
+			),
+			'location' => array(
+				array(
+					array(
+						'param'    => 'taxonomy',
+						'operator' => '==',
+						'value'    => 'category',
+					),
+				),
+			),
 			'active'   => true,
 		)
 	);
