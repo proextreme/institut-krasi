@@ -522,6 +522,11 @@ require get_template_directory() . '/inc/seed-price-devices.php';
 require get_template_directory() . '/inc/seed-price-dental.php';
 
 /**
+ * One-time seed for text reviews (temporary).
+ */
+require get_template_directory() . '/inc/seed-reviews.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
