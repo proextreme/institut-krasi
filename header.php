@@ -78,7 +78,7 @@ $primary_menu_fallback = array(
 				</nav>
 
 				<div class="header_actions">
-					<a class="btn btn_consultation" href="<?php echo esc_url( $header_cta_url ); ?>">
+					<a class="btn btn_consultation" href="<?php echo esc_url( $header_cta_url ); ?>" data-consult-modal-open>
 						<span class="btn_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chat.svg' ) ); ?>');" aria-hidden="true"></span>
 						<span class="btn_text"><?php echo esc_html( $header_cta_text ); ?></span>
 					</a>
@@ -109,7 +109,7 @@ $primary_menu_fallback = array(
 				<?php beauty_institute_primary_menu( 'mobile_menu_list', 'mobile_menu_item', 'mobile_menu_link', $primary_menu_fallback ); ?>
 			</nav>
 
-			<a class="btn btn_consultation btn_consultation_menu" href="<?php echo esc_url( $header_cta_url ); ?>">
+			<a class="btn btn_consultation btn_consultation_menu" href="<?php echo esc_url( $header_cta_url ); ?>" data-consult-modal-open>
 				<span class="btn_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/icon_chat_white.svg' ) ); ?>');" aria-hidden="true"></span>
 				<span class="btn_text"><?php echo esc_html( $header_cta_text ); ?></span>
 			</a>

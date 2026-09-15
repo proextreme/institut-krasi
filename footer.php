@@ -129,6 +129,11 @@
 		</div>
 	</footer>
 
+	<?php
+	beauty_institute_consult_modal();
+	beauty_institute_thanks_modal();
+	?>
+
 <?php wp_footer(); ?>
 </body>
 </html>

@@ -715,6 +715,24 @@ function beauty_institute_acf_group_settings() {
 				bi_acf_field( 'consult_title', __( 'Блок запису — заголовок', 'beauty-institute' ), 'consult_title', 'text', array( 'placeholder' => 'Запис на консультацію' ) ),
 				bi_acf_field( 'consult_intro_desktop', __( 'Блок запису — текст (десктоп)', 'beauty-institute' ), 'consult_intro_desktop', 'textarea', array( 'rows' => 3 ) ),
 				bi_acf_field( 'consult_intro_mobile', __( 'Блок запису — текст (мобільний)', 'beauty-institute' ), 'consult_intro_mobile', 'textarea', array( 'rows' => 2 ) ),
+				bi_acf_field(
+					'consult_success_title',
+					__( 'Вікно «Дякуємо» — заголовок', 'beauty-institute' ),
+					'consult_success_title',
+					'text',
+					array( 'placeholder' => 'Дякуємо за заявку!' )
+				),
+				bi_acf_field(
+					'consult_success_text',
+					__( 'Вікно «Дякуємо» — текст', 'beauty-institute' ),
+					'consult_success_text',
+					'textarea',
+					array(
+						'rows'         => 3,
+						'placeholder'  => 'Ми отримали ваше повідомлення і зв’яжемося з вами найближчим часом, щоб підібрати зручний час консультації.',
+						'instructions' => __( 'Показується у спливному вікні після успішної відправки будь-якої форми запису на сайті.', 'beauty-institute' ),
+					)
+				),
 
 				bi_acf_field( 'set_tab_footer', __( 'Підвал', 'beauty-institute' ), '', 'tab' ),
 				bi_acf_field( 'footer_slogan', __( 'Слоган у підвалі', 'beauty-institute' ), 'footer_slogan', 'text' ),

@@ -1615,4 +1615,100 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 	});
+
+	// Consult modal (header CTA opens the same consult form in a modal).
+	const consultModal = document.querySelector('[data-consult-modal]');
+	let closeConsultModal = () => {};
+
+	if (consultModal) {
+		const consultOpenButtons = document.querySelectorAll('[data-consult-modal-open]');
+		const consultCloseTargets = consultModal.querySelectorAll('[data-consult-modal-close]');
+		let consultTrigger = null;
+
+		/**
+		 * Open the consult modal.
+		 *
+		 * @param {HTMLElement|null} trigger Element that opened the modal.
+		 */
+		const openConsultModal = (trigger) => {
+			consultModal.hidden = false;
+			consultTrigger = trigger || null;
+			document.body.classList.add('is_consult_modal_open');
+
+			const firstField = consultModal.querySelector('input[name="your-name"]');
+			if (firstField) {
+				firstField.focus();
+			}
+		};
+
+		closeConsultModal = () => {
+			consultModal.hidden = true;
+			document.body.classList.remove('is_consult_modal_open');
+
+			if (consultTrigger && typeof consultTrigger.focus === 'function') {
+				consultTrigger.focus();
+			}
+		};
+
+		consultOpenButtons.forEach((btn) => {
+			btn.addEventListener('click', (event) => {
+				event.preventDefault();
+				openConsultModal(btn);
+			});
+		});
+
+		consultCloseTargets.forEach((el) => {
+			el.addEventListener('click', closeConsultModal);
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && !consultModal.hidden) {
+				closeConsultModal();
+			}
+		});
+	}
+
+	// Shared "Дякуємо" modal, shown after any consult form on the page is sent.
+	const thanksModal = document.querySelector('[data-thanks-modal]');
+	if (thanksModal) {
+		const thanksCloseTargets = thanksModal.querySelectorAll('[data-thanks-modal-close]');
+
+		/**
+		 * Open the thanks modal.
+		 */
+		const openThanksModal = () => {
+			thanksModal.hidden = false;
+			document.body.classList.add('is_thanks_modal_open');
+
+			const closeBtn = thanksModal.querySelector('.thanks_modal_close');
+			if (closeBtn) {
+				closeBtn.focus();
+			}
+		};
+
+		/**
+		 * Close the thanks modal.
+		 */
+		const closeThanksModal = () => {
+			thanksModal.hidden = true;
+			document.body.classList.remove('is_thanks_modal_open');
+		};
+
+		thanksCloseTargets.forEach((el) => {
+			el.addEventListener('click', closeThanksModal);
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && !thanksModal.hidden) {
+				closeThanksModal();
+			}
+		});
+
+		document.addEventListener('wpcf7mailsent', (event) => {
+			if (consultModal && consultModal.contains(event.target)) {
+				closeConsultModal();
+			}
+			openThanksModal();
+		});
+	}
 });

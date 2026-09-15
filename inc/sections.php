@@ -578,6 +578,41 @@ function beauty_institute_consult_section() {
 }
 
 /**
+ * Render the "Запис на консультацію" modal (opens from the header CTA).
+ */
+function beauty_institute_consult_modal() {
+	?>
+	<div class="consult_modal" id="consult-modal" data-consult-modal hidden>
+		<div class="consult_modal_backdrop" data-consult-modal-close tabindex="-1"></div>
+		<div class="consult_modal_dialog" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr( bi_section_value( 'consult_title', __( 'Запис на консультацію', 'beauty-institute' ) ) ); ?>">
+			<button type="button" class="consult_modal_close" data-consult-modal-close aria-label="<?php esc_attr_e( 'Закрити', 'beauty-institute' ); ?>"></button>
+			<h2 class="consult_modal_title font_heading"><?php echo esc_html( bi_section_value( 'consult_title', __( 'Запис на консультацію', 'beauty-institute' ) ) ); ?></h2>
+			<p class="consult_modal_intro"><?php echo esc_html( bi_section_value( 'consult_intro_mobile', 'Допоможемо визначити проблему та підібрати лікування.' ) ); ?></p>
+			<?php beauty_institute_consult_form( bi_field( 'consult_form' ) ); ?>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Render the shared "Дякуємо" modal, shown after any consult form is sent.
+ */
+function beauty_institute_thanks_modal() {
+	?>
+	<div class="thanks_modal" id="thanks-modal" data-thanks-modal hidden>
+		<div class="thanks_modal_backdrop" data-thanks-modal-close tabindex="-1"></div>
+		<div class="thanks_modal_dialog" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr( bi_section_value( 'consult_success_title', __( 'Дякуємо за заявку!', 'beauty-institute' ) ) ); ?>">
+			<button type="button" class="thanks_modal_close" data-thanks-modal-close aria-label="<?php esc_attr_e( 'Закрити', 'beauty-institute' ); ?>"></button>
+			<span class="thanks_modal_icon" aria-hidden="true"></span>
+			<h2 class="thanks_modal_title font_heading"><?php echo esc_html( bi_section_value( 'consult_success_title', __( 'Дякуємо за заявку!', 'beauty-institute' ) ) ); ?></h2>
+			<p class="thanks_modal_text"><?php echo esc_html( bi_section_value( 'consult_success_text', 'Ми отримали ваше повідомлення і зв’яжемося з вами найближчим часом, щоб підібрати зручний час консультації.' ) ); ?></p>
+			<button type="button" class="thanks_modal_ok" data-thanks-modal-close><?php esc_html_e( 'Добре', 'beauty-institute' ); ?></button>
+		</div>
+	</div>
+	<?php
+}
+
+/**
  * Render one row of the price accordion.
  *
  * @param array $item array( 'name', 'price', 'code', 'time' ).
