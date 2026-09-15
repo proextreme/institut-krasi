@@ -512,6 +512,11 @@ require get_template_directory() . '/inc/acf-fields.php';
 require get_template_directory() . '/inc/seed-price.php';
 
 /**
+ * One-time seed for the "Технології" price list (temporary).
+ */
+require get_template_directory() . '/inc/seed-price-devices.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
