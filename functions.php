@@ -507,26 +507,6 @@ require get_template_directory() . '/inc/post-types.php';
 require get_template_directory() . '/inc/acf-fields.php';
 
 /**
- * One-time seed for the general price list (temporary).
- */
-require get_template_directory() . '/inc/seed-price.php';
-
-/**
- * One-time seed for the "Технології" price list (temporary).
- */
-require get_template_directory() . '/inc/seed-price-devices.php';
-
-/**
- * One-time seed for the "Стоматологія" price list (temporary).
- */
-require get_template_directory() . '/inc/seed-price-dental.php';
-
-/**
- * One-time seed for text reviews (temporary).
- */
-require get_template_directory() . '/inc/seed-reviews.php';
-
-/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
