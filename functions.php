@@ -517,6 +517,11 @@ require get_template_directory() . '/inc/seed-menus.php';
 require get_template_directory() . '/inc/seed-sho.php';
 
 /**
+ * One-time seed for real doctor profiles (temporary).
+ */
+require get_template_directory() . '/inc/seed-doctors.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
