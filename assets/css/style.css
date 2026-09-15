@@ -3083,7 +3083,7 @@ body.is_menu_open .mobile_menu_close_icon::after {
 	width: 100%;
 }
 
-.consult_form .wpcf7-form-control:not(.wpcf7-submit) {
+.consult_form .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-acceptance) {
 	box-sizing: border-box;
 	width: 100%;
 	min-height: 50px;
