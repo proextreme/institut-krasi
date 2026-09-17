@@ -908,18 +908,6 @@ function beauty_institute_acf_group_price() {
 					)
 				),
 
-				bi_acf_field( 'price_tab_devices', __( 'Апарати', 'beauty-institute' ), '', 'tab' ),
-				bi_acf_field(
-					'price_devices',
-					__( 'Позиції', 'beauty-institute' ),
-					'price_devices',
-					'textarea',
-					array(
-						'rows'         => 20,
-						'instructions' => __( 'Той самий формат, що й на вкладці «Прайс загальний».', 'beauty-institute' ),
-					)
-				),
-
 				bi_acf_field( 'price_tab_dental', __( 'Стоматологія', 'beauty-institute' ), '', 'tab' ),
 				bi_acf_field(
 					'price_dental',

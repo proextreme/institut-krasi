@@ -9,7 +9,6 @@ get_header();
 
 $tabs = array(
 	'general' => array( 'label' => 'Загальний прайс', 'field' => 'price_general' ),
-	'devices' => array( 'label' => 'Технології', 'field' => 'price_devices' ),
 	'dental'  => array( 'label' => 'Стоматологія', 'field' => 'price_dental' ),
 );
 ?>
