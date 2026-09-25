@@ -547,6 +547,7 @@ function beauty_institute_acf_group_contact() {
 				bi_acf_field( 'contact_feats', __( 'Плашки під заголовком (по одній на рядок)', 'beauty-institute' ), 'hero_feats', 'textarea', array( 'rows' => 3, 'instructions' => __( 'Порожньо — показується графік роботи з налаштувань сайту.', 'beauty-institute' ) ) ),
 				bi_acf_field( 'contact_find_title', __( 'Блок «Як нас знайти» — заголовок', 'beauty-institute' ), 'find_title', 'text', array( 'placeholder' => 'Як нас знайти' ) ),
 				bi_acf_field( 'contact_find_text', __( 'Блок «Як нас знайти» — текст', 'beauty-institute' ), 'find_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+				bi_acf_field( 'contact_consult_bg', __( 'Фон блоку «Запис на консультацію» (лише на цій сторінці)', 'beauty-institute' ), 'consult_bg', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Порожньо — використовується загальний фон (як на інших сторінках).', 'beauty-institute' ) ) ),
 			),
 			'location' => array(
 				array(

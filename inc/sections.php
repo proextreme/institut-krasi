@@ -548,19 +548,21 @@ function beauty_institute_faq_section( $title = '', $group_id = 0 ) {
 /**
  * Render the whole "Запис на консультацію" section.
  */
-function beauty_institute_consult_section() {
+function beauty_institute_consult_section( $bg_url = '', $bg_mob_url = '' ) {
+	$bg     = $bg_url ? $bg_url : beauty_institute_asset( 'images/zapys_bg.webp' );
+	$bg_mob = $bg_mob_url ? $bg_mob_url : beauty_institute_asset( 'images/zapys_img_mob.webp' );
 	?>
 	<section class="consult" id="consult" aria-label="Запис на консультацію">
 		<div
 			class="consult_media"
 			aria-hidden="true"
-			style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/zapys_img_mob.webp' ) ); ?>');"
+			style="background-image: url('<?php echo esc_url( $bg_mob ); ?>');"
 		></div>
 
 		<div class="container consult_container">
 			<div
 				class="consult_box"
-				style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/zapys_bg.webp' ) ); ?>');"
+				style="background-image: url('<?php echo esc_url( $bg ); ?>');"
 			>
 				<div class="consult_form_col">
 					<h2 class="consult_title font_heading"><?php echo esc_html( bi_section_value( 'consult_title', __( 'Запис на консультацію', 'beauty-institute' ) ) ); ?></h2>

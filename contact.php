@@ -52,7 +52,9 @@ if ( ! $feats ) {
 
 	<?php
 	beauty_institute_find_section();
-	beauty_institute_consult_section();
+	$consult_bg_id  = bi_image_id( bi_field( 'consult_bg' ) );
+	$consult_bg_url = $consult_bg_id ? wp_get_attachment_image_url( $consult_bg_id, 'large' ) : '';
+	beauty_institute_consult_section( $consult_bg_url );
 	?>
 </main>
 <?php
