@@ -566,10 +566,7 @@ function beauty_institute_consult_section( $bg_url = '', $bg_mob_url = '' ) {
 		></div>
 
 		<div class="container consult_container">
-			<div
-				class="consult_box"
-				style="background-image: url('<?php echo esc_url( $bg ); ?>');"
-			>
+			<div class="consult_box">
 				<div class="consult_form_col">
 					<h2 class="consult_title font_heading"><?php echo esc_html( bi_section_value( 'consult_title', __( 'Запис на консультацію', 'beauty-institute' ) ) ); ?></h2>
 					<p class="consult_intro consult_intro_desktop"><?php echo esc_html( bi_section_value( 'consult_intro_desktop', 'Ми завжди раді відповісти на всі хвилюючі вас питання і зробити все можливе для поліпшення вашого здоров’я і зовнішнього вигляду' ) ); ?></p>
