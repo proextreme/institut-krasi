@@ -66,9 +66,13 @@ $req_btn  = bi_field( 'requests_btn' );
 				</div>
 			</div>
 
+			<?php
+			$why_img_id  = bi_image_id( bi_field( 'why_image' ) );
+			$why_bg_desk = $why_img_id ? wp_get_attachment_image_url( $why_img_id, 'large' ) : beauty_institute_asset( 'images/why_body_bg.webp' );
+			?>
 			<div
 				class="why_body"
-				style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/why_body_bg.webp' ) ); ?>');"
+				style="background-image: url('<?php echo esc_url( $why_bg_desk ); ?>');"
 			>
 				<div class="why_media" aria-hidden="true">
 					<picture class="why_media_picture">
