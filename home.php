@@ -384,11 +384,18 @@ $req_btn  = bi_field( 'requests_btn' );
 				<div class="doctors_viewport">
 					<div class="doctors_track">
 						<?php
-						$doctors = beauty_institute_home_query( 'doctors_items', 'bi_doctor', 8 );
+						$doctors          = beauty_institute_home_query( 'doctors_items', 'bi_doctor', 8 );
+						$doctors_photo_ov = array(
+							bi_image_id( bi_field( 'doctors_photo_1' ) ),
+							bi_image_id( bi_field( 'doctors_photo_2' ) ),
+							bi_image_id( bi_field( 'doctors_photo_3' ) ),
+							bi_image_id( bi_field( 'doctors_photo_4' ) ),
+						);
 						if ( $doctors ) :
 							foreach ( $doctors as $index => $doctor_id ) :
-								$d_img  = get_post_thumbnail_id( $doctor_id );
-								$d_src  = $d_img ? wp_get_attachment_image_url( $d_img, 'medium_large' ) : beauty_institute_asset( 'images/doctor_1.webp' );
+								$d_img_override = isset( $doctors_photo_ov[ $index ] ) ? $doctors_photo_ov[ $index ] : 0;
+								$d_img          = $d_img_override ? $d_img_override : get_post_thumbnail_id( $doctor_id );
+								$d_src          = $d_img ? wp_get_attachment_image_url( $d_img, 'medium_large' ) : beauty_institute_asset( 'images/doctor_1.webp' );
 								$d_role = function_exists( 'get_field' ) ? (string) get_field( 'role', $doctor_id ) : '';
 								$d_desc = function_exists( 'get_field' ) ? (string) get_field( 'card_description', $doctor_id ) : '';
 								?>

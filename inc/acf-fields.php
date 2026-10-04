@@ -841,6 +841,11 @@ function beauty_institute_acf_group_home() {
 						'instructions'  => __( 'Порожньо — показуються останні додані лікарі.', 'beauty-institute' ),
 					)
 				),
+				bi_acf_field( 'doctors_photo_override_msg', __( 'Фото для цього блоку (лише на головній)', 'beauty-institute' ), '', 'message', array( 'message' => __( 'Необов’язково. Якщо залишити порожнім — показується фото з картки лікаря (як завжди). Поля застосовуються по порядку до лікарів, обраних вище.', 'beauty-institute' ) ) ),
+				bi_acf_field( 'doctors_photo_1', __( 'Фото 1', 'beauty-institute' ), 'doctors_photo_1', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '25' ) ) ),
+				bi_acf_field( 'doctors_photo_2', __( 'Фото 2', 'beauty-institute' ), 'doctors_photo_2', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '25' ) ) ),
+				bi_acf_field( 'doctors_photo_3', __( 'Фото 3', 'beauty-institute' ), 'doctors_photo_3', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '25' ) ) ),
+				bi_acf_field( 'doctors_photo_4', __( 'Фото 4', 'beauty-institute' ), 'doctors_photo_4', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '25' ) ) ),
 
 				bi_acf_field( 'home_tab_results', __( 'До та після', 'beauty-institute' ), '', 'tab' ),
 				bi_acf_field( 'results_title', __( 'Заголовок', 'beauty-institute' ), 'results_title', 'text' ),
