@@ -795,6 +795,10 @@ function beauty_institute_acf_group_home() {
 				bi_acf_field( 'services_title', __( 'Заголовок', 'beauty-institute' ), 'services_title', 'text' ),
 				bi_acf_field( 'services_intro', __( 'Вступ', 'beauty-institute' ), 'services_intro', 'textarea', array( 'rows' => 2 ) ),
 				bi_acf_field( 'services_btn', __( 'Кнопка «Всі послуги»', 'beauty-institute' ), 'services_btn', 'link' ),
+				bi_acf_field( 'services_photo_msg', __( 'Фото блоку (необов’язково — порожньо = фото за замовчуванням)', 'beauty-institute' ), '', 'message' ),
+				bi_acf_field( 'services_bg_photo', __( 'Фон блоку', 'beauty-institute' ), 'services_bg_photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'services_media_photo', __( 'Фото зліва', 'beauty-institute' ), 'services_media_photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'services_panel_photo', __( 'Фон панелі зі списком', 'beauty-institute' ), 'services_panel_photo', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
 				bi_acf_field(
 					'services_items',
 					__( 'Які послуги показувати (рубрики зі сторінки «Послуги»)', 'beauty-institute' ),

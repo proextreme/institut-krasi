@@ -275,6 +275,14 @@ $req_btn  = bi_field( 'requests_btn' );
 			></span>
 		</div>
 
+		<?php
+		$services_bg_id    = bi_image_id( bi_field( 'services_bg_photo' ) );
+		$services_bg_url   = $services_bg_id ? wp_get_attachment_image_url( $services_bg_id, 'full' ) : beauty_institute_asset( 'images/med_ta_estet_bg.webp' );
+		$services_media_id = bi_image_id( bi_field( 'services_media_photo' ) );
+		$services_media_url = $services_media_id ? wp_get_attachment_image_url( $services_media_id, 'large' ) : beauty_institute_asset( 'images/med_ta_estet_mob_bg.webp' );
+		$services_panel_id = bi_image_id( bi_field( 'services_panel_photo' ) );
+		$services_panel_url = $services_panel_id ? wp_get_attachment_image_url( $services_panel_id, 'large' ) : beauty_institute_asset( 'images/med_ta_estet_right_body_mob_bg.webp' );
+		?>
 		<section class="services" id="services" aria-label="Медичні та естетичні послуги">
 			<div class="container services_head">
 				<h2 class="services_title font_heading"><?php echo wp_kses_post( bi_field( 'services_title', '<span class="services_title_line">Медичні та естетичні</span><br>послуги' ) ); ?></h2>
@@ -289,17 +297,17 @@ $req_btn  = bi_field( 'requests_btn' );
 
 			<div
 				class="services_body"
-				style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/med_ta_estet_bg.webp' ) ); ?>');"
+				style="background-image: url('<?php echo esc_url( $services_bg_url ); ?>');"
 			>
 				<div class="services_cols">
 					<div
 						class="services_media"
 						aria-hidden="true"
-						style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/med_ta_estet_mob_bg.webp' ) ); ?>');"
+						style="background-image: url('<?php echo esc_url( $services_media_url ); ?>');"
 					></div>
 					<div
 						class="services_panel"
-						style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/med_ta_estet_right_body_mob_bg.webp' ) ); ?>');"
+						style="background-image: url('<?php echo esc_url( $services_panel_url ); ?>');"
 					>
 						<div class="services_panel_inner">
 							<?php
