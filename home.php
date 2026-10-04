@@ -531,11 +531,18 @@ $req_btn  = bi_field( 'requests_btn' );
 				<div class="results_viewport">
 					<div class="results_track">
 						<?php
-						$results = beauty_institute_home_query( 'results_items', 'bi_result', 12 );
+						$results          = beauty_institute_home_query( 'results_items', 'bi_result', 12 );
+						$results_photo_ov = array(
+							bi_image_id( bi_field( 'results_photo_1' ) ),
+							bi_image_id( bi_field( 'results_photo_2' ) ),
+							bi_image_id( bi_field( 'results_photo_3' ) ),
+							bi_image_id( bi_field( 'results_photo_4' ) ),
+						);
 						if ( $results ) :
-							foreach ( $results as $result_id ) :
-								$r_img = get_post_thumbnail_id( $result_id );
-								$r_src = $r_img ? wp_get_attachment_image_url( $r_img, 'medium_large' ) : beauty_institute_asset( 'images/before_after_1.webp' );
+							foreach ( $results as $r_index => $result_id ) :
+								$r_img_override = isset( $results_photo_ov[ $r_index ] ) ? $results_photo_ov[ $r_index ] : 0;
+								$r_img          = $r_img_override ? $r_img_override : get_post_thumbnail_id( $result_id );
+								$r_src          = $r_img ? wp_get_attachment_image_url( $r_img, 'medium_large' ) : beauty_institute_asset( 'images/before_after_1.webp' );
 								?>
 								<div class="results_slide">
 									<div class="results_photo">
