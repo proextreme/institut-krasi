@@ -562,28 +562,7 @@ get_header();
 		</div>
 	</section>
 	
-	<section class="consult" id="consult" aria-label="Запис на консультацію">
-			<div
-				class="consult_media"
-				aria-hidden="true"
-				style="background-image: url('/wp-content/themes/beauty-institute/assets/images/zapys_img_mob.webp');"
-			></div>
-
-			<div class="container consult_container">
-				<div
-					class="consult_box"
-					style="background-image: url('/wp-content/themes/beauty-institute/assets/images/zapys_bg.webp');"
-				>
-					<div class="consult_form_col">
-						<h2 class="consult_title font_heading">Записатись на прийом</h2>
-						<p class="consult_intro">Підберемо зручний час</p>
-						<?php beauty_institute_consult_form( bi_field( 'consult_form' ) ); ?>
-					</div>
-
-					<div class="consult_visual" aria-hidden="true"></div>
-				</div>
-			</div>
-	</section>
+	<?php beauty_institute_consult_section(); ?>
 
 </main>
 <?php
