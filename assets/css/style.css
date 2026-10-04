@@ -3271,7 +3271,7 @@ body.is_menu_open .mobile_menu_close_icon::after {
 
 	.consult_box {
 		display: grid;
-		grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.85fr);
 		align-items: stretch;
 		height: 628px;
 		min-height: 628px;
