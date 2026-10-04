@@ -559,6 +559,12 @@ function beauty_institute_consult_section( $bg_url = '', $bg_mob_url = '' ) {
 			style="background-image: url('<?php echo esc_url( $bg_mob ); ?>');"
 		></div>
 
+		<div
+			class="consult_bg_full"
+			aria-hidden="true"
+			style="background-image: url('<?php echo esc_url( $bg ); ?>');"
+		></div>
+
 		<div class="container consult_container">
 			<div
 				class="consult_box"
