@@ -203,12 +203,14 @@ while ( have_posts() ) :
 					</div>
 				</div>
 
+				<?php if ( count( $reviews ) > 1 ) : ?>
 				<div class="results_controls vidhuky_controls">
 					<div class="results_dots" data-vidhuky-dots role="tablist" aria-label="Слайди відгуків"></div>
 					<button class="results_next" type="button" data-vidhuky-next aria-label="Наступний відгук">
 						<span class="results_next_icon" style="mask-image: url('<?php echo esc_url( beauty_institute_asset( 'images/arrow_right_nav.svg' ) ); ?>'); -webkit-mask-image: url('<?php echo esc_url( beauty_institute_asset( 'images/arrow_right_nav.svg' ) ); ?>');" aria-hidden="true"></span>
 					</button>
 				</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</section>
