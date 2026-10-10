@@ -5918,8 +5918,8 @@ body.is_thanks_modal_open {
 @media (min-width: 1024px) {
 	.iniektsiina_kosmetolohiya,
 	.contact_hero {
-		height: 440px;
-		min-height: 440px;
+		height: 510px;
+		min-height: 510px;
 		padding-bottom: 0;
 	}
 
