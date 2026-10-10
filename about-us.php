@@ -259,7 +259,19 @@ $doctors_btn  = bi_field( 'doctors_btn' );
 	</div>
 </section>
 
-<?php beauty_institute_results_tabs( bi_field( 'results_title' ), bi_field( 'results_text' ) ); ?>
+<?php
+$ab_results_overrides = array_map(
+	'bi_image_id',
+	array(
+		bi_field( 'results_photo_1' ),
+		bi_field( 'results_photo_2' ),
+		bi_field( 'results_photo_3' ),
+		bi_field( 'results_photo_4' ),
+		bi_field( 'results_photo_5' ),
+	)
+);
+beauty_institute_results_tabs( bi_field( 'results_title' ), bi_field( 'results_text' ), $ab_results_overrides );
+?>
 
 <section class="nashi_sertyfikaty">
 	<div class="container nashi_sertyfikaty_inner">

@@ -165,10 +165,20 @@ function beauty_institute_find_section() {
  * @param string $tab_id   Matching tab id.
  * @param string $slug     data-* slug.
  */
-function beauty_institute_results_panel( $ids, $is_active, $panel_id, $tab_id, $slug ) {
+function beauty_institute_results_panel( $ids, $is_active, $panel_id, $tab_id, $slug, $photo_overrides = array() ) {
 	$slots = array( 'a', 'b', 'c', 'd', 'e' );
 	$imgs  = array();
+
+	foreach ( $slots as $index => $slot ) {
+		if ( ! empty( $photo_overrides[ $index ] ) ) {
+			$imgs[ $slot ] = wp_get_attachment_image_url( $photo_overrides[ $index ], 'large' );
+		}
+	}
+
 	foreach ( array_slice( $ids, 0, 5 ) as $index => $id ) {
+		if ( ! empty( $imgs[ $slots[ $index ] ] ) ) {
+			continue; // Already set by an override above.
+		}
 		$att = bi_image_id( function_exists( 'get_field' ) ? get_field( 'image', $id ) : '' );
 		if ( ! $att ) {
 			$att = get_post_thumbnail_id( $id );
@@ -209,7 +219,7 @@ function beauty_institute_results_panel( $ids, $is_active, $panel_id, $tab_id, $
  * @param string $title Section heading.
  * @param string $text  Section intro.
  */
-function beauty_institute_results_tabs( $title = '', $text = '' ) {
+function beauty_institute_results_tabs( $title = '', $text = '', $photo_overrides = array() ) {
 	$title = $title ? $title : __( 'Результати, яким довіряють', 'beauty-institute' );
 	$text  = $text ? $text : 'Реальні результати наших пацієнтів після лікування та естетичних процедур. Ми працюємо делікатно, щоб підкреслити природну красу без зайвого втручання.';
 
@@ -283,7 +293,8 @@ function beauty_institute_results_tabs( $title = '', $text = '' ) {
 					$i === $active_index,
 					'rezultaty-panel-' . $panel['slug'],
 					'rezultaty-tab-' . $panel['slug'],
-					$panel['slug']
+					$panel['slug'],
+					'all' === $panel['slug'] ? $photo_overrides : array()
 				);
 			}
 			?>

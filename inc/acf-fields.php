@@ -634,7 +634,12 @@ function beauty_institute_acf_group_about() {
 					bi_acf_field( 'ab_tab_results', __( 'Результати', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'ab_results_title', __( 'Заголовок', 'beauty-institute' ), 'results_title', 'text' ),
 					bi_acf_field( 'ab_results_text', __( 'Текст', 'beauty-institute' ), 'results_text', 'textarea', array( 'rows' => 3 ) ),
-					bi_acf_field( 'ab_results_note', __( 'Джерело', 'beauty-institute' ), '', 'message', array( 'message' => __( 'Роботи беруться з розділу «До та після». Вкладки — це «Категорії результатів».', 'beauty-institute' ) ) ),
+					bi_acf_field( 'ab_results_note', __( 'Джерело', 'beauty-institute' ), '', 'message', array( 'message' => __( 'За замовчуванням роботи беруться з розділу «До та після» (вкладки — це «Категорії результатів»). 5 фото нижче необов’язкові — якщо заповнити хоча б одне, вкладка «Усі роботи» покаже саме ці фото замість автоматичних.', 'beauty-institute' ) ) ),
+					bi_acf_field( 'ab_results_photo_1', __( 'Фото 1', 'beauty-institute' ), 'results_photo_1', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '20' ) ) ),
+					bi_acf_field( 'ab_results_photo_2', __( 'Фото 2', 'beauty-institute' ), 'results_photo_2', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '20' ) ) ),
+					bi_acf_field( 'ab_results_photo_3', __( 'Фото 3', 'beauty-institute' ), 'results_photo_3', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '20' ) ) ),
+					bi_acf_field( 'ab_results_photo_4', __( 'Фото 4', 'beauty-institute' ), 'results_photo_4', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '20' ) ) ),
+					bi_acf_field( 'ab_results_photo_5', __( 'Фото 5', 'beauty-institute' ), 'results_photo_5', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '20' ) ) ),
 
 					bi_acf_field( 'ab_tab_certs', __( 'Сертифікати', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'ab_certs_title', __( 'Заголовок', 'beauty-institute' ), 'certs_title', 'text' ),
