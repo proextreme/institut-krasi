@@ -7887,6 +7887,12 @@ main.likari {
 	width: min(100%, 300px);
 	aspect-ratio: 300 / 366;
 	overflow: hidden;
+	border: 1px solid #ffdcd3;
+	border-radius: var(--likar_photo_r);
+	background-color: #e9e5e2;
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .likar_intro {
