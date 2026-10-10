@@ -120,13 +120,7 @@ $primary_menu_fallback = array(
 				<?php
 				$mobile_socials = array(
 					'social_instagram' => array( 'Instagram', 'images/instagram_menu.svg' ),
-					'social_threads'   => array( 'Threads', 'images/threads_menu.svg' ),
 					'social_facebook'  => array( 'Facebook', 'images/fb_menu.svg' ),
-					'social_youtube'   => array( 'YouTube', 'images/youtube_menu.svg' ),
-					'social_meta'      => array( 'Meta', 'images/meta_menu.svg' ),
-					'social_whatsapp'  => array( 'WhatsApp', 'images/whatsapp_menu.svg' ),
-					'social_messenger' => array( 'Messenger', 'images/fb_mess_menu.svg' ),
-					'social_telegram'  => array( 'Telegram', 'images/telegram_menu.svg' ),
 				);
 				foreach ( $mobile_socials as $social_key => $social_meta ) :
 					$social_url = function_exists( 'bi_option' ) ? bi_option( $social_key, '#' ) : '#';

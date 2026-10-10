@@ -683,7 +683,7 @@ function beauty_institute_acf_group_settings() {
 				bi_acf_field( 'header_cta', __( 'Кнопка «Консультація»', 'beauty-institute' ), 'header_cta', 'link' ),
 
 				bi_acf_field( 'set_tab_social', __( 'Соцмережі', 'beauty-institute' ), '', 'tab' ),
-				bi_acf_field( 'social_msg', __( 'Порожнє поле — іконка не показується у підвалі; у мобільному меню показуються всі.', 'beauty-institute' ), '', 'message' ),
+				bi_acf_field( 'social_msg', __( 'Порожнє поле — іконка не показується у підвалі. У мобільному меню показуються лише Instagram і Facebook.', 'beauty-institute' ), '', 'message' ),
 				bi_acf_field( 'social_instagram', 'Instagram', 'social_instagram', 'url' ),
 				bi_acf_field( 'social_facebook', 'Facebook', 'social_facebook', 'url' ),
 				bi_acf_field( 'social_youtube', 'YouTube', 'social_youtube', 'url' ),
