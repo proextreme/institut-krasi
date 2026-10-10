@@ -4477,9 +4477,10 @@ body.is_thanks_modal_open {
 	position: relative;
 	order: 1;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-areas: "a b" "c c";
-	gap: 12px;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+	grid-template-rows: 1fr 1fr;
+	grid-template-areas: "a c" "b c";
+	gap: 10px;
 	width: 100%;
 	flex-shrink: 0;
 }
@@ -4493,19 +4494,22 @@ body.is_thanks_modal_open {
 	border-radius: var(--nl_card_r);
 }
 
+.nashi_likari_photo_1,
+.nashi_likari_photo_2 {
+	aspect-ratio: 4 / 3;
+}
+
 .nashi_likari_photo_1 {
 	grid-area: a;
-	aspect-ratio: 1 / 1;
 }
 
 .nashi_likari_photo_2 {
 	grid-area: b;
-	aspect-ratio: 1 / 1;
 }
 
 .nashi_likari_photo_3 {
 	grid-area: c;
-	aspect-ratio: 358 / 220;
+	aspect-ratio: auto;
 }
 
 .nashi_likari_photo_img {
@@ -4581,18 +4585,7 @@ body.is_thanks_modal_open {
 		order: 0;
 		width: min(620px, 49%);
 		grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
-		grid-template-rows: 1fr 1fr;
-		grid-template-areas: "a c" "b c";
 		gap: 15px;
-	}
-
-	.nashi_likari_photo_1,
-	.nashi_likari_photo_2 {
-		aspect-ratio: auto;
-	}
-
-	.nashi_likari_photo_3 {
-		aspect-ratio: auto;
 	}
 
 	.nashi_likari_content {
