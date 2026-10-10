@@ -143,20 +143,15 @@ $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 
 	<?php beauty_institute_faq_section(); ?>
 
-	<section class="consult" id="consult" aria-label="Запис на консультацію">
-		<div class="consult_media" aria-hidden="true" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/zapys_img_mob.webp' ) ); ?>');"></div>
-
-		<div class="container consult_container">
-			<div class="consult_box" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/zapys_bg.webp' ) ); ?>');">
-				<div class="consult_form_col">
-					<h2 class="consult_title font_heading"><?php echo esc_html( get_field( 'consult_title', $term ) ? get_field( 'consult_title', $term ) : 'Записатись на прийом' ); ?></h2>
-					<p class="consult_intro"><?php echo esc_html( get_field( 'consult_intro_desktop', $term ) ? get_field( 'consult_intro_desktop', $term ) : 'Підберемо зручний час' ); ?></p>
-					<?php beauty_institute_consult_form(); ?>
-				</div>
-
-				<div class="consult_visual" aria-hidden="true"></div>
-			</div>
-		</div>
-	</section>
+	<?php
+	$term_consult_title = get_field( 'consult_title', $term );
+	$term_consult_intro = get_field( 'consult_intro_desktop', $term );
+	beauty_institute_consult_section(
+		'',
+		'',
+		$term_consult_title ? $term_consult_title : 'Записатись на прийом',
+		$term_consult_intro ? $term_consult_intro : 'Підберемо зручний час'
+	);
+	?>
 
 </main>

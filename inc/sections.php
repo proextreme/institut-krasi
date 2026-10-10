@@ -579,10 +579,19 @@ function beauty_institute_faq_section( $title = '', $group_id = 0 ) {
 
 /**
  * Render the whole "Запис на консультацію" section.
+ *
+ * @param string $bg_url     Desktop/full-bleed background image URL override.
+ * @param string $bg_mob_url Mobile background image URL override.
+ * @param string $title      Title override (e.g. a category term's own field). Falls back to the usual page field → option → default chain.
+ * @param string $intro      Intro text override, used for both the desktop and mobile copy.
  */
-function beauty_institute_consult_section( $bg_url = '', $bg_mob_url = '' ) {
+function beauty_institute_consult_section( $bg_url = '', $bg_mob_url = '', $title = '', $intro = '' ) {
 	$bg     = $bg_url ? $bg_url : beauty_institute_asset( 'images/zapys_bg.webp' );
 	$bg_mob = $bg_mob_url ? $bg_mob_url : beauty_institute_asset( 'images/zapys_img_mob.webp' );
+
+	$title_text    = $title ? $title : bi_section_value( 'consult_title', __( 'Запис на консультацію', 'beauty-institute' ) );
+	$intro_desktop = $intro ? $intro : bi_section_value( 'consult_intro_desktop', 'Ми завжди раді відповісти на всі хвилюючі вас питання і зробити все можливе для поліпшення вашого здоров’я і зовнішнього вигляду' );
+	$intro_mobile  = $intro ? $intro : bi_section_value( 'consult_intro_mobile', 'Допоможемо визначити проблему та підібрати лікування.' );
 	?>
 	<section class="consult" id="consult" aria-label="Запис на консультацію">
 		<div
@@ -600,9 +609,9 @@ function beauty_institute_consult_section( $bg_url = '', $bg_mob_url = '' ) {
 		<div class="container consult_container">
 			<div class="consult_box">
 				<div class="consult_form_col">
-					<h2 class="consult_title font_heading"><?php echo esc_html( bi_section_value( 'consult_title', __( 'Запис на консультацію', 'beauty-institute' ) ) ); ?></h2>
-					<p class="consult_intro consult_intro_desktop"><?php echo esc_html( bi_section_value( 'consult_intro_desktop', 'Ми завжди раді відповісти на всі хвилюючі вас питання і зробити все можливе для поліпшення вашого здоров’я і зовнішнього вигляду' ) ); ?></p>
-					<p class="consult_intro consult_intro_mobile"><?php echo esc_html( bi_section_value( 'consult_intro_mobile', 'Допоможемо визначити проблему та підібрати лікування.' ) ); ?></p>
+					<h2 class="consult_title font_heading"><?php echo esc_html( $title_text ); ?></h2>
+					<p class="consult_intro consult_intro_desktop"><?php echo esc_html( $intro_desktop ); ?></p>
+					<p class="consult_intro consult_intro_mobile"><?php echo esc_html( $intro_mobile ); ?></p>
 
 					<?php beauty_institute_consult_form( bi_field( 'consult_form' ) ); ?>
 				</div>
