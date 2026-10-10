@@ -40,7 +40,10 @@ $unassigned = get_posts(
 	)
 );
 
-$panels = array();
+// Fixed tab order; any specialty not listed here falls back after these, before "Інші лікарі".
+$specialty_order = array( 'dermatologi', 'khirurgi', 'stomatologi' );
+
+$specialty_panels = array();
 foreach ( $specialties as $term ) {
 	$ids = get_posts(
 		array(
@@ -60,18 +63,47 @@ foreach ( $specialties as $term ) {
 		)
 	);
 	if ( $ids ) {
-		$panels[] = array(
+		$specialty_panels[ $term->slug ] = array(
 			'slug'  => $term->slug,
 			'name'  => $term->name,
 			'items' => $ids,
 		);
 	}
 }
+usort(
+	$specialty_panels,
+	function ( $a, $b ) use ( $specialty_order ) {
+		$pos_a = array_search( $a['slug'], $specialty_order, true );
+		$pos_b = array_search( $b['slug'], $specialty_order, true );
+		$pos_a = false === $pos_a ? count( $specialty_order ) : $pos_a;
+		$pos_b = false === $pos_b ? count( $specialty_order ) : $pos_b;
+		return $pos_a <=> $pos_b;
+	}
+);
+
+$panels    = array_values( $specialty_panels );
+$all_items = array();
+foreach ( $panels as $panel ) {
+	$all_items = array_merge( $all_items, $panel['items'] );
+}
+
 if ( $unassigned ) {
-	$panels[] = array(
+	$panels[]  = array(
 		'slug'  => 'other',
 		'name'  => __( 'Інші лікарі', 'beauty-institute' ),
 		'items' => $unassigned,
+	);
+	$all_items = array_merge( $all_items, $unassigned );
+}
+
+if ( $all_items ) {
+	array_unshift(
+		$panels,
+		array(
+			'slug'  => 'all',
+			'name'  => __( 'Всі лікарі', 'beauty-institute' ),
+			'items' => $all_items,
+		)
 	);
 }
 
