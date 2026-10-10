@@ -12,10 +12,32 @@ $hero_bg_mob = bi_image_id( get_field( 'hero_bg_mobile', $term ) );
 $hero_bg_url = $hero_bg ? wp_get_attachment_image_url( $hero_bg, 'full' ) : beauty_institute_asset( 'images/child_cat/iniektsiina_kosmetolohiya.webp' );
 $hero_mob_url = $hero_bg_mob ? wp_get_attachment_image_url( $hero_bg_mob, 'large' ) : beauty_institute_asset( 'images/child_cat/iniektsiina_kosmetolohiya_mob.webp' );
 
-$feats = array_filter( array( get_field( 'feat_1', $term ), get_field( 'feat_2', $term ), get_field( 'feat_3', $term ) ) );
-if ( ! $feats ) {
-	$feats = array( 'Індивідуальний підхід', 'Досвідчені лікарі', 'Сертифіковані матеріали' );
+$feat_defs = array(
+	array(
+		'icon' => 'diamonds',
+		'text' => get_field( 'feat_1', $term ),
+	),
+	array(
+		'icon' => 'clock',
+		'text' => get_field( 'feat_2', $term ),
+	),
+	array(
+		'icon' => 'security',
+		'text' => get_field( 'feat_3', $term ),
+	),
+	array(
+		'icon' => 'star',
+		'text' => get_field( 'feat_4', $term ),
+	),
+);
+if ( ! array_filter( wp_list_pluck( $feat_defs, 'text' ) ) ) {
+	$feat_defs[0]['text'] = '6 напрямків';
+	$feat_defs[1]['text'] = 'Від 30 хвилин';
+	$feat_defs[2]['text'] = 'Сертифіковані препарати';
+	$feat_defs[3]['text'] = 'Видимий ефект після першої процедури';
 }
+
+$price_btn = get_field( 'price_btn', $term );
 
 $intro_img_id = bi_image_id( get_field( 'intro_image', $term ) );
 $intro_img    = $intro_img_id ? wp_get_attachment_image_url( $intro_img_id, 'large' ) : beauty_institute_asset( 'images/child_cat/molodist_bez.webp' );
@@ -54,13 +76,25 @@ $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 					<a class="btn btn_main iniektsiina_kosmetolohiya_btn" href="<?php echo esc_url( home_url( '/#consult' ) ); ?>">
 						<span class="btn_text">Записатися</span>
 					</a>
+					<?php if ( is_array( $price_btn ) && ! empty( $price_btn['url'] ) ) : ?>
+					<a class="btn iniektsiina_kosmetolohiya_btn_price" href="<?php echo esc_url( $price_btn['url'] ); ?>" <?php echo ! empty( $price_btn['target'] ) ? 'target="' . esc_attr( $price_btn['target'] ) . '"' : ''; ?>>
+						<span class="btn_text"><?php echo esc_html( ! empty( $price_btn['title'] ) ? $price_btn['title'] : 'Прайс' ); ?></span>
+						<span class="btn_icon_arrow" style="mask-image: url('<?php echo esc_url( $arrow ); ?>'); -webkit-mask-image: url('<?php echo esc_url( $arrow ); ?>');" aria-hidden="true"></span>
+					</a>
+					<?php endif; ?>
 				</div>
 			</div>
 
 			<ul class="iniektsiina_kosmetolohiya_feats">
-				<?php foreach ( $feats as $feat ) : ?>
+				<?php
+				foreach ( $feat_defs as $feat ) :
+					if ( ! $feat['text'] ) {
+						continue;
+					}
+					?>
 					<li class="iniektsiina_kosmetolohiya_feat">
-						<span class="iniektsiina_kosmetolohiya_feat_text"><?php echo esc_html( $feat ); ?></span>
+						<span class="iniektsiina_kosmetolohiya_feat_icon iniektsiina_kosmetolohiya_feat_icon_<?php echo esc_attr( $feat['icon'] ); ?>" aria-hidden="true"></span>
+						<span class="iniektsiina_kosmetolohiya_feat_text"><?php echo esc_html( $feat['text'] ); ?></span>
 					</li>
 				<?php endforeach; ?>
 			</ul>

@@ -5906,6 +5906,46 @@ body.is_thanks_modal_open {
 	background-size: contain;
 }
 
+.iniektsiina_kosmetolohiya_feat_icon_diamonds,
+.contact_hero_feat_icon_diamonds {
+	position: relative;
+	background-image: url("../images/child_cat/iniektsiina_kosmetolohiya_2.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.iniektsiina_kosmetolohiya_feat_icon_diamonds::after,
+.contact_hero_feat_icon_diamonds::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 16px;
+	height: 2px;
+	transform: translate(-50%, -50%);
+	background-image: url("../images/child_cat/iniektsiina_kosmetolohiya_3.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.iniektsiina_kosmetolohiya_feat_icon_security,
+.contact_hero_feat_icon_security {
+	background-image: url("../images/child_cat/iniektsiina_kosmetolohiya_6.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.iniektsiina_kosmetolohiya_feat_icon_star,
+.contact_hero_feat_icon_star {
+	background-image: url("../images/child_cat/iniektsiina_kosmetolohiya_7.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
 .iniektsiina_kosmetolohiya_feat_text,
 .contact_hero_feat_text {
 	color: var(--color_gray_0);
