@@ -20,7 +20,7 @@ if ( ! $feats ) {
 $intro_img_id = bi_image_id( get_field( 'intro_image', $term ) );
 $intro_img    = $intro_img_id ? wp_get_attachment_image_url( $intro_img_id, 'large' ) : beauty_institute_asset( 'images/child_cat/molodist_bez.webp' );
 
-$services = bi_parse_rows( get_field( 'services_list', $term ), 2 );
+$services = bi_parse_rows( get_field( 'services_list', $term ), 4 );
 $audience = bi_parse_rows( get_field( 'audience_list', $term ), 2 );
 $problems = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) get_field( 'problems_list', $term ) ) ) );
 
@@ -93,15 +93,32 @@ $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 			<h2 class="nashi_posluhy_title"><?php echo esc_html( get_field( 'services_title', $term ) ? get_field( 'services_title', $term ) : 'Наші послуги' ); ?></h2>
 
 			<div class="nashi_posluhy_list">
-				<?php foreach ( $services as $service ) : ?>
-					<div class="nashi_posluhy_item">
+				<?php
+				foreach ( $services as $service ) :
+					$service_link = trim( $service[2] );
+					$service_tags = array_filter( array_map( 'trim', explode( ',', (string) $service[3] ) ) );
+					$item_tag     = $service_link ? 'a' : 'div';
+					?>
+					<<?php echo tag_escape( $item_tag ); ?>
+						class="nashi_posluhy_item"
+						<?php if ( $service_link ) : ?>href="<?php echo esc_url( $service_link ); ?>"<?php endif; ?>
+					>
 						<div class="nashi_posluhy_body">
 							<div class="nashi_posluhy_head">
 								<h3 class="nashi_posluhy_name"><?php echo esc_html( $service[0] ); ?></h3>
+								<span class="btn_icon_arrow nashi_posluhy_arrow" style="mask-image: url('<?php echo esc_url( $arrow ); ?>'); -webkit-mask-image: url('<?php echo esc_url( $arrow ); ?>');" aria-hidden="true"></span>
 							</div>
 							<?php if ( $service[1] ) : ?><p class="nashi_posluhy_desc"><?php echo esc_html( $service[1] ); ?></p><?php endif; ?>
+							<?php if ( $service_tags ) : ?>
+							<ul class="nashi_posluhy_tags">
+								<?php foreach ( $service_tags as $tag ) : ?>
+									<li class="nashi_posluhy_tag"><?php echo esc_html( $tag ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+							<?php endif; ?>
 						</div>
-					</div>
+						<span class="btn_icon_arrow nashi_posluhy_arrow_aside" style="mask-image: url('<?php echo esc_url( $arrow ); ?>'); -webkit-mask-image: url('<?php echo esc_url( $arrow ); ?>');" aria-hidden="true"></span>
+					</<?php echo tag_escape( $item_tag ); ?>>
 				<?php endforeach; ?>
 			</div>
 		</div>

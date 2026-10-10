@@ -521,7 +521,7 @@ function beauty_institute_acf_group_category() {
 				bi_acf_field( 'cat_intro_text', __( 'Вступ — текст', 'beauty-institute' ), 'intro_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
 				bi_acf_field( 'cat_intro_image', __( 'Вступ — зображення', 'beauty-institute' ), 'intro_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
 				bi_acf_field( 'cat_services_title', __( '«Наші послуги» — заголовок', 'beauty-institute' ), 'services_title', 'text', array( 'placeholder' => 'Наші послуги' ) ),
-				bi_acf_field( 'cat_services_list', __( '«Наші послуги» — пункти (Назва | Опис)', 'beauty-institute' ), 'services_list', 'textarea', array( 'rows' => 8, 'instructions' => __( 'Один пункт на рядок. Формат: <code>Назва | Опис</code>', 'beauty-institute' ) ) ),
+				bi_acf_field( 'cat_services_list', __( '«Наші послуги» — пункти (Назва | Опис | Посилання | Теги)', 'beauty-institute' ), 'services_list', 'textarea', array( 'rows' => 8, 'instructions' => __( 'Один пункт на рядок. Формат: <code>Назва | Опис | Посилання | Теги через кому</code>. Посилання і теги не обов’язкові — залиште порожніми, якщо не потрібні.', 'beauty-institute' ) ) ),
 				bi_acf_field( 'cat_audience_title', __( '«Кому підходить» — заголовок', 'beauty-institute' ), 'audience_title', 'text', array( 'placeholder' => 'Кому підходить' ) ),
 				bi_acf_field( 'cat_audience_list', __( '«Кому підходить» — пункти (Назва | Опис)', 'beauty-institute' ), 'audience_list', 'textarea', array( 'rows' => 4 ) ),
 				bi_acf_field( 'cat_problems_title', __( '«Які проблеми вирішує» — заголовок', 'beauty-institute' ), 'problems_title', 'text', array( 'placeholder' => 'Які проблеми вирішує' ) ),

@@ -6102,7 +6102,7 @@ body.is_thanks_modal_open {
 	flex-direction: column;
 	gap: 20px;
 	box-sizing: border-box;
-	padding: 24px 16px;
+	padding: 20px 16px;
 	border-bottom: 1px solid #dedede;
 	color: inherit;
 	text-decoration: none;
@@ -6197,6 +6197,7 @@ body.is_thanks_modal_open {
 		flex-direction: row;
 		align-items: center;
 		gap: 20px;
+		padding: 24px 16px;
 	}
 
 	.nashi_posluhy_head .nashi_posluhy_arrow {
