@@ -502,7 +502,7 @@ function beauty_institute_video_modal( $label = 'Відео' ) {
  * @param string $title    Section heading.
  * @param int    $group_id Optional bi_faq_group term ID to filter by.
  */
-function beauty_institute_faq_section( $title = '', $group_id = 0 ) {
+function beauty_institute_faq_section( $title = '', $group_id = 0, $bg_url = '' ) {
 	$title = $title ? $title : __( 'Усе, що ви хотіли запитати', 'beauty-institute' );
 
 	$args = array(
@@ -520,10 +520,11 @@ function beauty_institute_faq_section( $title = '', $group_id = 0 ) {
 	}
 	$faqs = get_posts( $args );
 
-	$icon = beauty_institute_asset( 'images/child_cat/use_shcho.svg' );
+	$icon   = beauty_institute_asset( 'images/child_cat/use_shcho.svg' );
+	$bg_url = $bg_url ? $bg_url : beauty_institute_asset( 'images/zemits/bg.webp' );
 	?>
 	<section class="use_shcho" aria-label="Усе, що ви хотіли запитати">
-		<span class="use_shcho_bg" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/zemits/bg.webp' ) ); ?>');" aria-hidden="true"></span>
+		<span class="use_shcho_bg" style="background-image: url('<?php echo esc_url( $bg_url ); ?>');" aria-hidden="true"></span>
 
 		<div class="container use_shcho_inner">
 			<div class="use_shcho_panel">

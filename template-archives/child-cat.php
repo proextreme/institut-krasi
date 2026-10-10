@@ -155,6 +155,11 @@ $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 					</<?php echo tag_escape( $item_tag ); ?>>
 				<?php endforeach; ?>
 			</div>
+
+			<?php $services_note = get_field( 'services_note', $term ); ?>
+			<?php if ( $services_note ) : ?>
+			<p class="nashi_posluhy_note"><?php echo esc_html( $services_note ); ?></p>
+			<?php endif; ?>
 		</div>
 	</section>
 	<?php endif; ?>
@@ -192,16 +197,14 @@ $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 	</section>
 	<?php endif; ?>
 
-	<?php beauty_institute_faq_section(); ?>
+	<?php beauty_institute_faq_section( '', 0, beauty_institute_asset( 'images/child_cat/use_shcho.webp' ) ); ?>
 
 	<?php
-	$term_consult_title = get_field( 'consult_title', $term );
-	$term_consult_intro = get_field( 'consult_intro_desktop', $term );
 	beauty_institute_consult_section(
 		'',
 		'',
-		$term_consult_title ? $term_consult_title : 'Записатись на прийом',
-		$term_consult_intro ? $term_consult_intro : 'Підберемо зручний час'
+		(string) get_field( 'consult_title', $term ),
+		(string) get_field( 'consult_intro_desktop', $term )
 	);
 	?>
 
