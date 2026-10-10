@@ -9263,7 +9263,8 @@ body.is_video_modal_open {
 	cursor: pointer;
 }
 
-.box_type_1_photo {
+.box_type_1_photo,
+.box_type_1_video_static {
 	cursor: default;
 }
 

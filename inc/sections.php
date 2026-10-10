@@ -326,7 +326,11 @@ function beauty_institute_device_block( $id, $index ) {
 	$yt         = $video_file ? '' : beauty_institute_youtube_id( (string) get_field( 'video_url', $id ) );
 	$has_video  = $video_file || $yt;
 	$poster_id  = bi_image_id( get_field( 'video_poster', $id ) );
+	$has_poster = (bool) $poster_id;
 	$poster     = $poster_id ? wp_get_attachment_image_url( $poster_id, 'large' ) : $photo;
+	// The second media slot shows as soon as a cover photo exists — it only
+	// becomes a clickable video once an actual video is attached too.
+	$show_media_2 = $has_video || $has_poster;
 
 	$layout = (string) get_field( 'layout', $id );
 	if ( '' === $layout ) {
@@ -425,23 +429,25 @@ function beauty_institute_device_block( $id, $index ) {
 						<img class="box_type_1_img" src="<?php echo esc_url( $photo ); ?>" alt="" width="620" height="478" loading="lazy" decoding="async">
 					</div>
 
-					<?php if ( $has_video ) : ?>
-					<button
-						type="button"
-						class="box_type_1_video"
-						data-video-open
-						<?php echo $video_file ? 'data-video-src="' . esc_url( $video_file ) . '"' : 'data-youtube-id="' . esc_attr( $yt ) . '"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відео: %s', 'beauty-institute' ), $title ) ); ?>"
-					>
+					<?php if ( $show_media_2 ) : ?>
+						<?php
+						$media_2_tag   = $has_video ? 'button' : 'div';
+						$media_2_attrs = $has_video
+							? ' type="button" data-video-open ' . ( $video_file ? 'data-video-src="' . esc_url( $video_file ) . '"' : 'data-youtube-id="' . esc_attr( $yt ) . '"' ) . ' aria-label="' . esc_attr( sprintf( __( 'Дивитися відео: %s', 'beauty-institute' ), $title ) ) . '"'
+							: '';
+						?>
+						<<?php echo tag_escape( $media_2_tag ); ?> class="box_type_1_video<?php echo $has_video ? '' : ' box_type_1_video_static'; ?>"<?php echo $media_2_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 						<img class="box_type_1_img" src="<?php echo esc_url( $poster ); ?>" alt="" width="620" height="478" loading="lazy" decoding="async">
+						<?php if ( $has_video ) : ?>
 						<span class="box_type_1_play" aria-hidden="true">
 							<img class="box_type_1_play_icon" src="<?php echo esc_url( beauty_institute_asset( 'images/zemits/mikrostrumova_terapiya_2.svg' ) ); ?>" alt="" width="19" height="20" decoding="async">
 						</span>
+						<?php endif; ?>
 						<span class="box_type_1_caption">
 							<span class="box_type_1_caption_title"><?php echo esc_html( $title ); ?></span>
 							<?php if ( $device ) : ?><span class="box_type_1_caption_device"><?php echo esc_html( $device ); ?></span><?php endif; ?>
 						</span>
-					</button>
+						</<?php echo tag_escape( $media_2_tag ); ?>>
 					<?php endif; ?>
 				</div>
 
