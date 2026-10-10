@@ -8726,6 +8726,13 @@ main.likari {
 	border: 0;
 }
 
+.videovidhuky_modal_video {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+}
+
 body.is_video_modal_open {
 	overflow: hidden;
 }

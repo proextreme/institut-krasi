@@ -322,9 +322,11 @@ function beauty_institute_device_block( $id, $index ) {
 	}
 	$photo = $photo_id ? wp_get_attachment_image_url( $photo_id, 'large' ) : beauty_institute_asset( 'images/zemits/mikrostrumova_terapiya.webp' );
 
-	$yt        = beauty_institute_youtube_id( (string) get_field( 'video_url', $id ) );
-	$poster_id = bi_image_id( get_field( 'video_poster', $id ) );
-	$poster    = $poster_id ? wp_get_attachment_image_url( $poster_id, 'large' ) : $photo;
+	$video_file = (string) get_field( 'video_file', $id );
+	$yt         = $video_file ? '' : beauty_institute_youtube_id( (string) get_field( 'video_url', $id ) );
+	$has_video  = $video_file || $yt;
+	$poster_id  = bi_image_id( get_field( 'video_poster', $id ) );
+	$poster     = $poster_id ? wp_get_attachment_image_url( $poster_id, 'large' ) : $photo;
 
 	$layout = (string) get_field( 'layout', $id );
 	if ( '' === $layout ) {
@@ -338,7 +340,7 @@ function beauty_institute_device_block( $id, $index ) {
 
 	if ( 'type_2' === $layout ) :
 		?>
-		<section class="box_type_2<?php echo $yt ? '' : ' box_type_2_bez_video'; ?>" aria-label="<?php echo esc_attr( $title ); ?>">
+		<section class="box_type_2<?php echo $has_video ? '' : ' box_type_2_bez_video'; ?>" aria-label="<?php echo esc_attr( $title ); ?>">
 			<div class="container box_type_2_inner">
 				<div class="box_type_2_head">
 					<div class="box_type_2_heading">
@@ -372,8 +374,14 @@ function beauty_institute_device_block( $id, $index ) {
 						</a>
 					</div>
 
-					<?php if ( $yt ) : ?>
-					<button type="button" class="box_type_2_media box_type_2_video" data-video-open data-youtube-id="<?php echo esc_attr( $yt ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відео: %s', 'beauty-institute' ), $title ) ); ?>">
+					<?php if ( $has_video ) : ?>
+					<button
+						type="button"
+						class="box_type_2_media box_type_2_video"
+						data-video-open
+						<?php echo $video_file ? 'data-video-src="' . esc_url( $video_file ) . '"' : 'data-youtube-id="' . esc_attr( $yt ) . '"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відео: %s', 'beauty-institute' ), $title ) ); ?>"
+					>
 						<img class="box_type_2_img" src="<?php echo esc_url( $poster ); ?>" alt="" width="620" height="468" loading="lazy" decoding="async">
 						<span class="box_type_2_play" aria-hidden="true">
 							<img class="box_type_2_play_icon" src="<?php echo esc_url( beauty_institute_asset( 'images/zemits/kompleksnyi_dohlyad_7.svg' ) ); ?>" alt="" width="19" height="20" decoding="async">
@@ -417,8 +425,14 @@ function beauty_institute_device_block( $id, $index ) {
 						<img class="box_type_1_img" src="<?php echo esc_url( $photo ); ?>" alt="" width="620" height="478" loading="lazy" decoding="async">
 					</div>
 
-					<?php if ( $yt ) : ?>
-					<button type="button" class="box_type_1_video" data-video-open data-youtube-id="<?php echo esc_attr( $yt ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відео: %s', 'beauty-institute' ), $title ) ); ?>">
+					<?php if ( $has_video ) : ?>
+					<button
+						type="button"
+						class="box_type_1_video"
+						data-video-open
+						<?php echo $video_file ? 'data-video-src="' . esc_url( $video_file ) . '"' : 'data-youtube-id="' . esc_attr( $yt ) . '"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відео: %s', 'beauty-institute' ), $title ) ); ?>"
+					>
 						<img class="box_type_1_img" src="<?php echo esc_url( $poster ); ?>" alt="" width="620" height="478" loading="lazy" decoding="async">
 						<span class="box_type_1_play" aria-hidden="true">
 							<img class="box_type_1_play_icon" src="<?php echo esc_url( beauty_institute_asset( 'images/zemits/mikrostrumova_terapiya_2.svg' ) ); ?>" alt="" width="19" height="20" decoding="async">
@@ -468,7 +482,8 @@ function beauty_institute_video_modal( $label = 'Відео' ) {
 		<div class="videovidhuky_modal_dialog" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr( $label ); ?>">
 			<button type="button" class="videovidhuky_modal_close" data-video-modal-close aria-label="Закрити відео"></button>
 			<div class="videovidhuky_modal_frame">
-				<iframe class="videovidhuky_modal_iframe" data-video-iframe title="<?php echo esc_attr( $label ); ?>" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+				<iframe class="videovidhuky_modal_iframe" data-video-iframe title="<?php echo esc_attr( $label ); ?>" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen hidden></iframe>
+				<video class="videovidhuky_modal_video" data-video-file controls playsinline hidden></video>
 			</div>
 		</div>
 	</div>

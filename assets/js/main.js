@@ -1558,16 +1558,17 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	// YouTube video modal (play → autoplay with sound).
+	// Video modal — YouTube embed or an uploaded MP4 file (play → autoplay with sound).
 	document.querySelectorAll('[data-video-modal]').forEach((modal) => {
 		const root = modal.closest('section') || modal.parentElement;
 		const iframe = modal.querySelector('[data-video-iframe]');
+		const videoEl = modal.querySelector('[data-video-file]');
 		const openButtons = root
 			? root.querySelectorAll('[data-video-open]')
 			: [];
 		const closeTargets = modal.querySelectorAll('[data-video-modal-close]');
 
-		if (!iframe || !openButtons.length) {
+		if (!iframe || !videoEl || !openButtons.length) {
 			return;
 		}
 
@@ -1590,17 +1591,27 @@ document.addEventListener('DOMContentLoaded', () => {
 		};
 
 		/**
-		 * Open modal and start playback.
+		 * Open modal and start playback, from a YouTube id or a direct file URL.
 		 *
-		 * @param {string} videoId YouTube video id.
-		 * @param {HTMLElement|null} trigger Button that opened the modal.
+		 * @param {HTMLElement} trigger Button that opened the modal.
 		 */
-		const openModal = (videoId, trigger) => {
-			if (!videoId) {
+		const openModal = (trigger) => {
+			const fileSrc = trigger.getAttribute('data-video-src') || '';
+			const videoId = trigger.getAttribute('data-youtube-id') || '';
+
+			if (fileSrc) {
+				videoEl.src = fileSrc;
+				videoEl.hidden = false;
+				iframe.hidden = true;
+				videoEl.play();
+			} else if (videoId) {
+				iframe.src = buildEmbedUrl(videoId);
+				iframe.hidden = false;
+				videoEl.hidden = true;
+			} else {
 				return;
 			}
 
-			iframe.src = buildEmbedUrl(videoId);
 			modal.hidden = false;
 			modal._videoTrigger = trigger || null;
 			document.body.classList.add('is_video_modal_open');
@@ -1617,6 +1628,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		const closeModal = () => {
 			modal.hidden = true;
 			iframe.src = '';
+			videoEl.pause();
+			videoEl.removeAttribute('src');
+			videoEl.load();
 			document.body.classList.remove('is_video_modal_open');
 
 			if (modal._videoTrigger && typeof modal._videoTrigger.focus === 'function') {
@@ -1627,7 +1641,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		openButtons.forEach((btn) => {
 			btn.addEventListener('click', (event) => {
 				event.preventDefault();
-				openModal(btn.getAttribute('data-youtube-id') || '', btn);
+				openModal(btn);
 			});
 		});
 
