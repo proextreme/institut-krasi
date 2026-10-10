@@ -4482,6 +4482,7 @@ body.is_thanks_modal_open {
 	grid-template-areas: "a c" "b c";
 	gap: 10px;
 	width: 100%;
+	aspect-ratio: 6 / 5;
 	flex-shrink: 0;
 }
 
@@ -4489,14 +4490,11 @@ body.is_thanks_modal_open {
 	position: relative;
 	margin: 0;
 	overflow: hidden;
+	min-width: 0;
+	min-height: 0;
 	border: 1px solid var(--color_blue_10);
 	background-color: #f8f1ee;
 	border-radius: var(--nl_card_r);
-}
-
-.nashi_likari_photo_1,
-.nashi_likari_photo_2 {
-	aspect-ratio: 4 / 3;
 }
 
 .nashi_likari_photo_1 {
@@ -4509,7 +4507,6 @@ body.is_thanks_modal_open {
 
 .nashi_likari_photo_3 {
 	grid-area: c;
-	aspect-ratio: auto;
 }
 
 .nashi_likari_photo_img {
