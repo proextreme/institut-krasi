@@ -628,8 +628,9 @@ function beauty_institute_acf_group_about() {
 					bi_acf_field( 'ab_doctors_title', __( 'Заголовок', 'beauty-institute' ), 'doctors_title', 'text' ),
 					bi_acf_field( 'ab_doctors_list', __( 'Список (по одному пункту на рядок)', 'beauty-institute' ), 'doctors_list', 'textarea', array( 'rows' => 5 ) ),
 					bi_acf_field( 'ab_doctors_btn', __( 'Кнопка', 'beauty-institute' ), 'doctors_btn', 'link' ),
-					bi_acf_field( 'ab_doctors_img_1', __( 'Фото 1', 'beauty-institute' ), 'doctors_image_1', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '50' ) ) ),
-					bi_acf_field( 'ab_doctors_img_2', __( 'Фото 2', 'beauty-institute' ), 'doctors_image_2', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '50' ) ) ),
+					bi_acf_field( 'ab_doctors_img_1', __( 'Фото 1 (угорі зліва)', 'beauty-institute' ), 'doctors_image_1', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '34' ) ) ),
+					bi_acf_field( 'ab_doctors_img_2', __( 'Фото 2 (внизу зліва)', 'beauty-institute' ), 'doctors_image_2', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '33' ) ) ),
+					bi_acf_field( 'ab_doctors_img_3', __( 'Фото 3 (справа, високе)', 'beauty-institute' ), 'doctors_image_3', 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '33' ) ) ),
 
 					bi_acf_field( 'ab_tab_results', __( 'Результати', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'ab_results_title', __( 'Заголовок', 'beauty-institute' ), 'results_title', 'text' ),

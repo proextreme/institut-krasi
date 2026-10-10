@@ -227,8 +227,9 @@ $doctors_btn  = bi_field( 'doctors_btn' );
 <section class="nashi_likari">
 	<div class="container nashi_likari_inner">
 		<div class="nashi_likari_gallery" aria-hidden="true">
-			<figure class="nashi_likari_photo nashi_likari_photo_back"><?php beauty_institute_about_img( 'doctors_image_1', 'images/nashi_likari.webp', 'nashi_likari_photo_img' ); ?></figure>
-			<figure class="nashi_likari_photo nashi_likari_photo_front"><?php beauty_institute_about_img( 'doctors_image_2', 'images/nashi_likari_1.webp', 'nashi_likari_photo_img' ); ?></figure>
+			<figure class="nashi_likari_photo nashi_likari_photo_1"><?php beauty_institute_about_img( 'doctors_image_1', 'images/nashi_likari.webp', 'nashi_likari_photo_img' ); ?></figure>
+			<figure class="nashi_likari_photo nashi_likari_photo_2"><?php beauty_institute_about_img( 'doctors_image_2', 'images/nashi_likari_1.webp', 'nashi_likari_photo_img' ); ?></figure>
+			<figure class="nashi_likari_photo nashi_likari_photo_3"><?php beauty_institute_about_img( 'doctors_image_3', 'images/nashi_likari_1.webp', 'nashi_likari_photo_img' ); ?></figure>
 		</div>
 
 		<div class="nashi_likari_content">
