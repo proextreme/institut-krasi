@@ -5149,7 +5149,7 @@ body.is_thanks_modal_open {
 	overflow: hidden;
 	box-sizing: border-box;
 	width: 100%;
-	height: 448px;
+	height: 510px;
 	border: 1px solid #dedede;
 	border-radius: var(--pb_r);
 	background-color: #fbfcfc;
@@ -5310,6 +5310,7 @@ body.is_thanks_modal_open {
 	.poslugi_box_card {
 		justify-content: flex-end;
 		flex-direction: row;
+		height: 448px;
 	}
 
 	.poslugi_box_panel {
