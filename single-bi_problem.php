@@ -305,7 +305,7 @@ $arrow_nav = beauty_institute_asset( 'images/arrow_right_nav.svg' );
 	<?php if ( $reviews ) : ?>
 	<section class="vidhuky" aria-label="Відгуки">
 		<div class="container vidhuky_inner">
-			<div class="vidhuky_slider" data-vidhuky-slider>
+			<div class="vidhuky_slider<?php echo count( $reviews ) < 2 ? ' is_single' : ''; ?>" data-vidhuky-slider>
 				<div class="vidhuky_viewport">
 					<div class="vidhuky_track">
 						<?php foreach ( $reviews as $review ) : ?>
@@ -354,7 +354,7 @@ $arrow_nav = beauty_institute_asset( 'images/arrow_right_nav.svg' );
 			</div>
 		</div>
 
-		<div class="container do_ta_pislya_slider" data-do-ta-pislya-slider>
+		<div class="container do_ta_pislya_slider<?php echo count( $results ) < 2 ? ' is_single' : ''; ?>" data-do-ta-pislya-slider>
 			<div class="do_ta_pislya_viewport">
 				<div class="do_ta_pislya_track">
 					<?php foreach ( $results as $result_src ) : ?>

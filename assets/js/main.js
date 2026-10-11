@@ -1073,6 +1073,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		let index = 0;
 
+		// One slide has nothing to switch to: CSS hides the dots and the arrow.
+		const hasSeveral = originals.length > 1;
+		slider.classList.toggle('is_single', !hasSeveral);
+
 		/**
 		 * Sync slide widths to viewport (one full slide).
 		 */
@@ -1160,6 +1164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			track,
 			getIndex: () => index,
 			goTo,
+			isEnabled: () => hasSeveral,
 		});
 
 		window.addEventListener('resize', () => {
@@ -1183,6 +1188,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		let index = 0;
 		const clones = [];
 		const gap = 20;
+
+		// One photo has nothing to switch to: CSS hides the dots and the arrow.
+		const hasSeveral = originals.length > 1;
+		slider.classList.toggle('is_single', !hasSeveral);
 
 		/**
 		 * Number of dots (one per original slide).
@@ -1318,6 +1327,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			track,
 			getIndex: () => index,
 			goTo,
+			isEnabled: () => hasSeveral,
 		});
 
 		window.addEventListener('resize', () => {

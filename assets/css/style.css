@@ -7188,6 +7188,11 @@ body.is_thanks_modal_open {
 	justify-content: flex-end;
 }
 
+/* One review: no dots and no arrow. */
+.vidhuky_slider.is_single .vidhuky_controls {
+	display: none;
+}
+
 @media (min-width: 1024px) {
 	.vidhuky_card {
 		padding-block: 40px;
@@ -7334,6 +7339,11 @@ body.is_thanks_modal_open {
 
 .do_ta_pislya_controls {
 	justify-content: flex-end;
+}
+
+/* One photo: no dots and no arrow. */
+.do_ta_pislya_slider.is_single .do_ta_pislya_controls {
+	display: none;
 }
 
 @media (min-width: 1024px) {
@@ -10144,6 +10154,11 @@ body.is_video_modal_open {
 	flex-direction: column;
 	align-items: stretch;
 	gap: 20px;
+}
+
+/* Mobile: taller doctor photo (desktop height is set in the min-width block below). */
+.sho_vyrishuemo .likari_photo {
+	height: 380px;
 }
 
 @media (min-width: 1024px) {
