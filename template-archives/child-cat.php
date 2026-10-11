@@ -12,24 +12,16 @@ $hero_bg_mob = bi_image_id( get_field( 'hero_bg_mobile', $term ) );
 $hero_bg_url = $hero_bg ? wp_get_attachment_image_url( $hero_bg, 'full' ) : beauty_institute_asset( 'images/child_cat/iniektsiina_kosmetolohiya.webp' );
 $hero_mob_url = $hero_bg_mob ? wp_get_attachment_image_url( $hero_bg_mob, 'large' ) : beauty_institute_asset( 'images/child_cat/iniektsiina_kosmetolohiya_mob.webp' );
 
-$feat_defs = array(
-	array(
-		'icon' => 'diamonds',
-		'text' => get_field( 'feat_1', $term ),
-	),
-	array(
-		'icon' => 'clock',
-		'text' => get_field( 'feat_2', $term ),
-	),
-	array(
-		'icon' => 'security',
-		'text' => get_field( 'feat_3', $term ),
-	),
-	array(
-		'icon' => 'star',
-		'text' => get_field( 'feat_4', $term ),
-	),
-);
+// Banner badges: default icon per slot, overridable via the "feat_N_icon" select.
+$feat_icons = array( 'diamonds', 'clock', 'security', 'star', 'calendar' );
+$feat_defs  = array();
+foreach ( array( 1 => 'diamonds', 2 => 'clock', 3 => 'security', 4 => 'star' ) as $feat_n => $default_icon ) {
+	$chosen_icon = get_field( 'feat_' . $feat_n . '_icon', $term );
+	$feat_defs[] = array(
+		'icon' => in_array( $chosen_icon, $feat_icons, true ) ? $chosen_icon : $default_icon,
+		'text' => get_field( 'feat_' . $feat_n, $term ),
+	);
+}
 if ( ! array_filter( wp_list_pluck( $feat_defs, 'text' ) ) ) {
 	$feat_defs[0]['text'] = '6 напрямків';
 	$feat_defs[1]['text'] = 'Від 30 хвилин';

@@ -32,6 +32,28 @@ function bi_acf_field( $key, $label, $name, $type = 'text', $args = array() ) {
 }
 
 /**
+ * Args for a banner-badge icon select (category page hero).
+ *
+ * @param string $instructions Help text under the field.
+ * @return array
+ */
+function bi_feat_icon_args( $instructions ) {
+	return array(
+		'choices'       => array(
+			'diamonds' => __( 'Діаманти', 'beauty-institute' ),
+			'clock'    => __( 'Годинник', 'beauty-institute' ),
+			'security' => __( 'Щит', 'beauty-institute' ),
+			'star'     => __( 'Зірка', 'beauty-institute' ),
+			'calendar' => __( 'Календар', 'beauty-institute' ),
+		),
+		'allow_null'    => 1,
+		'return_format' => 'value',
+		'instructions'  => $instructions,
+		'wrapper'       => array( 'width' => '25' ),
+	);
+}
+
+/**
  * Register all theme field groups.
  */
 function beauty_institute_register_acf_fields() {
@@ -524,6 +546,10 @@ function beauty_institute_acf_group_category() {
 				bi_acf_field( 'cat_feat_2', __( 'Плашка 2 (іконка — годинник)', 'beauty-institute' ), 'feat_2', 'text', array( 'wrapper' => array( 'width' => '25' ) ) ),
 				bi_acf_field( 'cat_feat_3', __( 'Плашка 3 (іконка — щит)', 'beauty-institute' ), 'feat_3', 'text', array( 'wrapper' => array( 'width' => '25' ) ) ),
 				bi_acf_field( 'cat_feat_4', __( 'Плашка 4 (іконка — зірка)', 'beauty-institute' ), 'feat_4', 'text', array( 'wrapper' => array( 'width' => '25' ) ) ),
+				bi_acf_field( 'cat_feat_1_icon', __( 'Плашка 1 — іконка', 'beauty-institute' ), 'feat_1_icon', 'select', bi_feat_icon_args( __( 'Порожньо — діаманти.', 'beauty-institute' ) ) ),
+				bi_acf_field( 'cat_feat_2_icon', __( 'Плашка 2 — іконка', 'beauty-institute' ), 'feat_2_icon', 'select', bi_feat_icon_args( __( 'Порожньо — годинник.', 'beauty-institute' ) ) ),
+				bi_acf_field( 'cat_feat_3_icon', __( 'Плашка 3 — іконка', 'beauty-institute' ), 'feat_3_icon', 'select', bi_feat_icon_args( __( 'Порожньо — щит.', 'beauty-institute' ) ) ),
+				bi_acf_field( 'cat_feat_4_icon', __( 'Плашка 4 — іконка', 'beauty-institute' ), 'feat_4_icon', 'select', bi_feat_icon_args( __( 'Порожньо — зірка.', 'beauty-institute' ) ) ),
 				bi_acf_field( 'cat_intro_title', __( 'Вступ — заголовок', 'beauty-institute' ), 'intro_title', 'text' ),
 				bi_acf_field( 'cat_intro_text', __( 'Вступ — текст', 'beauty-institute' ), 'intro_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
 				bi_acf_field( 'cat_intro_image', __( 'Вступ — зображення', 'beauty-institute' ), 'intro_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),

@@ -5956,6 +5956,14 @@ body.is_thanks_modal_open {
 	background-size: contain;
 }
 
+.iniektsiina_kosmetolohiya_feat_icon_calendar,
+.contact_hero_feat_icon_calendar {
+	background-image: url("../images/single/calendar.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
 .iniektsiina_kosmetolohiya_feat_text,
 .contact_hero_feat_text {
 	color: var(--color_gray_0);
