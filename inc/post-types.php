@@ -84,7 +84,8 @@ function beauty_institute_register_post_types() {
 			'has_archive'   => false,
 			'menu_icon'     => 'dashicons-sos',
 			'menu_position' => 23,
-			'supports'      => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+			// No content editor: the page is built from the ACF fields (single-bi_problem.php).
+			'supports'      => array( 'title', 'thumbnail', 'page-attributes' ),
 			'rewrite'       => array( 'slug' => 'zapyt', 'with_front' => false ),
 			'show_in_rest'  => true,
 		)

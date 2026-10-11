@@ -503,6 +503,11 @@ require get_template_directory() . '/inc/post-types.php';
 require get_template_directory() . '/inc/acf-fields.php';
 
 /**
+ * TEMPORARY one-time seed of the "Розацеа" request record — remove after it ran.
+ */
+require get_template_directory() . '/inc/seed-problem-rozatsea.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';

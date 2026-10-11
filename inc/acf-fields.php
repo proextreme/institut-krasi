@@ -67,6 +67,7 @@ function beauty_institute_register_acf_fields() {
 	beauty_institute_acf_group_about();
 	beauty_institute_acf_group_doctor();
 	beauty_institute_acf_group_problem();
+	beauty_institute_acf_group_problem_page();
 	beauty_institute_acf_group_sho_vyrishuemo();
 	beauty_institute_acf_group_review();
 	beauty_institute_acf_group_reviews_page();
@@ -152,6 +153,119 @@ function beauty_institute_acf_group_problem() {
 			'fields'   => array(
 				bi_acf_field( 'prob_card_image', __( 'Зображення картки', 'beauty-institute' ), 'card_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
 				bi_acf_field( 'prob_lead', __( 'Короткий опис', 'beauty-institute' ), 'lead', 'textarea', array( 'rows' => 3 ) ),
+			),
+			'location' => bi_acf_location_post_type( 'bi_problem' ),
+			'active'   => true,
+		)
+	);
+}
+
+/**
+ * Сторінка запиту (запис «Запити», single-bi_problem.php).
+ *
+ * Той самий макет, що й у «Що ми вирішуємо» (Розацеа), але під кожен запит
+ * окремий запис. Усі блоки показуються лише коли заповнені — без підстановки
+ * тексту про розацеа в чужі сторінки. Поля сторінки-шаблону (group_bi_sho)
+ * лишаються окремими, щоб не зачепити вже робочу сторінку.
+ */
+function beauty_institute_acf_group_problem_page() {
+	$types = array();
+	for ( $i = 1; $i <= 4; $i++ ) {
+		$types[] = bi_acf_field( "pp_type_{$i}_image", sprintf( __( 'Тип %d — фото', 'beauty-institute' ), $i ), "type_{$i}_image", 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '20' ) ) );
+		$types[] = bi_acf_field( "pp_type_{$i}_title", sprintf( __( 'Тип %d — назва', 'beauty-institute' ), $i ), "type_{$i}_title", 'text', array( 'wrapper' => array( 'width' => '30' ) ) );
+		$types[] = bi_acf_field( "pp_type_{$i}_text", sprintf( __( 'Тип %d — опис', 'beauty-institute' ), $i ), "type_{$i}_text", 'textarea', array( 'rows' => 2, 'wrapper' => array( 'width' => '50' ) ) );
+	}
+
+	$reviews = array();
+	for ( $i = 1; $i <= 3; $i++ ) {
+		$reviews[] = bi_acf_field( "pp_rev_{$i}_topic", sprintf( __( 'Відгук %d — заголовок', 'beauty-institute' ), $i ), "review_{$i}_topic", 'text', array( 'wrapper' => array( 'width' => '40' ) ) );
+		$reviews[] = bi_acf_field( "pp_rev_{$i}_name", sprintf( __( 'Відгук %d — імʼя', 'beauty-institute' ), $i ), "review_{$i}_name", 'text', array( 'wrapper' => array( 'width' => '20' ) ) );
+		$reviews[] = bi_acf_field( "pp_rev_{$i}_photo", sprintf( __( 'Відгук %d — фото', 'beauty-institute' ), $i ), "review_{$i}_photo", 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'instructions' => __( 'Не обовʼязково. Без фото показується стандартне фото клініки.', 'beauty-institute' ), 'wrapper' => array( 'width' => '40' ) ) );
+		$reviews[] = bi_acf_field( "pp_rev_{$i}_text", sprintf( __( 'Відгук %d — текст', 'beauty-institute' ), $i ), "review_{$i}_text", 'textarea', array( 'rows' => 3 ) );
+	}
+
+	$results = array();
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$results[] = bi_acf_field( "pp_result_{$i}", sprintf( __( 'Фото %d', 'beauty-institute' ), $i ), "result_{$i}", 'image', array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'wrapper' => array( 'width' => '25' ) ) );
+	}
+
+	$hint_hide = __( 'Блок не показується, поки не заповнений.', 'beauty-institute' );
+
+	acf_add_local_field_group(
+		array(
+			'key'      => 'group_bi_problem_page',
+			'title'    => __( 'Сторінка запиту', 'beauty-institute' ),
+			'fields'   => array_merge(
+				array(
+					bi_acf_field( 'pp_tab_hero', __( 'Hero', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_hero_title', __( 'Заголовок', 'beauty-institute' ), 'hero_title', 'text', array( 'instructions' => __( 'Порожньо — береться назва запису. Для переносу рядка можна <br>.', 'beauty-institute' ) ) ),
+					bi_acf_field( 'pp_hero_text', __( 'Текст під заголовком', 'beauty-institute' ), 'hero_text', 'textarea', array( 'rows' => 3, 'instructions' => __( 'Порожньо — береться «Короткий опис» із блоку «Дані запиту».', 'beauty-institute' ) ) ),
+					bi_acf_field( 'pp_hero_bg', __( 'Фон (десктоп)', 'beauty-institute' ), 'hero_bg', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Порожньо — береться зображення запису.', 'beauty-institute' ) ) ),
+					bi_acf_field( 'pp_hero_bg_mob', __( 'Фон (мобільний)', 'beauty-institute' ), 'hero_bg_mobile', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Порожньо — береться фон для десктопа.', 'beauty-institute' ) ) ),
+
+					bi_acf_field( 'pp_tab_intro', __( 'Опис', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_intro_title', __( 'Заголовок', 'beauty-institute' ), 'intro_title', 'text', array( 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_intro_text', __( 'Текст', 'beauty-institute' ), 'intro_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+					bi_acf_field( 'pp_intro_image', __( 'Зображення', 'beauty-institute' ), 'intro_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Порожньо — береться зображення запису.', 'beauty-institute' ) ) ),
+
+					bi_acf_field( 'pp_tab_types', __( 'Типи', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_types_title', __( 'Заголовок', 'beauty-institute' ), 'types_title', 'text', array( 'placeholder' => 'Типи', 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_types_lead', __( 'Підзаголовок', 'beauty-institute' ), 'types_lead', 'text' ),
+				),
+				$types,
+				array(
+					bi_acf_field( 'pp_tab_causes', __( 'Причини', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_causes_title', __( 'Заголовок', 'beauty-institute' ), 'causes_title', 'text', array( 'placeholder' => 'Причини та тригери', 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_causes_list', __( 'Причини (один рядок = один пункт, формат: Назва | Опис)', 'beauty-institute' ), 'causes_list', 'textarea', array( 'rows' => 6 ) ),
+
+					bi_acf_field( 'pp_tab_symptoms', __( 'Симптоми', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_symptoms_title', __( 'Заголовок', 'beauty-institute' ), 'symptoms_title', 'text', array( 'placeholder' => 'Симптоми', 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_symptoms_list', __( 'Симптоми (по одному на рядок)', 'beauty-institute' ), 'symptoms_list', 'textarea', array( 'rows' => 6 ) ),
+
+					bi_acf_field( 'pp_tab_stages', __( 'Стадії', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_stages_title', __( 'Заголовок', 'beauty-institute' ), 'stages_title', 'text', array( 'placeholder' => 'Стадії розвитку', 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_stages_list', __( 'Стадії (Назва | Опис) — нумеруються автоматично', 'beauty-institute' ), 'stages_list', 'textarea', array( 'rows' => 6 ) ),
+					bi_acf_field( 'pp_note_title', __( 'Примітка — заголовок', 'beauty-institute' ), 'note_title', 'text', array( 'placeholder' => 'Важливо знати!' ) ),
+					bi_acf_field( 'pp_note_text', __( 'Примітка — текст', 'beauty-institute' ), 'note_text', 'textarea', array( 'rows' => 3 ) ),
+
+					bi_acf_field( 'pp_tab_treatment', __( 'Лікування', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_tr_title', __( 'Заголовок', 'beauty-institute' ), 'treatment_title', 'text', array( 'placeholder' => 'Лікування починається з діагнозу', 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_tr_text', __( 'Текст', 'beauty-institute' ), 'treatment_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+					bi_acf_field( 'pp_tr_image', __( 'Зображення', 'beauty-institute' ), 'treatment_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+					bi_acf_field( 'pp_tr_label', __( 'Підпис над списком послуг', 'beauty-institute' ), 'treatment_label', 'text', array( 'placeholder' => 'Послуги, які ми радимо:' ) ),
+					bi_acf_field( 'pp_tr_services', __( 'Послуги (один рядок = одна послуга, формат: Назва | Опис | Посилання)', 'beauty-institute' ), 'treatment_services', 'textarea', array( 'rows' => 6 ) ),
+
+					bi_acf_field( 'pp_tab_doctors', __( 'Лікарі', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_doctors_title', __( 'Заголовок', 'beauty-institute' ), 'doctors_title', 'text', array( 'placeholder' => 'Лікарі' ) ),
+					bi_acf_field( 'pp_doctors_subtitle', __( 'Підзаголовок', 'beauty-institute' ), 'doctors_subtitle', 'textarea', array( 'rows' => 2 ) ),
+					bi_acf_field(
+						'pp_doctors',
+						__( 'Оберіть лікарів', 'beauty-institute' ),
+						'doctors',
+						'relationship',
+						array(
+							'post_type'     => array( 'bi_doctor' ),
+							'return_format' => 'id',
+							'filters'       => array( 'search' ),
+							'instructions'  => __( 'Показуються лише вибрані лікарі, у вказаному порядку. Без вибору блок не показується.', 'beauty-institute' ),
+						)
+					),
+
+					bi_acf_field( 'pp_tab_reviews', __( 'Відгуки', 'beauty-institute' ), '', 'tab' ),
+				),
+				$reviews,
+				array(
+					bi_acf_field( 'pp_tab_results', __( 'До та після', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_results_title', __( 'Заголовок', 'beauty-institute' ), 'results_title', 'text', array( 'placeholder' => 'До та після' ) ),
+					bi_acf_field( 'pp_results_intro', __( 'Підзаголовок', 'beauty-institute' ), 'results_intro', 'text', array( 'placeholder' => 'Наші результати підкреслюють ваші індивідуальні риси.' ) ),
+				),
+				$results,
+				array(
+					bi_acf_field( 'pp_tab_consult', __( 'Запис', 'beauty-institute' ), '', 'tab' ),
+					bi_acf_field( 'pp_consult_title', __( 'Заголовок', 'beauty-institute' ), 'consult_title', 'text', array( 'placeholder' => 'Запис на консультацію', 'instructions' => __( 'Порожньо — береться з «Налаштування сайту».', 'beauty-institute' ) ) ),
+					bi_acf_field( 'pp_consult_intro', __( 'Текст (десктоп)', 'beauty-institute' ), 'consult_intro_desktop', 'textarea', array( 'rows' => 2 ) ),
+					bi_acf_field( 'pp_consult_intro_mob', __( 'Текст (мобільний)', 'beauty-institute' ), 'consult_intro_mobile', 'textarea', array( 'rows' => 2 ) ),
+				)
 			),
 			'location' => bi_acf_location_post_type( 'bi_problem' ),
 			'active'   => true,
