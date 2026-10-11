@@ -6066,6 +6066,9 @@ body.is_thanks_modal_open {
 }
 
 .molodist_bez_text {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 	margin: 0;
 	color: var(--color_gray_80);
 	font-family: var(--font_primary);
@@ -6073,6 +6076,11 @@ body.is_thanks_modal_open {
 	font-weight: var(--font_weight_regular);
 	line-height: 1.4;
 	letter-spacing: 0;
+}
+
+/* Full-width paragraphs under the photo */
+.molodist_bez_more {
+	margin-top: 20px;
 }
 
 .molodist_bez_media {

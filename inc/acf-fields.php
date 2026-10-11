@@ -552,6 +552,7 @@ function beauty_institute_acf_group_category() {
 				bi_acf_field( 'cat_feat_4_icon', __( 'Плашка 4 — іконка', 'beauty-institute' ), 'feat_4_icon', 'select', bi_feat_icon_args( __( 'Порожньо — зірка.', 'beauty-institute' ) ) ),
 				bi_acf_field( 'cat_intro_title', __( 'Вступ — заголовок', 'beauty-institute' ), 'intro_title', 'text' ),
 				bi_acf_field( 'cat_intro_text', __( 'Вступ — текст', 'beauty-institute' ), 'intro_text', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic' ) ),
+				bi_acf_field( 'cat_intro_text_more', __( 'Вступ — текст під фото (на всю ширину)', 'beauty-institute' ), 'intro_text_more', 'wysiwyg', array( 'media_upload' => 0, 'toolbar' => 'basic', 'instructions' => __( 'Необов’язково. Показується під заголовком і фото на всю ширину сторінки.', 'beauty-institute' ) ) ),
 				bi_acf_field( 'cat_intro_image', __( 'Вступ — зображення', 'beauty-institute' ), 'intro_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
 				bi_acf_field( 'cat_services_title', __( '«Наші послуги» — заголовок', 'beauty-institute' ), 'services_title', 'text', array( 'placeholder' => 'Наші послуги' ) ),
 				bi_acf_field( 'cat_services_list', __( '«Наші послуги» — пункти (Назва | Опис | Посилання | Теги)', 'beauty-institute' ), 'services_list', 'textarea', array( 'rows' => 8, 'instructions' => __( 'Один пункт на рядок. Формат: <code>Назва | Опис | Посилання | Теги через кому</code>. Посилання і теги не обов’язкові — залиште порожніми, якщо не потрібні.', 'beauty-institute' ) ) ),

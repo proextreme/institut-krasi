@@ -93,17 +93,26 @@ $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 		</div>
 	</section>
 
-	<?php if ( get_field( 'intro_title', $term ) || get_field( 'intro_text', $term ) ) : ?>
+	<?php
+	$intro_title = get_field( 'intro_title', $term );
+	$intro_text  = (string) get_field( 'intro_text', $term );
+	$intro_more  = (string) get_field( 'intro_text_more', $term );
+	?>
+	<?php if ( $intro_title || $intro_text || $intro_more ) : ?>
 	<section class="molodist_bez">
 		<div class="container molodist_bez_inner">
 			<div class="molodist_bez_content">
-				<?php $intro_title = get_field( 'intro_title', $term ); ?>
 				<?php if ( $intro_title ) : ?><h2 class="molodist_bez_title font_heading"><?php echo esc_html( $intro_title ); ?></h2><?php endif; ?>
-				<div class="molodist_bez_text"><?php echo wp_kses_post( wpautop( (string) get_field( 'intro_text', $term ) ) ); ?></div>
+				<div class="molodist_bez_text"><?php echo wp_kses_post( wpautop( $intro_text ) ); ?></div>
 			</div>
 
 			<div class="molodist_bez_media" style="background-image: url('<?php echo esc_url( $intro_img ); ?>');" aria-hidden="true"></div>
 		</div>
+		<?php if ( $intro_more ) : ?>
+		<div class="container molodist_bez_more">
+			<div class="molodist_bez_text"><?php echo wp_kses_post( wpautop( $intro_more ) ); ?></div>
+		</div>
+		<?php endif; ?>
 	</section>
 	<?php endif; ?>
 
