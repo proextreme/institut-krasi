@@ -507,6 +507,7 @@ function beauty_institute_acf_group_category() {
 				bi_acf_field( 'cat_tab_card', __( 'Картка на /poslugi/', 'beauty-institute' ), '', 'tab' ),
 				bi_acf_field( 'cat_card_msg', __( 'Ці поля показуються у прев’ю-картці цієї рубрики на сторінці «Послуги» (для дочірніх рубрик).', 'beauty-institute' ), '', 'message' ),
 				bi_acf_field( 'cat_card_image', __( 'Зображення картки', 'beauty-institute' ), 'card_image', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
+				bi_acf_field( 'cat_card_image_mobile', __( 'Зображення картки (мобільний)', 'beauty-institute' ), 'card_image_mobile', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium', 'instructions' => __( 'Необов’язково. Якщо не задано — на мобільному показується основне зображення.', 'beauty-institute' ) ) ),
 				bi_acf_field( 'cat_card_subtitle', __( 'Підзаголовок картки', 'beauty-institute' ), 'card_subtitle', 'text', array( 'placeholder' => 'Природний результат без операції.' ) ),
 				bi_acf_field( 'cat_card_services', __( 'Міні-список послуг (по одному на рядок)', 'beauty-institute' ), 'card_services', 'textarea', array( 'rows' => 5 ) ),
 

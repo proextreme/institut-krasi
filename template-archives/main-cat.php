@@ -73,12 +73,19 @@ usort(
 			foreach ( $children as $child ) :
 				$img_id   = bi_image_id( get_field( 'card_image', $child ) );
 				$img_src  = $img_id ? wp_get_attachment_image_url( $img_id, 'large' ) : beauty_institute_asset( 'images/in_iektsiina_kosmetolohiya.webp' );
+				$mob_id   = bi_image_id( get_field( 'card_image_mobile', $child ) );
+				$mob_src  = $mob_id ? wp_get_attachment_image_url( $mob_id, 'large' ) : '';
 				$subtitle = get_field( 'card_subtitle', $child );
 				$services = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) get_field( 'card_services', $child ) ) ) );
 				$link     = get_term_link( $child );
+				$style    = "--card-photo: url('" . esc_url( $img_src ) . "');";
+				if ( $mob_src ) {
+					$style .= " --card-photo-mobile: url('" . esc_url( $mob_src ) . "');";
+				}
 				?>
-				<article class="poslugi_box_card" style="--card-photo: url('<?php echo esc_url( $img_src ); ?>');">
+				<article class="poslugi_box_card" style="<?php echo esc_attr( $style ); ?>">
 					<picture class="poslugi_box_media">
+						<?php if ( $mob_src ) : ?><source media="(max-width: 1023px)" srcset="<?php echo esc_url( $mob_src ); ?>"><?php endif; ?>
 						<img class="poslugi_box_img" src="<?php echo esc_url( $img_src ); ?>" alt="" width="615" height="448" loading="lazy" decoding="async">
 					</picture>
 					<div class="poslugi_box_panel">

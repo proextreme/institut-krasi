@@ -5201,6 +5201,15 @@ body.is_thanks_modal_open {
 	filter: blur(12px);
 }
 
+/* Separate mobile photo (set per category in admin) also feeds the frosted panel */
+@media (max-width: 1023px) {
+	.poslugi_box_panel::before {
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),
+			var(--card-photo-mobile, var(--card-photo));
+	}
+}
+
 .poslugi_box_body,
 .poslugi_box_btn {
 	position: relative;
