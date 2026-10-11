@@ -166,22 +166,22 @@ usort(
 					</figure>
 
 					<nav class="zapysatys_na_nav" aria-label="Швидкі посилання">
-						<a class="zapysatys_na_link" href="<?php echo esc_url( home_url( '/poslugi/' ) ); ?>">
-							<span class="zapysatys_na_link_text">Ціни на послуги</span>
+						<?php
+						// URLs are editable on the "Послуги" term (hub tab); an empty field keeps the default.
+						$quick_links = array(
+							array( 'Ціни на послуги', 'hub_link_prices', home_url( '/poslugi/' ) ),
+							array( 'Відгуки клієнтів', 'hub_link_reviews', home_url( '/vidguki/' ) ),
+							array( 'Поширені питання', 'hub_link_faq', '#' ),
+							array( 'Записатись<br>на прийом', 'hub_link_consult', home_url( '/#consult' ) ),
+						);
+						foreach ( $quick_links as $quick_link ) :
+							$quick_url = get_field( $quick_link[1], $hub_term );
+							?>
+						<a class="zapysatys_na_link" href="<?php echo esc_url( $quick_url ? $quick_url : $quick_link[2] ); ?>">
+							<span class="zapysatys_na_link_text"><?php echo wp_kses( $quick_link[0], array( 'br' => array() ) ); ?></span>
 							<span class="zapysatys_na_link_icon btn_icon_arrow" style="mask-image: url('<?php echo esc_url( $arrow ); ?>'); -webkit-mask-image: url('<?php echo esc_url( $arrow ); ?>');" aria-hidden="true"></span>
 						</a>
-						<a class="zapysatys_na_link" href="<?php echo esc_url( home_url( '/vidguki/' ) ); ?>">
-							<span class="zapysatys_na_link_text">Відгуки клієнтів</span>
-							<span class="zapysatys_na_link_icon btn_icon_arrow" style="mask-image: url('<?php echo esc_url( $arrow ); ?>'); -webkit-mask-image: url('<?php echo esc_url( $arrow ); ?>');" aria-hidden="true"></span>
-						</a>
-						<a class="zapysatys_na_link" href="#">
-							<span class="zapysatys_na_link_text">Поширені питання</span>
-							<span class="zapysatys_na_link_icon btn_icon_arrow" style="mask-image: url('<?php echo esc_url( $arrow ); ?>'); -webkit-mask-image: url('<?php echo esc_url( $arrow ); ?>');" aria-hidden="true"></span>
-						</a>
-						<a class="zapysatys_na_link" href="<?php echo esc_url( home_url( '/#consult' ) ); ?>">
-							<span class="zapysatys_na_link_text">Записатись<br>на прийом</span>
-							<span class="zapysatys_na_link_icon btn_icon_arrow" style="mask-image: url('<?php echo esc_url( $arrow ); ?>'); -webkit-mask-image: url('<?php echo esc_url( $arrow ); ?>');" aria-hidden="true"></span>
-						</a>
+						<?php endforeach; ?>
 					</nav>
 				</div>
 			</div>

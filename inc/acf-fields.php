@@ -503,6 +503,10 @@ function beauty_institute_acf_group_category() {
 				bi_acf_field( 'cat_hub_msg', __( 'Ці поля використовуються тільки на самій рубриці «Послуги».', 'beauty-institute' ), '', 'message' ),
 				bi_acf_field( 'cat_hub_lead', __( 'Лід', 'beauty-institute' ), 'hub_lead', 'text', array( 'placeholder' => 'Краса та здоров’я — в одному місці!' ) ),
 				bi_acf_field( 'cat_hub_desc', __( 'Опис', 'beauty-institute' ), 'hub_desc', 'textarea', array( 'rows' => 3 ) ),
+				bi_acf_field( 'cat_link_prices', __( 'Блок «Записатись на прийом» — «Ціни на послуги»', 'beauty-institute' ), 'hub_link_prices', 'url', array( 'instructions' => __( 'Порожнє поле — стандартне посилання.', 'beauty-institute' ), 'placeholder' => '/poslugi/' ) ),
+				bi_acf_field( 'cat_link_reviews', __( 'Блок «Записатись на прийом» — «Відгуки клієнтів»', 'beauty-institute' ), 'hub_link_reviews', 'url', array( 'placeholder' => '/vidguki/' ) ),
+				bi_acf_field( 'cat_link_faq', __( 'Блок «Записатись на прийом» — «Поширені питання»', 'beauty-institute' ), 'hub_link_faq', 'url' ),
+				bi_acf_field( 'cat_link_consult', __( 'Блок «Записатись на прийом» — «Записатись на прийом»', 'beauty-institute' ), 'hub_link_consult', 'url', array( 'placeholder' => '/#consult' ) ),
 
 				bi_acf_field( 'cat_tab_card', __( 'Картка на /poslugi/', 'beauty-institute' ), '', 'tab' ),
 				bi_acf_field( 'cat_card_msg', __( 'Ці поля показуються у прев’ю-картці цієї рубрики на сторінці «Послуги» (для дочірніх рубрик).', 'beauty-institute' ), '', 'message' ),
