@@ -52,7 +52,7 @@ for ( $i = 1; $i <= 4; $i++ ) {
 $causes   = bi_parse_rows( bi_field( 'causes_list' ), 2 );
 $symptoms = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) bi_field( 'symptoms_list' ) ) ) );
 $stages   = bi_parse_rows( bi_field( 'stages_list' ), 2 );
-$note     = bi_field( 'note_text' );
+$note     = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) bi_field( 'note_text' ) ) ) );
 
 $has_intro   = $intro_title || $intro_text;
 $has_details = $types || $causes || $symptoms || $stages || $note;
@@ -171,7 +171,10 @@ $arrow_nav = beauty_institute_asset( 'images/arrow_right_nav.svg' );
 
 			<?php if ( $causes ) : ?>
 			<div class="view_01_block">
-				<div class="view_01_head"><h2 class="view_01_title"><?php bi_text( 'causes_title', 'Причини та тригери' ); ?></h2></div>
+				<div class="view_01_head">
+					<h2 class="view_01_title"><?php bi_text( 'causes_title', 'Причини та тригери' ); ?></h2>
+					<?php if ( bi_field( 'causes_lead' ) ) : ?><p class="view_01_lead"><?php bi_text( 'causes_lead' ); ?></p><?php endif; ?>
+				</div>
 				<ul class="view_01_grid view_01_grid_causes">
 					<?php foreach ( $causes as $cause ) : ?>
 						<li class="view_01_card view_01_card_cause">
@@ -185,7 +188,10 @@ $arrow_nav = beauty_institute_asset( 'images/arrow_right_nav.svg' );
 
 			<?php if ( $symptoms ) : ?>
 			<div class="view_01_block">
-				<div class="view_01_head"><h2 class="view_01_title"><?php bi_text( 'symptoms_title', 'Симптоми' ); ?></h2></div>
+				<div class="view_01_head">
+					<h2 class="view_01_title"><?php bi_text( 'symptoms_title', 'Симптоми' ); ?></h2>
+					<?php if ( bi_field( 'symptoms_lead' ) ) : ?><p class="view_01_lead"><?php bi_text( 'symptoms_lead' ); ?></p><?php endif; ?>
+				</div>
 				<ul class="view_01_grid view_01_grid_symptoms">
 					<?php foreach ( $symptoms as $symptom ) : ?>
 						<li class="view_01_card view_01_card_symptom"><p class="view_01_card_text"><?php echo esc_html( $symptom ); ?></p></li>
@@ -196,7 +202,10 @@ $arrow_nav = beauty_institute_asset( 'images/arrow_right_nav.svg' );
 
 			<?php if ( $stages ) : ?>
 			<div class="view_01_block">
-				<div class="view_01_head"><h2 class="view_01_title"><?php bi_text( 'stages_title', 'Стадії розвитку' ); ?></h2></div>
+				<div class="view_01_head">
+					<h2 class="view_01_title"><?php bi_text( 'stages_title', 'Стадії розвитку' ); ?></h2>
+					<?php if ( bi_field( 'stages_lead' ) ) : ?><p class="view_01_lead"><?php bi_text( 'stages_lead' ); ?></p><?php endif; ?>
+				</div>
 				<ol class="view_01_grid view_01_grid_stages">
 					<?php foreach ( $stages as $index => $stage ) : ?>
 						<li class="view_01_stage">
@@ -214,7 +223,9 @@ $arrow_nav = beauty_institute_asset( 'images/arrow_right_nav.svg' );
 			<?php if ( $note ) : ?>
 			<div class="view_01_note">
 				<p class="view_01_note_title"><?php bi_text( 'note_title', 'Важливо знати!' ); ?></p>
-				<p class="view_01_note_text"><?php echo esc_html( $note ); ?></p>
+				<?php foreach ( $note as $note_line ) : ?>
+					<p class="view_01_note_text"><?php echo esc_html( $note_line ); ?></p>
+				<?php endforeach; ?>
 			</div>
 			<?php endif; ?>
 		</div>

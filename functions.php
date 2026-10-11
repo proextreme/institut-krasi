@@ -508,6 +508,11 @@ require get_template_directory() . '/inc/acf-fields.php';
 require get_template_directory() . '/inc/seed-problem-rozatsea.php';
 
 /**
+ * TEMPORARY one-time seed of the other six request records — remove after it ran.
+ */
+require get_template_directory() . '/inc/seed-problems.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';

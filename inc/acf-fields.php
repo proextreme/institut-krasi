@@ -216,14 +216,17 @@ function beauty_institute_acf_group_problem_page() {
 				array(
 					bi_acf_field( 'pp_tab_causes', __( 'Причини', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'pp_causes_title', __( 'Заголовок', 'beauty-institute' ), 'causes_title', 'text', array( 'placeholder' => 'Причини та тригери', 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_causes_lead', __( 'Підзаголовок', 'beauty-institute' ), 'causes_lead', 'textarea', array( 'rows' => 2, 'instructions' => __( 'Необовʼязково — вступне речення під заголовком.', 'beauty-institute' ) ) ),
 					bi_acf_field( 'pp_causes_list', __( 'Причини (один рядок = один пункт, формат: Назва | Опис)', 'beauty-institute' ), 'causes_list', 'textarea', array( 'rows' => 6 ) ),
 
 					bi_acf_field( 'pp_tab_symptoms', __( 'Симптоми', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'pp_symptoms_title', __( 'Заголовок', 'beauty-institute' ), 'symptoms_title', 'text', array( 'placeholder' => 'Симптоми', 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_symptoms_lead', __( 'Підзаголовок', 'beauty-institute' ), 'symptoms_lead', 'textarea', array( 'rows' => 2, 'instructions' => __( 'Необовʼязково — вступне речення під заголовком.', 'beauty-institute' ) ) ),
 					bi_acf_field( 'pp_symptoms_list', __( 'Симптоми (по одному на рядок)', 'beauty-institute' ), 'symptoms_list', 'textarea', array( 'rows' => 6 ) ),
 
 					bi_acf_field( 'pp_tab_stages', __( 'Стадії', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'pp_stages_title', __( 'Заголовок', 'beauty-institute' ), 'stages_title', 'text', array( 'placeholder' => 'Стадії розвитку', 'instructions' => $hint_hide ) ),
+					bi_acf_field( 'pp_stages_lead', __( 'Підзаголовок', 'beauty-institute' ), 'stages_lead', 'textarea', array( 'rows' => 2, 'instructions' => __( 'Необовʼязково — вступне речення під заголовком.', 'beauty-institute' ) ) ),
 					bi_acf_field( 'pp_stages_list', __( 'Стадії (Назва | Опис) — нумеруються автоматично', 'beauty-institute' ), 'stages_list', 'textarea', array( 'rows' => 6 ) ),
 					bi_acf_field( 'pp_note_title', __( 'Примітка — заголовок', 'beauty-institute' ), 'note_title', 'text', array( 'placeholder' => 'Важливо знати!' ) ),
 					bi_acf_field( 'pp_note_text', __( 'Примітка — текст', 'beauty-institute' ), 'note_text', 'textarea', array( 'rows' => 3 ) ),
