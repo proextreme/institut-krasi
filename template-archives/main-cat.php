@@ -12,12 +12,34 @@ $children = get_terms(
 		'taxonomy'   => 'category',
 		'parent'     => $hub_term->term_id,
 		'hide_empty' => false,
-		'orderby'    => 'term_order',
 	)
 );
 if ( is_wp_error( $children ) ) {
 	$children = array();
 }
+
+/*
+ * Card order on the hub. Slugs not listed here go after these, in creation order.
+ */
+$card_order = array(
+	'vydalennya-novoutvoren',
+	'inyektsiyna-kosmetologiya',
+	'estetychna-khirurhiya',
+	'aparatna-kosmetolohiya',
+	'dohlyadovi-protsedury',
+	'stomatolohiya',
+);
+usort(
+	$children,
+	static function ( $a, $b ) use ( $card_order ) {
+		$pos_a = array_search( $a->slug, $card_order, true );
+		$pos_b = array_search( $b->slug, $card_order, true );
+		$pos_a = false === $pos_a ? count( $card_order ) : $pos_a;
+		$pos_b = false === $pos_b ? count( $card_order ) : $pos_b;
+
+		return $pos_a <=> $pos_b ?: $a->term_id <=> $b->term_id;
+	}
+);
 ?>
 <main class="main-cat">
 
