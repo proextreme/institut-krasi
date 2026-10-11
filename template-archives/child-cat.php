@@ -61,7 +61,7 @@ $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 				<div class="iniektsiina_kosmetolohiya_text">
 					<h1 class="iniektsiina_kosmetolohiya_title font_heading"><?php echo esc_html( $term->name ); ?></h1>
 					<?php $hero_desc = get_field( 'hero_desc', $term ); ?>
-					<?php if ( $hero_desc ) : ?><p class="iniektsiina_kosmetolohiya_desc"><?php echo esc_html( $hero_desc ); ?></p><?php endif; ?>
+					<?php if ( $hero_desc ) : ?><p class="iniektsiina_kosmetolohiya_desc"><?php echo nl2br( esc_html( $hero_desc ) ); ?></p><?php endif; ?>
 				</div>
 
 				<div class="iniektsiina_kosmetolohiya_actions">
