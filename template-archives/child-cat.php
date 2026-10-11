@@ -37,6 +37,9 @@ $intro_img    = $intro_img_id ? wp_get_attachment_image_url( $intro_img_id, 'lar
 $services = bi_parse_rows( get_field( 'services_list', $term ), 4 );
 $audience = bi_parse_rows( get_field( 'audience_list', $term ), 2 );
 $problems = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) get_field( 'problems_list', $term ) ) ) );
+$process  = bi_parse_rows( get_field( 'process_steps', $term ), 3 );
+$doctors  = get_field( 'doctors', $term );
+$doctors  = ( is_array( $doctors ) && $doctors ) ? $doctors : array();
 
 $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 ?>
@@ -194,6 +197,79 @@ $arrow = beauty_institute_asset( 'images/arrow_right.svg' );
 				</div>
 			</div>
 			<?php endif; ?>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( $process ) : ?>
+	<section class="yak_prokhodyt_section">
+		<div class="container">
+			<div class="yak_prokhodyt">
+				<h2 class="yak_prokhodyt_title"><?php echo esc_html( get_field( 'process_title', $term ) ? get_field( 'process_title', $term ) : 'Як проходить процедура' ); ?></h2>
+				<div class="yak_prokhodyt_list">
+					<?php foreach ( $process as $step_n => $step ) : ?>
+						<?php $step_tags = array_filter( array_map( 'trim', explode( ',', $step[2] ) ) ); ?>
+						<article class="yak_prokhodyt_item">
+							<span class="yak_prokhodyt_num" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $step_n + 1 ) ); ?></span>
+							<div class="yak_prokhodyt_body">
+								<h3 class="yak_prokhodyt_item_title"><?php echo esc_html( $step[0] ); ?></h3>
+								<?php if ( '' !== $step[1] ) : ?><p class="yak_prokhodyt_item_text"><?php echo esc_html( $step[1] ); ?></p><?php endif; ?>
+								<?php if ( $step_tags ) : ?>
+								<ul class="yak_prokhodyt_tags">
+									<?php foreach ( $step_tags as $step_tag ) : ?>
+										<li class="yak_prokhodyt_tag"><?php echo esc_html( $step_tag ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+								<?php endif; ?>
+							</div>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( $doctors ) : ?>
+	<section class="likari" aria-label="Лікарі">
+		<div class="container likari_inner">
+			<div class="likari_head">
+				<h2 class="likari_title font_heading"><?php echo esc_html( get_field( 'doctors_title', $term ) ? get_field( 'doctors_title', $term ) : 'Лікарі' ); ?></h2>
+				<?php $doctors_subtitle = get_field( 'doctors_subtitle', $term ); ?>
+				<?php if ( $doctors_subtitle ) : ?><p class="likari_subtitle"><?php echo esc_html( $doctors_subtitle ); ?></p><?php endif; ?>
+			</div>
+			<div class="likari_list">
+				<?php
+				foreach ( $doctors as $doc_id ) :
+					$doc_id = (int) ( is_object( $doc_id ) ? $doc_id->ID : $doc_id );
+					if ( ! $doc_id ) {
+						continue;
+					}
+					$d_img = bi_image_id( get_field( 'photo', $doc_id ) );
+					if ( ! $d_img ) {
+						$d_img = get_post_thumbnail_id( $doc_id );
+					}
+					$d_src  = $d_img ? wp_get_attachment_image_url( $d_img, 'medium_large' ) : beauty_institute_asset( 'images/likari/estetychnyi_khirurh.webp' );
+					$d_role = trim( (string) get_field( 'role', $doc_id ) );
+					if ( '' === $d_role ) {
+						$d_role = trim( (string) get_field( 'card_description', $doc_id ) );
+					}
+					if ( '' === $d_role ) {
+						$d_terms = get_the_terms( $doc_id, 'bi_specialty' );
+						$d_role  = ( $d_terms && ! is_wp_error( $d_terms ) ) ? $d_terms[0]->name : '';
+					}
+					?>
+					<article class="likari_card">
+						<a class="likari_photo" href="<?php echo esc_url( get_permalink( $doc_id ) ); ?>">
+							<picture><img class="likari_photo_img" src="<?php echo esc_url( $d_src ); ?>" alt="" width="300" height="366" loading="lazy" decoding="async"></picture>
+						</a>
+						<a class="likari_info" href="<?php echo esc_url( get_permalink( $doc_id ) ); ?>">
+							<?php if ( '' !== $d_role ) : ?><span class="likari_role"><?php echo esc_html( $d_role ); ?></span><?php endif; ?>
+							<span class="likari_name"><?php echo esc_html( get_the_title( $doc_id ) ); ?></span>
+						</a>
+					</article>
+				<?php endforeach; ?>
+			</div>
 		</div>
 	</section>
 	<?php endif; ?>

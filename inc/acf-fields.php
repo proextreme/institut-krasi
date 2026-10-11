@@ -561,6 +561,22 @@ function beauty_institute_acf_group_category() {
 				bi_acf_field( 'cat_audience_list', __( '«Кому підходить» — пункти (Назва | Опис)', 'beauty-institute' ), 'audience_list', 'textarea', array( 'rows' => 4 ) ),
 				bi_acf_field( 'cat_problems_title', __( '«Які проблеми вирішує» — заголовок', 'beauty-institute' ), 'problems_title', 'text', array( 'placeholder' => 'Які проблеми вирішує' ) ),
 				bi_acf_field( 'cat_problems_list', __( '«Які проблеми вирішує» — пункти (по одному на рядок)', 'beauty-institute' ), 'problems_list', 'textarea', array( 'rows' => 4 ) ),
+				bi_acf_field( 'cat_process_title', __( '«Як проходить» — заголовок', 'beauty-institute' ), 'process_title', 'text', array( 'placeholder' => 'Як проходить процедура' ) ),
+				bi_acf_field( 'cat_process_steps', __( '«Як проходить» — кроки (Назва | Опис | Теги)', 'beauty-institute' ), 'process_steps', 'textarea', array( 'rows' => 6, 'instructions' => __( 'Один крок на рядок. Формат: <code>Назва | Опис | Теги через кому</code>. Теги не обов’язкові. Нумерація (01, 02…) автоматична. Порожньо — блок не показується.', 'beauty-institute' ) ) ),
+				bi_acf_field( 'cat_doctors_title', __( 'Лікарі — заголовок', 'beauty-institute' ), 'doctors_title', 'text', array( 'placeholder' => 'Лікарі' ) ),
+				bi_acf_field( 'cat_doctors_subtitle', __( 'Лікарі — підзаголовок', 'beauty-institute' ), 'doctors_subtitle', 'text', array( 'placeholder' => 'що проводять процедуру видалення новоутворень' ) ),
+				bi_acf_field(
+					'cat_doctors',
+					__( 'Лікарі — оберіть лікарів', 'beauty-institute' ),
+					'doctors',
+					'relationship',
+					array(
+						'post_type'     => array( 'bi_doctor' ),
+						'return_format' => 'id',
+						'filters'       => array( 'search' ),
+						'instructions'  => __( 'Показуються лише вибрані лікарі, у вказаному порядку. Нікого не вибрано — блок «Лікарі» не показується.', 'beauty-institute' ),
+					)
+				),
 				bi_acf_field( 'cat_consult_title', __( 'Запис — заголовок', 'beauty-institute' ), 'consult_title', 'text', array( 'placeholder' => 'Записатись на прийом' ) ),
 				bi_acf_field( 'cat_consult_intro', __( 'Запис — текст', 'beauty-institute' ), 'consult_intro_desktop', 'textarea', array( 'rows' => 2, 'instructions' => __( 'Використовується як текст блоку запису на цій сторінці.', 'beauty-institute' ) ) ),
 			),

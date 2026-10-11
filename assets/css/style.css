@@ -6719,6 +6719,10 @@ body.is_thanks_modal_open {
 }
 
 /* ========== Як проходить процедура (yak_prokhodyt) ========== */
+.yak_prokhodyt_section {
+	padding-block: 40px;
+}
+
 .yak_prokhodyt {
 	display: flex;
 	flex-direction: column;
