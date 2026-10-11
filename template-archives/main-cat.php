@@ -175,7 +175,7 @@ usort(
 							array( 'Записатись<br>на прийом', 'hub_link_consult', home_url( '/#consult' ) ),
 						);
 						foreach ( $quick_links as $quick_link ) :
-							$quick_url = get_field( $quick_link[1], $hub_term );
+							$quick_url = trim( (string) get_field( $quick_link[1], $hub_term ) );
 							?>
 						<a class="zapysatys_na_link" href="<?php echo esc_url( $quick_url ? $quick_url : $quick_link[2] ); ?>">
 							<span class="zapysatys_na_link_text"><?php echo wp_kses( $quick_link[0], array( 'br' => array() ) ); ?></span>
