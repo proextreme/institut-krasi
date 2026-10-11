@@ -1228,7 +1228,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		 * Refresh loop clones for current layout (fills 2nd slot on desk).
 		 */
 		const syncClones = () => {
-			const need = getLoopCloneCount(viewport, track, originals[0]);
+			// A lone photo must not be repeated in the second desktop slot.
+			const need = hasSeveral ? getLoopCloneCount(viewport, track, originals[0]) : 0;
 			syncLoopClones({ track, originals, clones, need });
 			syncSlideWidths();
 		};
