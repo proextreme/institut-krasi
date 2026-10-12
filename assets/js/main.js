@@ -1569,6 +1569,24 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
+	/**
+	 * Build YouTube embed URL with autoplay (unmuted after user gesture).
+	 *
+	 * @param {string} videoId YouTube video id.
+	 * @return {string} Embed URL.
+	 */
+	const buildEmbedUrl = (videoId) => {
+		const params = new URLSearchParams({
+			autoplay: '1',
+			mute: '0',
+			rel: '0',
+			playsinline: '1',
+			modestbranding: '1',
+		});
+
+		return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?${params.toString()}`;
+	};
+
 	// Video modal — YouTube embed or an uploaded MP4 file (play → autoplay with sound).
 	document.querySelectorAll('[data-video-modal]').forEach((modal) => {
 		const root = modal.closest('section') || modal.parentElement;
@@ -1582,24 +1600,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!iframe || !videoEl || !openButtons.length) {
 			return;
 		}
-
-		/**
-		 * Build YouTube embed URL with autoplay (unmuted after user gesture).
-		 *
-		 * @param {string} videoId YouTube video id.
-		 * @return {string} Embed URL.
-		 */
-		const buildEmbedUrl = (videoId) => {
-			const params = new URLSearchParams({
-				autoplay: '1',
-				mute: '0',
-				rel: '0',
-				playsinline: '1',
-				modestbranding: '1',
-			});
-
-			return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?${params.toString()}`;
-		};
 
 		/**
 		 * Open modal and start playback, from a YouTube id or a direct file URL.
@@ -1664,6 +1664,42 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (event.key === 'Escape' && !modal.hidden) {
 				closeModal();
 			}
+		});
+	});
+
+	// Inline video — plays inside its own card instead of a modal (YouTube embed or MP4 file).
+	document.querySelectorAll('[data-video-inline]').forEach((card) => {
+		const trigger = card.querySelector('[data-video-inline-open]');
+		const player = card.querySelector('[data-video-inline-player]');
+		const iframe = card.querySelector('[data-video-inline-iframe]');
+		const videoEl = card.querySelector('[data-video-inline-file]');
+
+		if (!trigger || !player || !iframe || !videoEl) {
+			return;
+		}
+
+		trigger.addEventListener('click', (event) => {
+			event.preventDefault();
+
+			const fileSrc = trigger.getAttribute('data-video-src') || '';
+			const videoId = trigger.getAttribute('data-youtube-id') || '';
+
+			if (fileSrc) {
+				videoEl.src = fileSrc;
+				videoEl.hidden = false;
+				iframe.hidden = true;
+				videoEl.play();
+			} else if (videoId) {
+				iframe.src = buildEmbedUrl(videoId);
+				iframe.hidden = false;
+				videoEl.hidden = true;
+			} else {
+				return;
+			}
+
+			player.hidden = false;
+			trigger.hidden = true;
+			card.classList.add('is_playing');
 		});
 	});
 

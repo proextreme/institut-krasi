@@ -101,7 +101,7 @@ $doctors_btn  = bi_field( 'doctors_btn' );
 	</div>
 
 	<div class="container tour_3d_ekskursiya_media">
-		<div class="tour_3d_ekskursiya_card">
+		<div class="tour_3d_ekskursiya_card" data-video-inline>
 			<?php
 			$tour_poster = bi_image_id( bi_field( 'tour_poster' ) );
 			$tour_src    = $tour_poster ? wp_get_attachment_image_url( $tour_poster, 'large' ) : beauty_institute_asset( 'images/3d_ekskursiya.webp' );
@@ -109,13 +109,15 @@ $doctors_btn  = bi_field( 'doctors_btn' );
 			$tour_yt     = bi_field( 'tour_youtube_id', 'rAx1qYtXI28' );
 			?>
 			<img class="tour_3d_ekskursiya_img" src="<?php echo esc_url( $tour_src ); ?>" alt="" width="1046" height="468" loading="lazy" decoding="async">
-			<button type="button" class="tour_3d_ekskursiya_play" data-video-open <?php echo $tour_file ? 'data-video-src="' . esc_url( $tour_file ) . '"' : 'data-youtube-id="' . esc_attr( $tour_yt ) . '"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-label="Відкрити 3D-екскурсію">
+			<button type="button" class="tour_3d_ekskursiya_play" data-video-inline-open <?php echo $tour_file ? 'data-video-src="' . esc_url( $tour_file ) . '"' : 'data-youtube-id="' . esc_attr( $tour_yt ) . '"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-label="Відкрити 3D-екскурсію">
 				<img class="tour_3d_ekskursiya_play_icon" src="<?php echo esc_url( beauty_institute_asset( 'images/3d_ekskursiya.svg' ) ); ?>" alt="" width="19" height="20" loading="lazy" decoding="async">
 			</button>
+			<div class="tour_3d_ekskursiya_player" data-video-inline-player hidden>
+				<iframe class="tour_3d_ekskursiya_player_media" data-video-inline-iframe title="3D-екскурсія" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen hidden></iframe>
+				<video class="tour_3d_ekskursiya_player_media" data-video-inline-file controls playsinline hidden></video>
+			</div>
 		</div>
 	</div>
-
-	<?php beauty_institute_video_modal( '3D-екскурсія' ); ?>
 </section>
 
 <section class="my_pratsyuiemo">
