@@ -105,24 +105,17 @@ $doctors_btn  = bi_field( 'doctors_btn' );
 			<?php
 			$tour_poster = bi_image_id( bi_field( 'tour_poster' ) );
 			$tour_src    = $tour_poster ? wp_get_attachment_image_url( $tour_poster, 'large' ) : beauty_institute_asset( 'images/3d_ekskursiya.webp' );
+			$tour_file   = (string) bi_field( 'tour_video_file', '' );
 			$tour_yt     = bi_field( 'tour_youtube_id', 'rAx1qYtXI28' );
 			?>
 			<img class="tour_3d_ekskursiya_img" src="<?php echo esc_url( $tour_src ); ?>" alt="" width="1046" height="468" loading="lazy" decoding="async">
-			<button type="button" class="tour_3d_ekskursiya_play" data-video-open data-youtube-id="<?php echo esc_attr( $tour_yt ); ?>" aria-label="Відкрити 3D-екскурсію">
+			<button type="button" class="tour_3d_ekskursiya_play" data-video-open <?php echo $tour_file ? 'data-video-src="' . esc_url( $tour_file ) . '"' : 'data-youtube-id="' . esc_attr( $tour_yt ) . '"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-label="Відкрити 3D-екскурсію">
 				<img class="tour_3d_ekskursiya_play_icon" src="<?php echo esc_url( beauty_institute_asset( 'images/3d_ekskursiya.svg' ) ); ?>" alt="" width="19" height="20" loading="lazy" decoding="async">
 			</button>
 		</div>
 	</div>
 
-	<div class="videovidhuky_modal" data-video-modal hidden>
-		<div class="videovidhuky_modal_backdrop" data-video-modal-close tabindex="-1"></div>
-		<div class="videovidhuky_modal_dialog" role="dialog" aria-modal="true" aria-label="3D-екскурсія">
-			<button type="button" class="videovidhuky_modal_close" data-video-modal-close aria-label="Закрити відео"></button>
-			<div class="videovidhuky_modal_frame">
-				<iframe class="videovidhuky_modal_iframe" data-video-iframe title="3D-екскурсія" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-			</div>
-		</div>
-	</div>
+	<?php beauty_institute_video_modal( '3D-екскурсія' ); ?>
 </section>
 
 <section class="my_pratsyuiemo">

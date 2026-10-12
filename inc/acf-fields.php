@@ -782,7 +782,18 @@ function beauty_institute_acf_group_about() {
 					bi_acf_field( 'ab_tour_title', __( 'Заголовок', 'beauty-institute' ), 'tour_title', 'text' ),
 					bi_acf_field( 'ab_tour_text', __( 'Текст', 'beauty-institute' ), 'tour_text', 'textarea', array( 'rows' => 2 ) ),
 					bi_acf_field( 'ab_tour_poster', __( 'Постер відео', 'beauty-institute' ), 'tour_poster', 'image', array( 'return_format' => 'id', 'preview_size' => 'medium' ) ),
-					bi_acf_field( 'ab_tour_youtube', __( 'YouTube ID відео', 'beauty-institute' ), 'tour_youtube_id', 'text', array( 'placeholder' => 'rAx1qYtXI28' ) ),
+					bi_acf_field(
+						'ab_tour_video_file',
+						__( 'Відео-файл (MP4, необовʼязково)', 'beauty-institute' ),
+						'tour_video_file',
+						'file',
+						array(
+							'return_format' => 'url',
+							'mime_types'    => 'mp4',
+							'instructions'  => __( 'Якщо завантажити файл тут — він показується замість YouTube-відео нижче.', 'beauty-institute' ),
+						)
+					),
+					bi_acf_field( 'ab_tour_youtube', __( 'Або YouTube ID відео (необовʼязково)', 'beauty-institute' ), 'tour_youtube_id', 'text', array( 'placeholder' => 'rAx1qYtXI28' ) ),
 
 					bi_acf_field( 'ab_tab_work', __( 'Ми працюємо', 'beauty-institute' ), '', 'tab' ),
 					bi_acf_field( 'ab_stat_1_num', __( 'Показник 1 — число', 'beauty-institute' ), 'stat_1_number', 'text', array( 'wrapper' => array( 'width' => '25' ), 'placeholder' => '75' ) ),
