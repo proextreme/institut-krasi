@@ -169,7 +169,8 @@ endif;
 					<?php
 					if ( $video_reviews ) {
 						foreach ( $video_reviews as $review_id ) {
-							$yt      = beauty_institute_youtube_id( (string) get_field( 'video_url', $review_id ) );
+							$file    = (string) get_field( 'video_file', $review_id );
+							$yt      = $file ? '' : beauty_institute_youtube_id( (string) get_field( 'video_url', $review_id ) );
 							$poster  = bi_image_id( get_field( 'video_poster', $review_id ) );
 							if ( ! $poster ) {
 								$poster = get_post_thumbnail_id( $review_id );
@@ -182,8 +183,8 @@ endif;
 							?>
 							<article class="videovidhuky_card">
 								<img class="videovidhuky_img" src="<?php echo esc_url( $src ); ?>" alt="" width="615" height="468" loading="lazy" decoding="async">
-								<?php if ( $yt ) : ?>
-								<button type="button" class="videovidhuky_play" data-video-open data-youtube-id="<?php echo esc_attr( $yt ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відеовідгук: %s', 'beauty-institute' ), $name ) ); ?>">
+								<?php if ( $file || $yt ) : ?>
+								<button type="button" class="videovidhuky_play" data-video-open <?php echo $file ? 'data-video-src="' . esc_url( $file ) . '"' : 'data-youtube-id="' . esc_attr( $yt ) . '"'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-label="<?php echo esc_attr( sprintf( __( 'Дивитися відеовідгук: %s', 'beauty-institute' ), $name ) ); ?>">
 									<span class="videovidhuky_play_icon" style="background-image: url('<?php echo esc_url( beauty_institute_asset( 'images/reviews/videovidhuky.svg' ) ); ?>');" aria-hidden="true"></span>
 								</button>
 								<?php endif; ?>
@@ -229,15 +230,7 @@ endif;
 			</div>
 		</div>
 
-		<div class="videovidhuky_modal" data-video-modal hidden>
-			<div class="videovidhuky_modal_backdrop" data-video-modal-close tabindex="-1"></div>
-			<div class="videovidhuky_modal_dialog" role="dialog" aria-modal="true" aria-label="Відеовідгук">
-				<button type="button" class="videovidhuky_modal_close" data-video-modal-close aria-label="Закрити відео"></button>
-				<div class="videovidhuky_modal_frame">
-					<iframe class="videovidhuky_modal_iframe" data-video-iframe title="Відеовідгук" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-				</div>
-			</div>
-		</div>
+		<?php beauty_institute_video_modal( 'Відеовідгук' ); ?>
 	</section>
 
 	<?php if ( $is_slider ) : ?>

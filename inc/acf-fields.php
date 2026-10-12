@@ -424,8 +424,20 @@ function beauty_institute_acf_group_review() {
 					array( 'return_format' => 'id', 'preview_size' => 'thumbnail', 'conditional_logic' => array( array( array( 'field' => 'field_bi_rev_is_video', 'operator' => '!=', 'value' => '1' ) ) ) )
 				),
 				bi_acf_field(
+					'rev_video_file',
+					__( 'Відео-файл (MP4, необовʼязково)', 'beauty-institute' ),
+					'video_file',
+					'file',
+					array(
+						'return_format'     => 'url',
+						'mime_types'        => 'mp4',
+						'instructions'      => __( 'Якщо завантажити файл тут — він показується замість YouTube-посилання нижче.', 'beauty-institute' ),
+						'conditional_logic' => array( array( array( 'field' => 'field_bi_rev_is_video', 'operator' => '==', 'value' => '1' ) ) ),
+					)
+				),
+				bi_acf_field(
 					'rev_video_url',
-					__( 'Посилання на YouTube-відео', 'beauty-institute' ),
+					__( 'Або посилання на YouTube-відео (необовʼязково)', 'beauty-institute' ),
 					'video_url',
 					'url',
 					array( 'conditional_logic' => array( array( array( 'field' => 'field_bi_rev_is_video', 'operator' => '==', 'value' => '1' ) ) ) )
