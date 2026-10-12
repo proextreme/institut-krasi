@@ -656,12 +656,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			lockedAxis = '';
 			viewport.classList.add('is_dragging');
 			track.classList.add('is_dragging');
-
-			try {
-				viewport.setPointerCapture(pointerId);
-			} catch (err) {
-				// Ignore capture errors on older engines.
-			}
 		});
 
 		viewport.addEventListener('pointermove', (event) => {
@@ -681,6 +675,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				if (lockedAxis === 'y') {
 					return;
+				}
+
+				// Capture only once a horizontal drag starts: capturing on pointerdown
+				// retargets the click to the viewport and breaks links inside slides.
+				try {
+					viewport.setPointerCapture(pointerId);
+				} catch (err) {
+					// Ignore capture errors on older engines.
 				}
 			}
 
