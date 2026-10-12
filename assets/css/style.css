@@ -8815,6 +8815,12 @@ main.likari {
 	background-color: #000;
 }
 
+/* `display: block` above would otherwise override the [hidden] attribute. */
+.videovidhuky_modal_iframe[hidden],
+.videovidhuky_modal_video[hidden] {
+	display: none;
+}
+
 body.is_video_modal_open {
 	overflow: hidden;
 }
